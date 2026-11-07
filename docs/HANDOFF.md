@@ -1,7 +1,51 @@
 # Handoff — Nextflow (estado em 07/11/2026)
 
-> Para continuar o trabalho de outro PC sem ajuda. Conferido contra o `git log` da `homolog` dos dois repos e contra
+> Atualizado em 07/11 à noite (seção 0). Para continuar o trabalho de outro PC sem ajuda. Conferido contra o `git log` da `homolog` dos dois repos e contra
 > os arquivos de setup reais. Detalhe de cada fatia: `slices/board.md` e os cartões `slices/F*.md`.
+
+## 0. Atualização de 07/11/2026 (noite): bloco C em andamento
+> Escrita ao fim da sessão de trabalho de 07/11; o resto do documento descreve o estado da manhã.
+
+**O que foi feito hoje, além do handoff original**
+- **Redesign do front** (visual estilo Apple, animações com `motion`, sidebar que expande no hover, logo só com o "n", dashboard sem cards): branch `feat/redesign-frontend` do front,
+  commits `708c3bc` e `ecb8700`, **sem push**. Base: `homolog` (`c442a77`).
+- **F3.1 Dados derivados** e **F3.2 Motor portado + F3.7**: no back, branch `feat/bloco-c-previsao`, commit `a0cdbaa` (sem push), saindo de `homolog` (`be6e911`).
+  Cartões em `slices/F3.1.md` e `slices/F3.2.md`. Suíte: 936 testes verdes na entrega da F3.2; 93 unitários de previsão verdes depois das correções parciais.
+- **Front, enums da F3.2**: branch `feat/bloco-c-previsao` do front, commit `0617ca0` (só `src/types/enums.ts`, `TLeadTimeSource`), saindo de `homolog`. **Não está na branch do redesign**: ao juntar as duas, é um merge trivial.
+- **Docs**: branch `docs/bloco-c-previsao` (cartões F3.1 e F3.2, quadro, log, contrato e este handoff).
+
+**Estado das fatias do bloco C**
+| Fatia | Estado |
+|--|--|
+| F3.1 Dados derivados | Feita, review em duas rodadas (aprovada com ressalvas, corrigidas) |
+| F3.2 + F3.7 Motor portado | Entregue; review aprovada com ressalvas, **correções parciais** (tabela em `slices/F3.2.md`, seção "Review") |
+| F3.3 Análise em segundo plano | A fazer. Pré-requisito: chamar `IDerivedDataService.RebuildAsync` antes de `IForecastEngine.RunAsync`; mover a consulta do `ForecastInputBuilder` para repositório (`AsSplitQuery`) |
+| F3.4 Ações (Comprar, Promover, Manter, Descartar) | A fazer |
+| F3.5 Painel e notificações | A fazer. É o que enche o dashboard (`/api/dashboard/stats`) e o card de recomendações; hoje essas telas dão 404 na `homolog` |
+| Front das telas T-DF | A fazer, depois das APIs |
+
+**Pendências desta noite (para retomar)**
+1. Terminar as correções da review da F3.2: teto de 90% no desconto da IA; testes de guardrails (mínimo/múltiplo), do cancelamento/`Failed`/índice único de run `Running`, do contraexemplo da trava de rajada e testes diretos do `ForecastInputBuilder`. Rodar a suíte completa depois.
+2. Decisões para o Daniel: cobertura alvo da política ABC no lugar dos 30 dias fixos (e os valores A 15/B 30/C 45 do seed), limites da trava da F3.7, dia sem estoque do produto e fórmula da demanda perdida (F3.1), dados enviados à IA (custo médio e preço), precedência mínimo/múltiplo × vida útil.
+3. Medir o tempo do seed de 36 meses com os dados derivados (a F3.1 acrescenta o recálculo no startup).
+4. Revisão visual do redesign pelo Daniel; depois juntar `feat/redesign-frontend` e `feat/bloco-c-previsao` do front na `homolog`.
+
+**Exceções declaradas a regras da casa (para o Daniel aprovar)**
+- `IUnitOfWork.ExecuteInTransactionAsync` (F3.1 e F3.2): ADR 0010 diz "sem transação manual"; usada só no recálculo dos dados derivados e no commit final do motor.
+- DELETE em massa nos repositórios das tabelas derivadas (`DeleteAllAsync`): exceção a "repositório só registra"; as tabelas são recriáveis.
+
+**Como rodar sem instalar o SDK no Windows (container)**
+O host não precisa de .NET: use o container da imagem `nextflow-v2-backend:development` (SDK 10) com a solução montada e volumes próprios para `bin`/`obj`
+(para não colidir com o `dotnet watch` da API). O script usado foi um `.f31-dotnet.sh` **local, fora do git** (`.git/info/exclude`), que monta
+`-v <repo>:/src`, `-v f31_<projeto>_bin:/src/<projeto>/bin` e `..._obj` para cada projeto, `-v f31_nuget:/root/.nuget/packages`, `-v f31_tools:/root/.dotnet/tools`,
+`-v //var/run/docker.sock:/var/run/docker.sock`, `TESTCONTAINERS_HOST_OVERRIDE=host.docker.internal` e `TESTCONTAINERS_RYUK_DISABLED=true`, e roda `dotnet "$@"`.
+Exemplos: `build nextflow-erp.sln -warnaserror`, `test nextflow.Tests --no-build --filter "FullyQualifiedName~Forecast"`, `format nextflow-erp.sln --verify-no-changes`,
+`ef migrations add <Nome> --project nextflow.Infrastructure --startup-project nextflow` (instalar antes: `dotnet tool install --global dotnet-ef`). Só um comando dotnet por vez.
+Com o Ryuk desligado, uma execução de teste interrompida deixa um container `postgres:17-alpine` parado: apague à mão. `dotnet format` acusa 4 erros antigos de whitespace em
+`ProductUseCases.cs` e `StockAvailabilityUseCases.cs`.
+
+**Ambiente local de hoje**: Docker Desktop + WSL2 no Windows; compose de dev `nextflow-v2-development` (Postgres 5435, API 8081, storage 9010), front por `npm run dev` (5173, `.env` com `VITE_API_URL=http://localhost:8081`).
+Login de dev: `admin@nextflow.com` (senha `DevelopmentPassword` em `UsersSeeder.cs`). O seed de 36 meses leva alguns minutos no primeiro startup e agora também roda o recálculo dos dados derivados.
 
 ## 1. Onde está o quê
 | Repo | Remoto | Branch de trabalho | Último commit (07/11) |

@@ -108,6 +108,8 @@ ProductForecastDto { productId; productName; saleUnit; decimalPlaces;
   seasonality: { month: number; productIndex?: number; categoryIndex?: number }[]; monthsOfHistory;
   events: { name; date: DateOnly; demandStartsOn: DateOnly; linkedToProduct: boolean }[];
   currentStock; accuracy: ForecastAccuracyItemDto[]; latestRecommendationId? }
+> **Nota F3.2 (07/11/2026):** o motor grava, por recomendação, `calculatedQuantity`, `reasonCalculated`, `aiAdjusted`, `leadTimeDays`/`leadTimeSource`, `safetyStock`, `monthsOfHistory` e `basedOnLastYear`, e por análise `referenceDate`, `productsSentToAi` e os contadores de lotes (`batches.total/completed/failed`). O rateio fica em `forecast_recommendation_items` (variante, quantidade, %). `reservedStock`, `targetCoverageDays` e `shelfLifeDays` do `ForecastCalculationDto` vêm do produto e da política na leitura (F3.5). Os DTOs de saída ainda não existem (F3.3/F3.5).
+
 VariantSplitDto { variantId; variantLabel; sharePercent; suggestedQuantity; availableByLocation: { locationName; available }[] }
 ```
 
