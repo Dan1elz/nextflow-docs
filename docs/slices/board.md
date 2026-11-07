@@ -52,7 +52,7 @@
 | F2.5 Pedido com orçamento | B | Fora do escopo | | Decisão do Daniel (07/11) |
 | F2.10 Push e troca do staging | B | A fazer (Daniel) | | Com o Daniel: os commits já estão no `origin/homolog`; falta a troca do staging na VM |
 | QA do bloco B | B | A fazer | | Daniel, manual; inclui F1.7 e os ajustes de cadastros e vendas |
-| F3.1 Dados derivados | C | A fazer | | |
+| F3.1 Dados derivados | C | A fazer | | Cartão F3.1.md escrito em 07/11 (rascunho, 3 pontos a validar com o Daniel); branch `feat/f3-1-dados-derivados` criada no back a partir da homolog, sem código ainda |
 | F3.2 Motor portado + F3.7 | C | A fazer | | densa |
 | F3.3 Análise em segundo plano | C | A fazer | | |
 | F3.4 Ações (sem Transferir) | C | A fazer | | densa |
