@@ -30,6 +30,11 @@
 3. Medir o tempo do seed de 36 meses com os dados derivados (a F3.1 acrescenta o recálculo no startup).
 4. Revisão visual do redesign pelo Daniel; depois juntar `feat/redesign-frontend` e `feat/bloco-c-previsao` do front na `homolog`.
 
+**Encerramento da sessão de 07/11 e ponto de retomada**
+- A sessão foi encerrada a pedido do usuário, com a meta "fazer a etapa 3 inteira" **não concluída**: F3.3, F3.4 e F3.5 não foram começadas e a F3.2 tem correções pendentes.
+- Tudo o que existe está commitado e sem push: back `a0cdbaa` (`feat/bloco-c-previsao`), front `0617ca0` (`feat/bloco-c-previsao`) e `ecb8700` (`feat/redesign-frontend`), docs `docs/bloco-c-previsao`.
+- **Retomar por aqui:** (1) fechar as pendências da review da F3.2 (lista na seção "Review" de `slices/F3.2.md`) e rodar a suíte completa; (2) F3.3, com o pré-requisito de chamar `IDerivedDataService.RebuildAsync` antes de `IForecastEngine.RunAsync`; (3) F3.4; (4) F3.5; (5) front das telas T-DF. Uma fatia por vez, com agente validador do diff a cada fatia (o processo usado hoje).
+
 **Exceções declaradas a regras da casa (para o Daniel aprovar)**
 - `IUnitOfWork.ExecuteInTransactionAsync` (F3.1 e F3.2): ADR 0010 diz "sem transação manual"; usada só no recálculo dos dados derivados e no commit final do motor.
 - DELETE em massa nos repositórios das tabelas derivadas (`DeleteAllAsync`): exceção a "repositório só registra"; as tabelas são recriáveis.
