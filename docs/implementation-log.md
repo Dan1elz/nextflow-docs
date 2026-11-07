@@ -1,0 +1,117 @@
+# Log de implementação — Nextflow (branch `feat/arquitetura-atrena`)
+
+> Relatório fatia a fatia do `implementation-plan.md`. O Daniel valida o resultado final por este arquivo.
+> Execução autônoma pedida por ele em 30/10/2026: um agente por módulo, um de testes e um validador como portão de qualidade.
+
+## Decisões da Fase 0 (delegadas pelo Daniel em 29/10/2026)
+1. `lastStoreId` sai do contrato: a última loja fica no localStorage do front.
+2. Usuário inativo é checado a cada requisição, com 401.
+3. Combos usam `GetOptionsUseCaseBase` no núcleo (busca, só ativos, até 20).
+4. `/api/addresses` e `/api/contacts` com `ownerType` + `ownerId`, um principal por dono, exclusão física.
+5. País, estado e cidade são só leitura, com seed do IBGE.
+6. `user_stores`: criar loja vincula todos os Admins ativos; criar usuário vincula todas as lojas ativas.
+7. Não se inativa o local padrão de uma loja.
+8. A FK da recomendação para o documento gerado fica na recomendação (`applied_*_id`).
+
+## Fase 0 — Fundação
+
+### F0.1 Esqueleto
+Solução .NET 10 com o núcleo do atrena (`ResultDto` com `FieldErrors`, bases de use case, filtros, UnitOfWork, middleware) e `GET /health`.
+Build sem avisos; 18 testes. Anterior à rodada com validador.
+
+### F0.2 Banco limpo
+Migration inicial vazia, compose `nextflow-v2-development` separado do dev antigo (Postgres 5435, API 8081, storage 9010), appsettings por ambiente.
+20 testes, incluindo migrations aplicadas do zero por Testcontainers. Anterior à rodada com validador.
+
+### F0.3 Front base
+`api.service` com envelope novo, `useApiForm` + `ConfirmWarningDialog`, enums em string, tokens do shadcn; enums antigos isolados em `legacy-enums.ts`.
+Erro por campo comprovado na tela de login, junto da F0.4.
+
+### F0.4 Acesso
+- **Feito:** usuários, `/api/auth` (login, me, perfil, troca de senha), token de 8 h, senha forte, último acesso, bloqueio de inativar a si mesmo e o último Admin, checagem de inativo a cada requisição; telas T-AC1 a T-AC4.
+- **Testes:** 115 aprovados, 0 falhas, 0 ignorados. Telas por Playwright em claro, escuro e mobile.
+- **Validador:** reprovada na primeira rodada (6 correções, sem defeito funcional) e **aprovada** na revalidação de 30/10/2026: `dotnet format` limpo, build sem avisos; front com eslint, prettier e build limpos. Login e CRUD confirmados por requisição real. JSON quebrado devolve 400 e campo inconversível, 422.
+- **Decisões:** RN-AC06..14 registradas em `access/business-rules.md`. Corrida do último Admin aceita como risco conhecido (porte de 4 a 15 funcionários; ADR 0010 não tem transação manual). Sem `Seed__Admin__Password`, a API não sobe fora de Development; o compose de staging exige `SEED_ADMIN_PASSWORD`.
+- **Em aberto:**
+  - contraste no tema escuro abaixo de AA (texto sobre `--primary` 4,01; botão destrutivo 2,77);
+  - cadastro simultâneo com o mesmo e-mail deve virar 500 pelo índice único (lido no código, não reproduzido);
+  - Home mostra toasts de 404 até o painel existir (F3.5).
+
+### F0.5 Localidade e cadastros
+- **Feito:** países, estados e cidades só leitura (seed IBGE: 2 países, 27 estados, 5.570 cidades), endereços e contatos polimórficos com CHECK, fornecedores e clientes, combos com `GetOptionsUseCaseBase`, cadastro rápido de cliente (API; botão entra na F2.4), filtro de aniversariantes; telas T-CD1 a T-CD4. Telas de CRUD de localidade removidas.
+- **Testes:** 239 aprovados, 0 falhas, 0 ignorados. Telas por Playwright e pelo validador no navegador, com ViaCEP real.
+- **Validador:** reprovada na primeira rodada (`Include` fora de `GetInclude()`, `mainPhone` trazendo telefone não principal, registros no guia) e **aprovada** na revalidação de 31/10/2026.
+- **Decisões:** RN-CD06 (primeiro nasce principal; no máximo um; zero é aceito, excluir ou desmarcar não promove outro), RN-CD07..09, RN-CD10 (dono inativo não recebe nem altera endereço e contato). Riscos aceitos pelo porte: dois principais em requisições simultâneas e 500 em CPF/CNPJ duplicado simultâneo. Sufixo `XSummaryDto` registrado no guia.
+- **Em aberto:** criar cliente e editar/excluir endereço pela tela só por Playwright do agente de testes, não pelo validador; busca sem acento não casa nome acentuado (registrado no contrato).
+
+### F0.6 Lojas e locais
+- **Feito:** `stores` ⇄ `stock_locations` (criar loja cria o local "Loja" como padrão de venda e recebimento no mesmo commit), `user_stores`, `/api/stores`, `/api/stock-locations`; tela T7 em `/settings/stores`; seletor de loja no topo (última loja no localStorage; some com 1 loja e 1 local).
+- **Testes:** 275 aprovados, 0 falhas, 0 ignorados. Telas por Playwright em escuro e mobile 375.
+- **Validador:** **aprovada** em 31/10/2026, na primeira rodada: `dotnet format` limpo, build sem avisos, front limpo; fluxo principal confirmado na tela, na API e no banco.
+- **Decisões:** RN-CE35 a 37. Inativar loja é soft delete, a última ativa não sai, locais somem dos combos com a loja e voltam ao reativar (RN-CE36, a validar com o Daniel). FKs dos padrões em SQL `DEFERRABLE INITIALLY DEFERRED` na migration, fora do modelo do EF, protegidas por teste de persistência. `locationCount` novo em `CurrentUserStoreDto`. Corrida da última loja aceita como risco.
+- **Em aberto:** criar local, trocar padrões e o estado sem seletor foram dirigidos pelo agente de testes, não pelo validador; `CurrentUserStoreDto` é montado em `UserStoreRepository.GetActiveStores` (observação do validador).
+
+## Fase 0: concluída em 31/10/2026
+275 testes verdes; F0.4, F0.5 e F0.6 aprovadas pelo validador. **Ponto de retomada: F1.1 Classificação.**
+
+## Validação retroativa de F0.1, F0.2 e F0.3 (31/10/2026)
+Reprovadas na rodada retroativa e corrigidas. O núcleo confere com o atrena e o ADR 0010, `/health` responde, o compose isolado e as migrations aplicam do zero.
+- **Achado principal:** os `appsettings` estavam fora do git desde a F0.1. Em checkout limpo, 120 de 275 testes falhavam por falta de `JwtSettings:Key` e a API não gravava logs de aplicação. Corrigido: arquivos versionados (sem segredo de produção) e `AccessApiFixture` com a própria chave. Conferido em checkout limpo: **275 aprovados, 0 falhas**.
+- **F0.3:** prettier em 9 arquivos corrigido; `OrderAction`, `AiBatchStatus`, `AbcClass`, `DismissReason` e `NotificationType` adicionados a `enums.ts`.
+- **Doc:** `source_type` do `DOMAIN_LEVELS` alinhado ao contrato (`Transfer`, `Manual`).
+
+## Fase 1 — Catálogo e estoque
+
+### F1.1 Classificação
+- **Feito:** `categories` (2 níveis validados no use case) e `collections`; telas T4 e T5 em dialog; telas antigas de categoria removidas.
+- **Testes:** 319 aprovados, 0 falhas, 0 ignorados. Telas por Playwright em claro, escuro e mobile.
+- **Validador:** reprovada na primeira rodada (`Include` fora de `GetInclude()`, DTOs agrupados, navegações sem `virtual`) e **aprovada** na revalidação de 31/10/2026.
+- **Decisões:** RN-CE38 (nome único entre irmãs), RN-CE39 (categoria ativa tem pai ativo), RN-CE40 (coleção com nome único, datas opcionais e `is_active`), a validar com o Daniel. Riscos aceitos: neta em gravações simultâneas; `Doces`/`doces` simultâneos.
+- **Em aberto:** "não inativa com produtos ativos sem confirmar" (T4) entra na F1.3; no combo de pai, ao editar filha, os outros pais só aparecem depois de digitar.
+
+### F1.2 Calendário
+- **Feito:** `calendar_events` com o calendário comercial portado, sete eventos nacionais no seed de todos os ambientes (idempotente, não sobrescreve antecedência nem status), `/api/calendar-events`, próxima data calculada só na API pelo relógio de negócio; tela T6 em `/calendar-events`.
+- **Testes:** 459 aprovados, 0 falhas, 0 ignorados. Tela por Playwright em claro, escuro e mobile 375.
+- **Validador:** reprovada na primeira rodada (trava do nacional sem teste para mês, dia da semana, ocorrência e deslocamento da Páscoa; relógio de negócio sem prova em POST, PUT e `GET /{id}`; `h-4 w-4` em vez de `size-4`) e **aprovada** na revalidação de 31/10/2026, com as mutações que antes sobreviviam agora derrubando testes.
+- **Decisões:** RN-CE41 a RN-CE47, a validar com o Daniel. Colunas novas no DER: `weekday`, `nth`, `easter_offset_days`. 29/02 é recusado; ocorrência só de 1 a 4; `scope` nunca vem do cliente; nacional só muda antecedência e status; exclusão é soft delete nos dois escopos. Corrida de `Natal`/`natal` no nome único aceita como risco, igual a coleções.
+- **A validar pelo Daniel, antecedência do seed:** Páscoa 42, Mães 21, Namorados 21, Pais 10 e Crianças 14 vêm do `DemoDemandModel` antigo. Natal 54 vem da janela de panetone e cesta, mas bombom, trufa e cesta de presente usam 24 no mesmo modelo. Black Friday 15 não tem base em dado. Pesa quando `lead_days` alimentar a previsão.
+- **Em aberto:** `productCount` é zero até a F1.4; filtros de status e escopo aplicados só em desktop claro pela tela (nas demais, por API); seed em banco de dev vazio só nos testes de integração; sem `.env`, o front aponta para a porta 5145, e não para a 8081 do dev novo.
+
+### F1.3 Produto e grade
+- **Feito:** `products`, atributos e valores com `tempKey`, variações com a padrão oculta, `category_products`, imagem no S3 portado como `IFileStorage`; telas T1, T2 (campos por tipo) e T3 (só aba Variações). Fica fechada a pendência da F1.1: T4 pede confirmação ao inativar categoria com produtos, e `productCount` é real em T4 e T5. Telas antigas de pedido, compra, promoção e movimentação passaram a usar `legacy-*`.
+- **Testes:** 659 aprovados, 0 falhas, 0 ignorados. Telas por Playwright em claro, escuro e mobile 375, com upload no Silo real.
+- **Validador:** reprovada duas vezes. Primeira rodada: 8 defeitos (mutações sobreviventes, 500 com item nulo, `Include` fora de `GetInclude()`, navegação sem `!= null` em DTO, `CancellationToken.None` fora de rollback, `dark:` manual, estouro em 375 px, documentação divergente). Revalidação de 01/11/2026: um defeito, `GetFormOptions` sem teste do filtro e da ordem. Esse último foi corrigido com os dois testes que ele sugeriu e conferido pelo coordenador (as duas mutações agora derrubam teste; `dotnet format`, build e 659 testes verdes), **sem terceira rodada do validador**.
+- **Decisões:** RN-CE48 a RN-CE57; RN-CE50, RN-CE52, RN-CE54 e RN-CE55 estão em "Perguntas em aberto". `PATCH /active` do contrato virou `DELETE` + `PATCH /reactivate` (ADR 0010). SKU e código de barras têm índice único em `lower(...)` além do índice exato, que o EF precisa para ordenar a gravação; reaproveitar o código de variação que sai só vale com a mesma grafia. Variação que sai do formulário é apagada de verdade enquanto não há saldo (ponto da F1.5 marcado).
+- **Provisório, declarado no contrato:** `availableQuantity` 0, `hasLowStock` falso, custos e promoção nulos, todos fora da tela; T2 sem eventos, fornecedores, mínimos e cobertura. Preço efetivo = preço da variação até a F2.3.
+- **Riscos aceitos:** corrida de SKU devolve 500 ao perdedor (a regra não fura: um único 201).
+- **Em aberto:** 500 com caractere NUL em qualquer texto da API, inclusive em coleção e categoria (pede filtro único no `ApiController`); 500 com sinal Kelvin no SKU, sem corromper dado; upload acima de 30 MB derruba a conexão em vez de dar 422 (o front barra em 5 MB); os prints `14-produtos-lista*.png` e o do T3 são anteriores à troca de "A granel" para "Granel"; `silo-s3.md` ainda cita a porta 9000 no dev.
+- **Ponto de retomada: F1.4 Preço e fornecedor.**
+
+### F1.8 Kardex e mínimos
+- **Decisões:** `stock_location_minimums` e `stock_policies` com id técnico e índice único (variação × local; classe), como as tabelas de vínculo da F1.3; `StockPolicyDto` ganhou `id` para o PUT usar a base de update. O mínimo por local cita a variação pela posição em `variants` (`variantIndex`), porque a variação nova não tem id. Kardex com use case próprio: o repositório do livro-razão não herda a base de CRUD (RN-CE14). Estoque baixo considera todo local ativo de loja ativa do recorte, sem saldo = 0; o filtro `lowStock` resolve os ids antes da paginação. Seed das políticas: A 15/7, B 30/5, C 45/3 (palpite, editável no T13). RN-CE06 obsoleta.
+- **Fora:** lote no kardex (F1.7), número do documento na origem (cada documento, F2), classe ABC calculada (F3); a tela do kardex ainda não abre o drawer de ajuste (segue pela aba Estoque do T3).
+
+### F1.11 Seed do catálogo
+- **Decisões:** `DemoCatalogSeeder` (Order 50, `Seeders/Demo/`) só com `Seed:Demo:Enabled`, em duas etapas idempotentes: catálogo se não existe a categoria "Doces e Presentes"; saldo de abertura se nenhum local das lojas demo tem movimento, num documento `Manual`/`Opening` com custo pelo `IStockLedger` (dois commits porque o livro-razão lê as variações do banco). Lojas "Doce Encanto Centro" e "Doce Encanto Shopping", cada uma com "Loja" (venda) e "Depósito" (recebimento, não vendável). 42 produtos (5 com grade de tamanho ou sabor), 5 fornecedores com prazo e múltiplo, eventos Páscoa, Mães, Namorados e Natal; mínimo por local nos itens com mínimo padrão ≥ 20. Item de temporada com mínimo 0 (ovos, kits) abre sem saldo. A `AccessApiFixture` desliga o seed demo para os outros testes não verem o catálogo; a coleção do seed roda sem paralelismo (logger estático do Serilog).
+- **Fora:** vendas e compras históricas (F2.9), lotes (F1.7), fotos.
+
+### F2.1 Seletor de venda
+- **Decisões:** `GET /api/sales/variant-options` com `storeId` obrigatório; sem `locationId` usa `stores.defaultSaleLocationId`; local inativo, não vendável ou de outra loja (e loja inexistente/inativa) é 422 no campo. Busca por nome, SKU ou código de barras em variações não removidas de produtos ativos (variação inativa e produto fora de linha entram, sinalizados); código de barras ou SKU exatos primeiro, `limit` 1–50. `VariantSaleOptionDto` ganhou `locationId` (local resolvido), para o aviso de falta excluir o local certo e a F2.4 saber de onde baixar. Disponível = físico no local até a F2.5. `GET /api/stock/availability` lista locais ativos de lojas ativas com disponível > 0, mesma loja do local excluído primeiro. Front: `VariantSalePicker` (Command + Popover, Enter do leitor com código exato escolhe direto, mesmo antes da busca responder) e `StockShortageDialog`; ainda sem tela que os use (entra na F2.4).
+- **Fora:** `activePromotion` (F2.3), `nextLot` (F1.7), "Transferir agora" (F1.9) e "Cliente procurou" (F2.2): campos nulos e ações escondidas.
+
+### F2.3 Promoções
+- **Decisões:** `promotions` (produto ou variação, `discount_percent` numeric(5,2) com check 1–90, período com check, origem `Manual`, `forecast_recommendation_id` sem FK até a F3.4, `below_cost_confirmed`, autor). Status calculado na leitura pela data de negócio (Agendada, Vigente, Encerrada, Cancelada); cancelar = inativar por `POST /{id}/cancel`, só Agendada ou Vigente. Preço promocional = tabela × (1 − %/100), 2 casas, meio para cima, só no `IProductPricingService`, que agora lê o relógio de negócio e as promoções ativas de `Product.Promotions` (incluídas no `GetInclude()` de produtos e do seletor de venda). L-VD10 fechada pela recomendação: produto inteiro conflita com qualquer variação no período; duas variações diferentes, não (422 em `startDate`). Abaixo do custo médio: `confirm` e, confirmado, grava `belowCostConfirmed`; sem custo médio, sem aviso (decisão 0003). `SaleOptionPromotionDto` virou `PromotionSummaryDto` (mesmo JSON). `ProductVariant` passou a receber o produto no construtor, para o preço efetivo enxergar as promoções no grafo novo. Front: `/promotions` reescrita para a API nova (a tela e o dialog antigos saíram; o legado da previsão segue com `legacy-promotion.interface.ts`), dialog com prévia por variação, aba Promoções no T3 e selo "−X%" no T1 e nas variações.
+- **Fora:** origem IA (F3.4), vendas no período (L-VD5), filtro "em promoção" e ordenação por preço efetivo no T1, promoção congelada no orçamento (F2.5).
+
+### F2.8 Recebimento
+- **Decisões:** `POST /purchase-orders/{id}/receive` só Pendente, todos os itens uma vez (senão 422 em `items`); uma entrada `Purchase` por item pelo `IStockLedger` (`SourceType = PurchaseOrder`); `product_variants.version` (int, token de concorrência, incrementado só em `ApplyInboundCost`) fecha a pendência da F1.5 sobre custo médio concorrente; `product_suppliers.last_cost` gravado só se o vínculo existe; `purchase_items.average_cost_after`, `purchase_orders.received_by` e `real_lead_time_days` (dia de negócio do recebimento − do envio). Migration `AddPurchaseReceiving`.
+- **Fora:** lotes (F1.7: `lots` → 422, item com lote entra sem lote, como no ajuste manual), data retroativa (L-CP4), "receber com divergência" (L-CP1), média dos últimos 5 lead times (RN-CP06, bloco C).
+
+### F2.9 Seed de 36 meses
+- **Decisões:** `Seed:Demo:HistoryMonths` (36 no dev e no staging, 0 no padrão); `DemoHistorySeeder` (ordem 60) simula em memória com `Random(42)` e âncora `Seed:Demo:AnchorDate` ou hoje, e lança tudo pelo `IStockLedger` em ordem de data: abertura no dia 0 (substitui a da F1.11 quando o histórico está ligado), vendas Pago/Counter montadas como a venda rápida e pedidos de compra enviados e recebidos como na F2.8 (os que chegariam depois da âncora ficam Pendentes); datas pelos parâmetros dos modelos e `CreatedAt` ajustado no `ChangeTracker` (só o seed); commit por dia com o rastreador limpo. 36 meses levam ~3 min no startup (medido no teste de integração).
+- **Fora:** promoções passadas, clientes, orçamentos, reembolsos, devolução ao fornecedor, transferências (compras do seed entram no salão; o depósito fica com a abertura), lotes, reajuste histórico de preço.
+
+### F1.7 Lotes
+- **Decisões:** tabela `lots` (variação, código até 40 normalizado em maiúsculas, validade; único por variação; imutável) com FK em `stock_balances` e `stock_movements` (migration AddLots). O `IStockLedger` resolve o lote antes de projetar: entrada de produto com lote exige lote, saída sem lote é repartida por FEFO (vencidos primeiro), lote em produto sem lote ou de outra variação → 422. Recebimento com `lots` por item somando a quantidade (uma entrada por lote; mesmo código e validade reaproveita o lote, outra validade → 422); ajuste com `lotId` ou `newLot`; aba Lotes `GET /api/products/{id}/lots?storeId` com dias para vencer e alerta de 30 dias; `GET /api/stock/lots/options`; `lotCode` no kardex e lotes no detalhe da compra. RN-CE55: troca de `tracksLots` com saldo → 422. Seed: alimentos com lote e 180 dias de vida útil (`ABERTURA` e `CyyMMdd`).
+- **Fora:** escolha de lote na venda rápida (segue 422) e `nextLot` no seletor; alerta no painel (F3.5); transferência com lote; pular vencido na baixa.
+- **A validar:** RN-CE15 (FEFO, era rascunho) e a janela de 30 dias.
