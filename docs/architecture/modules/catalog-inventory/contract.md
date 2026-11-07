@@ -108,7 +108,7 @@ Abas (cada uma carrega sob demanda). Só aparecem as que têm dado: **a partir d
 |--|--|--|--|
 | Variações | por variação, sem as removidas (RN-CE58): combinação ("Padrão" sem grade), SKU, código de barras, preço, preço efetivo, status. F1.5: custo médio, último custo, margem % ((preço efetivo − médio) / preço efetivo) e disponível da empresa. Depois: promoção (F2.3) | editar (T2) | F1.3 |
 | Estoque | matriz variação × local (variações ativas × locais ativos de lojas ativas, da loja selecionada ou todas): físico, reservado (0 até haver orçamento), disponível, mínimo e abaixo do mínimo (F1.8) | ajuste/perda (T9, F1.6), transferir (T10), "cliente procurou" (T14) | F1.5 em diante |
-| Lotes | por lote com saldo ≠ 0: código, variação, loja/local, validade, dias para vencer (dia de negócio), selo vencido / vence em até 30 dias, quantidade; ordem FEFO; só produto que controla lote | — | F1.7 |
+| Lotes | por lote com saldo ≠ 0: código, variação, loja/local, validade, dias para vencer (dia de negócio), selo vencido / vence em até 30 dias (janela fixa `LotAlert.ExpiringSoonDays`, **não confirmada pelo Daniel**), quantidade; ordem FEFO; a aba só aparece em produto que controla lote (`tracksLots`) e segue a loja do topo (`storeId`), como a matriz | — | F1.7 |
 | Movimentações | kardex do produto (T8 filtrado) | — | F1.8 |
 | Fornecedores | fornecedor, preferido, prazo, mínimo, múltiplo, último custo, última compra | — | F1.4 |
 | Preços | histórico: variação (inclui as removidas, marcadas, RN-CE58), SKU, preço, de, até, quem alterou; mais recente primeiro (RN-CE59) | — | F1.4 |
@@ -136,7 +136,8 @@ ProductVariantResponseDto { id; label: string /* "P / Azul"; vazio na variação
 // F2.3: ProductVariantResponseDto.activePromotion?: PromotionSummaryDto (vigente hoje)
 StockMatrixDto { locations: { id; name; storeName }[]; rows: { variantId; variantLabel; sku;
   cells: { locationId; physical; reserved /* 0 até F2.x */; available; minQuantity? /* nulo até F1.8 */; isBelowMin: boolean /* falso até F1.8 */ }[] }[] }
-LotBalanceDto { lotId; code; expiresOn: DateOnly; daysToExpire: number; variantId; variantLabel; locationId; locationName; quantity }
+LotBalanceDto { lotId; code; expiresOn: DateOnly; daysToExpire: number /* negativo = vencido */; isExpired: boolean;
+  isExpiringSoon: boolean /* 0 ≤ dias ≤ 30, janela fixa não confirmada */; variantId; variantLabel; locationId; locationName; storeName; quantity }
 PriceHistoryDto { id; variantLabel /* vazio na oculta */; sku; variantRemoved; price; validFrom: DateOnly; validTo?: DateOnly; changedByName }  // variação removida do formulário fica gravada (inativa, RemovedOn) e continua no histórico
 ProductSupplierDto { supplierId; supplierName; supplierIsActive; isPreferred; supplierSku?; leadTimeDays: number /* efetivo */; minOrderQty?; orderMultiple?; lastCost?; lastPurchaseOn?: DateOnly }
 ```

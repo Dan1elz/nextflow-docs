@@ -139,8 +139,8 @@ Abas (padrão `EntityTabsLayout`). Ao criar, só Dados fica habilitada; depois d
 | Dados | nome, CNPJ (único e válido, RN-CD02), prazo padrão 1–180, padrão 7 (RN-CD03), observação | salvar |
 | Endereços | CEP (preenche via ViaCEP, a cidade pelo código IBGE), rua, número, complemento, bairro, cidade/UF, principal | CRUD |
 | Contatos | tipo (Telefone, E-mail, WhatsApp), valor, principal | CRUD |
-| Produtos | **vazia com `Empty` até a fase 1.** Depois: produto, variações, código no fornecedor, preferido, prazo (do vínculo ou "padrão"), mínimo, múltiplo, último custo, última compra | editar vínculo (mesmo DTO do T2 do catálogo) |
-| Compras | **vazia com `Empty` até a fase 2.** Depois: pedidos do fornecedor: nº, status, total, criado, recebido, lead time real; resumo: total comprado 12 meses, lead time médio | abrir pedido |
+| Produtos | Implementada em 07/11 (back 89d3c3c, front e007611): vínculos do fornecedor com produto, marca, código no fornecedor, preferido, prazo efetivo, mínimo, múltiplo e último custo (ver `SupplierProductDto` abaixo) | editar vínculo (mesmo DTO do T2 do catálogo) |
+| Compras | Implementada em 07/11: pedidos do fornecedor pela listagem `GET /api/purchase-orders` filtrada por `supplierId`; o resumo "total comprado 12 meses" previsto não tem endpoint próprio | abrir pedido |
 
 ```ts
 GET  /api/suppliers/{id} → SupplierResponseDto
@@ -151,9 +151,11 @@ SupplierResponseDto { id; name; cnpj; leadTimeDays; note?; isActive; realLeadTim
   mainAddress?: AddressResponseDto; mainContact?: ContactResponseDto; createdAt; updatedAt? }
 GET /api/suppliers/options?search → Option[]  // só ativos, até 20; label = nome · CNPJ
 
-// Fase 1 e 2 (ainda não existem)
-GET /api/suppliers/{id}/products  → SupplierProductDto[]  { productId; productName; variantCount; supplierSku?; isPreferred; leadTimeDays?; minOrderQty?; orderMultiple?; lastCost?; lastPurchaseOn? }
-GET /api/suppliers/{id}/purchases?offset&limit → PaginationDto<PurchaseOrderListItemDto> + summary { totalLast12Months; realLeadTimeDays? }
+// 07/11 (89d3c3c), conferido no código:
+GET /api/suppliers/{id}/products  → SupplierProductDto[]  { productId; productName; brand?; productIsActive; lifecycle; isPreferred; supplierSku?; leadTimeDays /* efetivo */; minOrderQty?; orderMultiple?; lastCost? }
+// GET /api/suppliers/{id}/purchases não existe: a aba Compras usa GET /api/purchase-orders com filtro supplierId.
+// Listagem GET /api/suppliers: filtros stateId, cityId, purchases (with|without|last30|last90|inactive90), pendingOrders;
+// SupplierListItemDto traz realLeadTimeDays, productCount e lastPurchaseOn (ver registry/overview.md).
 ```
 
 ### Endereços e contatos (de cliente e fornecedor)
