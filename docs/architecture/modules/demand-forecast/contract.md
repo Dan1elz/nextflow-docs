@@ -1,6 +1,6 @@
 # Contrato — Inteligência de compras, painel e notificações
 
-> **Status:** rascunho para validação · **Atualizado:** 2026-10-28 · Convenções: `../../contracts/README.md`
+> **Status:** rascunho para validação · **Atualizado:** 2026-11-08 (front F3.8a–i implementado; `storeId` na leitura, em andamento) · Convenções: `../../contracts/README.md`
 > Regras: `business-rules.md` (RN-DF*), `../catalog-inventory/business-rules.md` (RN-CE*) · DER: `../../diagrams/der-consolidado.md` (seção Previsão)
 > Contrato anterior (versão em produção na `task-17`): `nextflow/docs/AI_FORECAST_SPEC.md` §7 — este documento o substitui quando implementado.
 
@@ -77,6 +77,13 @@ ForecastRecommendationListItemDto { id; productId; productName; imageUrl?; categ
   deadline?: DateOnly; preferredSupplierId?; preferredSupplierName?;
   reasonShort: string; aiAdjusted: boolean; appliedLink?: { type: SourceType; id; number? } }
 ```
+> **Loja selecionada (08/11/2026, em andamento na branch `feat/filtro-loja`, back sem commit e front `7f88de0` + `3b0e8ad`, sem push).**
+> A análise continua **da empresa inteira** (não há previsão por loja; `decisions/0001-previsao-da-empresa-com-estoque-da-loja.md`).
+> Com uma loja no topo, o front manda `storeId` em `GET /api/forecasts/latest/top`, `GET /api/forecasts/{runId}/recommendations`
+> e `GET /api/forecasts/recommendations/{id}`, e a API preenche dois campos novos em `ForecastRecommendationListItemDto`:
+> `storeCurrentStock?` (saldo da loja) e `storeIncomingStock?` ("a caminho" para os locais da loja, RN-CP05), nulos sem `storeId`.
+> A tela mostra esses números ao lado do total da empresa, com aviso de que a sugestão vale para todas as lojas. Os blocos do painel
+> (vendas, gráfico, estoque baixo, lotes vencendo) passam a mandar o `storeId` que o contrato já previa.
 
 ## T-DF3. Detalhe da recomendação / previsão do produto (drawer na `/forecast` e aba "Previsão" do produto = T-DF5)
 Mesma visão nos dois lugares. Na aba do produto, mostra a recomendação pendente mais recente (se houver) e o histórico.
@@ -108,6 +115,8 @@ ProductForecastDto { productId; productName; saleUnit; decimalPlaces;
   seasonality: { month: number; productIndex?: number; categoryIndex?: number }[]; monthsOfHistory;
   events: { name; date: DateOnly; demandStartsOn: DateOnly; linkedToProduct: boolean }[];
   currentStock; accuracy: ForecastAccuracyItemDto[]; latestRecommendationId? }
+> **Nota F3.2 (07/11/2026):** o motor grava, por recomendação, `calculatedQuantity`, `reasonCalculated`, `aiAdjusted`, `leadTimeDays`/`leadTimeSource`, `safetyStock`, `monthsOfHistory` e `basedOnLastYear`, e por análise `referenceDate`, `productsSentToAi` e os contadores de lotes (`batches.total/completed/failed`). O rateio fica em `forecast_recommendation_items` (variante, quantidade, %). `reservedStock`, `targetCoverageDays` e `shelfLifeDays` do `ForecastCalculationDto` vêm do produto e da política na leitura (F3.5). Os DTOs de saída ainda não existem (F3.3/F3.5).
+
 VariantSplitDto { variantId; variantLabel; sharePercent; suggestedQuantity; availableByLocation: { locationName; available }[] }
 ```
 
@@ -162,17 +171,17 @@ GET /api/forecasts/{runId}/batches       → { batchNumber; productsCount; statu
 ```
 
 ## T-DF10. Precisão da previsão (`/forecast/accuracy`)
-Visão geral: erro médio % por mês (últimos 12), por classe ABC e por categoria; % de produtos dentro de ±20%.
+Visão geral: erro médio % por mês (últimos 12), por classe ABC e por categoria; % de produtos dentro de ±15% (RN-DF26).
 Tabela por produto: classe, meses medidos, erro médio %, último mês (previsto × vendido), tendência (subestima/superestima).
-Usa só meses **completos** já encerrados (RN-DF19). Exclui meses com ruptura total? **Lacuna L-DF3**.
+Usa só meses **completos** já encerrados (RN-DF19). Meses com mais de 50% dos dias sem estoque ficam fora (L-DF3, resolvida pela RN-DF26).
 ```ts
 GET /api/forecasts/accuracy/summary?months=12 → ForecastAccuracySummaryDto
-GET /api/forecasts/accuracy/products?offset&limit&filters → PaginationDto<ForecastAccuracyProductDto>
-ForecastAccuracySummaryDto { monthly: { month; mapePercent; productsMeasured }[]; byAbcClass: { abcClass; mapePercent }[];
-  byCategory: { categoryPath; mapePercent }[]; withinTolerancePercent }
+GET /api/forecasts/accuracy/products?offset&limit&filters → PaginationDto<ForecastAccuracyProductDto>   // 12 meses; filtros search, abcClass, bias; só Admin
+ForecastAccuracySummaryDto { monthly: { month; mapePercent: number | null; productsMeasured }[]; byAbcClass: { abcClass; mapePercent }[];
+  byCategory: { categoryPath; mapePercent }[]; withinTolerancePercent: number | null }   // um item por mês da janela (F3.6c); só Admin
 ForecastAccuracyProductDto { productId; productName; abcClass?; monthsMeasured; mapePercent; bias: "Under" | "Over" | "Balanced";
   lastMonth?: { month; projected; actual } }
-ForecastAccuracyItemDto { month; projected; actual; errorPercent }
+ForecastAccuracyItemDto { month; projected; actual; errorPercent: number | null }   // ProductForecastDto.accuracy (T-DF5); nulo = mês fora (ruptura ou vendido zero)
 ```
 
 ## T-DF11. Agendamento (`/settings/forecast`)
@@ -202,10 +211,18 @@ NotificationDto { id; type: NotificationType; title; message; link?; createdAt; 
 `DismissReason` BoughtElsewhere=1, DisagreeQuantity=2, WillDiscontinue=3, Other=4 ·
 `NotificationType` NewRecommendations=1, LotExpiring=2, LowStock=3
 
+
+> **Nota F3.3–F3.5 (08/11/2026), divergências do implementado:** `ForecastRunSummaryDto` ganhou `referenceDate` e `finishedAt`, e
+> `horizonStart`/`horizonEnd` vêm nulos enquanto a análise roda; `ForecastRecommendationListItemDto` ganhou `forecastRunId`; o descarte
+> (T-DF8) devolve a linha atualizada e exige corpo (mesmo `{}`); o detalhe (T-DF3) traz `dismissReasonCode`/`dismissNote` e
+> `calculation.nextMonthDemand`/`nextMonthSeasonalIndex`; `ProductForecastDto.seasonality[].categoryIndex` vem nulo (o índice da categoria
+> não é gravado) e `accuracy` vazio até a F3.6; `ForecastSettingsDto` traz `nextScheduledAt`. Enums trafegam pelo nome (os números do
+> back diferem desta tabela, ex.: `ForecastRunStatus` Running=1).
+
 ## Lacunas encontradas neste módulo
 - **L-DF1** Geração demorada (vários lotes de IA): recomendação — análise assíncrona em background (`Running`), progresso por polling de `/status` e notificação ao terminar; hoje o `POST generate` é síncrono.
 - **L-DF2** Horizonte "maior lead time + 3, até 6" é da análise inteira; produtos de lead time curto recebem projeção longa sem necessidade. Recomendação: projeção sempre até o horizonte (útil no gráfico), mas a necessidade de compra usa o lead time de cada produto (como hoje).
-- **L-DF3** Precisão em meses com ruptura: vender 0 por falta não é erro da previsão. Recomendação: excluir da média meses com > 50% dos dias sem estoque e sinalizar.
+- **L-DF3** Precisão em meses com ruptura: vender 0 por falta não é erro da previsão. Recomendação: excluir da média meses com > 50% dos dias sem estoque e sinalizar. **Resolvida em 08/11 (RN-DF26).**
 - **L-DF4** Notificações de estoque baixo e lote vencendo: recomendação — gerar 1 resumo diário (job), não por evento.
 - **L-DF5** "Comprar" de produto com grade: rateio com variação sem histórico (tamanho novo). Recomendação: proporção igual entre as variações sem histórico, editável no dialog.
 - **L-DF6** Recomendação Transferir é por local, mas a previsão é da empresa (RN-CE17). Recomendação: Transferir usa só saldo × mínimo/cobertura por local (sem previsão por local) até existir previsão por loja.

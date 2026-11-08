@@ -1,7 +1,116 @@
-# Handoff — Nextflow (estado em 07/11/2026)
+# Handoff — Nextflow (estado em 08/11/2026, tarde)
 
-> Para continuar o trabalho de outro PC sem ajuda. Conferido contra o `git log` da `homolog` dos dois repos e contra
+> **Comece pela seção 0.3** (08/11 à tarde: estado atual, "Em andamento" e ponto de retomada). As seções 0 a 0.2 são o histórico do bloco C.
+> Atualizado em 07/11 à noite (seção 0). Para continuar o trabalho de outro PC sem ajuda. Conferido contra o `git log` da `homolog` dos dois repos e contra
 > os arquivos de setup reais. Detalhe de cada fatia: `slices/board.md` e os cartões `slices/F*.md`.
+
+## 0. Atualização de 07/11/2026 (noite): bloco C em andamento
+> Escrita ao fim da sessão de trabalho de 07/11; o resto do documento descreve o estado da manhã.
+
+**O que foi feito hoje, além do handoff original**
+- **Redesign do front** (visual estilo Apple, animações com `motion`, sidebar que expande no hover, logo só com o "n", dashboard sem cards): branch `feat/redesign-frontend` do front,
+  commits `708c3bc` e `ecb8700`, **sem push**. Base: `homolog` (`c442a77`).
+- **F3.1 Dados derivados** e **F3.2 Motor portado + F3.7**: no back, branch `feat/bloco-c-previsao`, commit `a0cdbaa` (sem push), saindo de `homolog` (`be6e911`).
+  Cartões em `slices/F3.1.md` e `slices/F3.2.md`. Suíte: 936 testes verdes na entrega da F3.2; 93 unitários de previsão verdes depois das correções parciais.
+- **Front, enums da F3.2**: branch `feat/bloco-c-previsao` do front, commit `0617ca0` (só `src/types/enums.ts`, `TLeadTimeSource`), saindo de `homolog`. **Não está na branch do redesign**: ao juntar as duas, é um merge trivial.
+- **Docs**: branch `docs/bloco-c-previsao` (cartões F3.1 e F3.2, quadro, log, contrato e este handoff).
+
+**Estado das fatias do bloco C**
+| Fatia | Estado |
+|--|--|
+| F3.1 Dados derivados | Feita, review em duas rodadas (aprovada com ressalvas, corrigidas) |
+| F3.2 + F3.7 Motor portado | Entregue; review aprovada com ressalvas, **correções parciais** (tabela em `slices/F3.2.md`, seção "Review") |
+| F3.3 Análise em segundo plano | A fazer. Pré-requisito: chamar `IDerivedDataService.RebuildAsync` antes de `IForecastEngine.RunAsync`; mover a consulta do `ForecastInputBuilder` para repositório (`AsSplitQuery`) |
+| F3.4 Ações (Comprar, Promover, Manter, Descartar) | A fazer |
+| F3.5 Painel e notificações | A fazer. É o que enche o dashboard (`/api/dashboard/stats`) e o card de recomendações; hoje essas telas dão 404 na `homolog` |
+| Front das telas T-DF | A fazer, depois das APIs |
+
+**Pendências desta noite (para retomar)**
+1. Terminar as correções da review da F3.2: teto de 90% no desconto da IA; testes de guardrails (mínimo/múltiplo), do cancelamento/`Failed`/índice único de run `Running`, do contraexemplo da trava de rajada e testes diretos do `ForecastInputBuilder`. Rodar a suíte completa depois.
+2. Decisões para o Daniel: cobertura alvo da política ABC no lugar dos 30 dias fixos (e os valores A 15/B 30/C 45 do seed), limites da trava da F3.7, dia sem estoque do produto e fórmula da demanda perdida (F3.1), dados enviados à IA (custo médio e preço), precedência mínimo/múltiplo × vida útil.
+3. Medir o tempo do seed de 36 meses com os dados derivados (a F3.1 acrescenta o recálculo no startup).
+4. Revisão visual do redesign pelo Daniel; depois juntar `feat/redesign-frontend` e `feat/bloco-c-previsao` do front na `homolog`.
+
+**Encerramento da sessão de 07/11 e ponto de retomada**
+- A sessão foi encerrada a pedido do usuário, com a meta "fazer a etapa 3 inteira" **não concluída**: F3.3, F3.4 e F3.5 não foram começadas e a F3.2 tem correções pendentes.
+- Tudo o que existe está commitado e sem push: back `a0cdbaa` (`feat/bloco-c-previsao`), front `0617ca0` (`feat/bloco-c-previsao`) e `ecb8700` (`feat/redesign-frontend`), docs `docs/bloco-c-previsao`.
+- **Retomar por aqui:** (1) fechar as pendências da review da F3.2 (lista na seção "Review" de `slices/F3.2.md`) e rodar a suíte completa; (2) F3.3, com o pré-requisito de chamar `IDerivedDataService.RebuildAsync` antes de `IForecastEngine.RunAsync`; (3) F3.4; (4) F3.5; (5) front das telas T-DF. Uma fatia por vez, com agente validador do diff a cada fatia (o processo usado hoje).
+
+**Exceções declaradas a regras da casa (para o Daniel aprovar)**
+- `IUnitOfWork.ExecuteInTransactionAsync` (F3.1 e F3.2): ADR 0010 diz "sem transação manual"; usada só no recálculo dos dados derivados e no commit final do motor.
+- DELETE em massa nos repositórios das tabelas derivadas (`DeleteAllAsync`): exceção a "repositório só registra"; as tabelas são recriáveis.
+
+**Como rodar sem instalar o SDK no Windows (container)**
+O host não precisa de .NET: use o container da imagem `nextflow-v2-backend:development` (SDK 10) com a solução montada e volumes próprios para `bin`/`obj`
+(para não colidir com o `dotnet watch` da API). O script usado foi um `.f31-dotnet.sh` **local, fora do git** (`.git/info/exclude`), que monta
+`-v <repo>:/src`, `-v f31_<projeto>_bin:/src/<projeto>/bin` e `..._obj` para cada projeto, `-v f31_nuget:/root/.nuget/packages`, `-v f31_tools:/root/.dotnet/tools`,
+`-v //var/run/docker.sock:/var/run/docker.sock`, `TESTCONTAINERS_HOST_OVERRIDE=host.docker.internal` e `TESTCONTAINERS_RYUK_DISABLED=true`, e roda `dotnet "$@"`.
+Exemplos: `build nextflow-erp.sln -warnaserror`, `test nextflow.Tests --no-build --filter "FullyQualifiedName~Forecast"`, `format nextflow-erp.sln --verify-no-changes`,
+`ef migrations add <Nome> --project nextflow.Infrastructure --startup-project nextflow` (instalar antes: `dotnet tool install --global dotnet-ef`). Só um comando dotnet por vez.
+Com o Ryuk desligado, uma execução de teste interrompida deixa um container `postgres:17-alpine` parado: apague à mão. `dotnet format` acusa 4 erros antigos de whitespace em
+`ProductUseCases.cs` e `StockAvailabilityUseCases.cs`.
+
+**Ambiente local de hoje**: Docker Desktop + WSL2 no Windows; compose de dev `nextflow-v2-development` (Postgres 5435, API 8081, storage 9010), front por `npm run dev` (5173, `.env` com `VITE_API_URL=http://localhost:8081`).
+Login de dev: `admin@nextflow.com` (senha `DevelopmentPassword` em `UsersSeeder.cs`). O seed de 36 meses leva alguns minutos no primeiro startup e agora também roda o recálculo dos dados derivados.
+
+## 0.1 Atualização de 08/11/2026 (madrugada): bloco C concluído no back
+- Retomado da branch do rodr1go22: correções e testes da review da F3.2, desvio do ADR 0005 corrigido (IA promovia sem gatilho),
+  previsão zerada vira "Sem ação" (a confirmar), e F3.3, F3.4 e F3.5 implementadas. Commits locais na `feat/bloco-c-previsao` do back:
+  `e0c922a`, `ef54da0`, `fa2feff`, `4270254`, `518e9b3` (sem push). Cartões `slices/F3.3.md`, `F3.4.md`, `F3.5.md`.
+- Três migrations novas depois de `AddForecastEngine`: `AddForecastSettings`, `AddForecastActions`, `AddNotifications`.
+- Falta: review das fatias (F3.4 densa), front das telas T-DF (o painel do front chama `/api/dashboard/stats`, que não existe; as rotas
+  são as do contrato T-DF1), QA do bloco C e as decisões listadas nos cartões.
+
+## 0.2 Atualização de 08/11/2026 (madrugada, depois da review)
+- Review pelo padrão das F3.1 a F3.5 e F3.7 concluída: commit `d27ae54` na `feat/bloco-c-previsao` do back, 969/969 testes verdes,
+  `dotnet format` limpo. Tudo local, **sem push**. O repo de trabalho é `~/Projetos/nextflow/nextflow` no WSL (as cópias
+  `nextflow-blococ` e `nextflow-docs-blococ` foram só para não mexer na `homolog` durante o trabalho).
+- Regras novas registradas (a confirmar com o Daniel): **RN-DF24** previsão zerada na janela de compra vira "Sem ação" (Hold com
+  motivo) e **RN-DF25** a IA não promove sem gatilho do cálculo.
+- Pendências: enum `TLeadTimeSource` ausente no `enums.ts` do front do WSL (F3.8a); índice do 422 no Aplicar Comprar quando a mesma
+  variação vem em duas linhas (F3.4c).
+- **O que falta do bloco C**, em fatias mínimas com aceite e testes: `slices/bloco-c-restante.md`. F3.6a (cálculo puro da precisão) feita, em review; próxima: F3.6b.
+- **Ao aprovar o bloco:** merge de `feat/bloco-c-previsao` na `homolog` (back e, quando houver, front) e de `docs/bloco-c-previsao` na
+  `main` dos docs. Push só quando o Daniel pedir.
+
+## 0.3 Atualização de 08/11/2026 (tarde): bloco C completo, front incluso; frentes novas em andamento
+
+**Feito e commitado (local, sem push)**
+- **Back do bloco C completo** na `feat/bloco-c-previsao` (`~/Projetos/nextflow/nextflow`): F3.6a–c (precisão, `d0f9526`, `9bd4812`,
+  `a8ee2e2`), F3.4c (`a106162`), tolerância de acerto **±15%** (`b852dfc`, era ±20%) e o **modelo reserva da IA** (`dcd1e3b`). Suíte 1003/1003.
+- **Regras aprovadas pelo Daniel em 08/11:** RN-DF24 (previsão zerada na janela de compra vira "Sem ação"), RN-DF25 (IA não promove sem
+  gatilho do cálculo) e RN-DF26 (dentro da tolerância com MAPE ≤ 15%; viés só acima de ±5%; mês com mais de 50% dos dias sem estoque fora).
+- **Front do bloco C completo** (F3.8a–i) na `feat/bloco-c-front` (`~/Projetos/nextflow/nextflow-front`, último `167d07b`), saindo da
+  `homolog` com o redesign: painel, sino, `/forecast`, detalhe em Sheet lateral e aba Previsão do produto, Comprar, Promover e Descartar,
+  histórico, agendamento e `/forecast/accuracy`. Linhas e hashes em `slices/board.md`; o que ficou de fora de cada tela em `slices/bloco-c-restante.md`.
+- **Modelo reserva:** o `gemini-flash-latest` deu 503 "high demand" e prendeu a conexão por até 141 s, então as análises saíam "Concluída
+  sem IA". Agora o prazo é por tentativa, 2 tentativas por modelo, e cai para `Ai:FallbackModel` (`AI_FALLBACK_MODEL`, padrão
+  `gemini-flash-lite-latest`). Detalhe em `architecture/integrations/gemini.md`.
+- **`.env` do dev** (`~/Projetos/nextflow/nextflow/.env`, fora do git, chmod 600): só `AI_PROVIDER`, `AI_API_KEY` e
+  `AI_MODEL=gemini-flash-latest`; o resto segue os padrões do compose. Sugestão em aberto: trocar `AI_MODEL` para o lite no dev
+  (análise de ~15 s em vez de ~3,5 min enquanto o flash-latest estiver sobrecarregado).
+
+**Em andamento (no fim da tarde de 08/11)**
+Cada frente é uma branch local com git worktree no WSL; back sai da `feat/bloco-c-previsao`, front da `feat/bloco-c-front`. Tabela
+completa (pastas, commits, o que está sem commit) em `slices/board.md`, seção "Em andamento".
+- **`feat/filtro-loja`**: a loja do topo filtra painel, listas e o novo pedido de compra (que passa a exigir loja). Na previsão, a análise
+  segue **da empresa inteira**; com loja no topo, a lista, o detalhe e o card do painel mostram o saldo e o "a caminho" da loja ao lado do total
+  (`demand-forecast/decisions/0001-previsao-da-empresa-com-estoque-da-loja.md`). Front commitado; **back sem commit**.
+- **`feat/historico-vendas`**: botão único Visualizar e filtros de cliente, vendedor, produto e faixa de valor (`GET /api/orders`).
+  Commitado nos dois repos. Conflito pequeno previsto com a `feat/filtro-loja` em `sales-history.provider.tsx`.
+- **`feat/venda-rapida-ajustes`**: leitor com Enter direto e aviso quando não acha, e-mail opcional no cadastro rápido de cliente, rodapé
+  novo, sem o botão "Atualizar preços". Front commitado; **back sem commit**.
+- **`feat/forecast-acoes`** (só front): ajustes da lista da previsão; branch criada, sem mudança ainda.
+- **F3.4b Transferir**: opcional, só investigação.
+
+**Backlog do Daniel (sem cartão):** filtros em todas as listagens; ver vendas e pedidos de compra pelo cliente e pelo fornecedor;
+mobile quebrado; "ver mais" no painel; melhorias em pedidos de compra.
+
+**Retomar por aqui**
+1. Fechar as frentes em andamento (commitar o back de `feat/filtro-loja` e `feat/venda-rapida-ajustes`, rodar suíte e `eslint src`).
+2. QA do Daniel: telas do bloco C e as frentes da tarde.
+3. Com a aprovação, juntar na `homolog` na ordem do `slices/board.md` (bloco C primeiro) e os docs na `main`. Push só quando ele pedir.
+4. Depois, o backlog acima (cada item vira cartão antes do código).
 
 ## 1. Onde está o quê
 | Repo | Remoto | Branch de trabalho | Último commit (07/11) |
@@ -32,8 +141,8 @@
 | — | F1.7 Lotes com validade (FEFO) | **Pronta, aprovada na review, aguardando QA** |
 | B | F2.5 pedido com orçamento | **Fora do escopo** (Daniel, 07/11). A tela `/orders` mostra um aviso no lugar |
 | B | F2.10 push e troca do staging | A cargo do Daniel |
-| C Previsão | F3.1, F3.2 + F3.7, F3.3, F3.4, F3.5 | A fazer (próxima etapa) |
-| Opcional | F2.2, F2.6, F1.9, F1.10, F3.4b, F3.6 | Só depois do bloco C |
+| C Previsão | F3.1–F3.5, F3.7, F3.6a–c, F3.4c (back); F3.8a–i (front) | **Feito em branches locais (08/11), aguardando QA do Daniel** (seção 0.3) |
+| Opcional | F2.2, F2.6, F1.9, F1.10, F3.4b | Só depois do bloco C (a F3.6 foi feita em 08/11) |
 
 QA final é sempre do Daniel, por bloco.
 

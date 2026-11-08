@@ -8,11 +8,42 @@
 > citados abaixo já estão no `origin/homolog` (back até `89d3c3c`, front até `c442a77`). Visão geral e setup de outra
 > máquina: `../HANDOFF.md`.
 
+> **Atualizado de novo em 08/11/2026 (tarde)**: linhas do bloco C, front F3.8b–i, modelo reserva da IA e a seção "Em andamento" abaixo.
+> As branches do bloco C e as desta tarde são **locais, sem push**.
+
+## Em andamento (08/11/2026, tarde)
+Trabalho começado nesta tarde, cada um numa branch local com git worktree no WSL (`~/Projetos/nextflow/<pasta>`). Nada tem push.
+Back das três saem da `feat/bloco-c-previsao` (`dcd1e3b`); front sai da `feat/bloco-c-front` (`167d07b`).
+
+| Frente | Branch | Pastas (back / front) | Estado no fim da tarde |
+|--|--|--|--|
+| Loja selecionada filtra o sistema | `feat/filtro-loja` | `nextflow-loja` / `nextflow-front-loja` | Front commitado (`7f88de0` painel, histórico, compras e novo pedido seguem a loja; `3b0e8ad` previsão mostra o estoque da loja). Back **sem commit**: `storeId` nas leituras da previsão, `storeCurrentStock`/`storeIncomingStock`, teste em `ForecastActionsTests`. Previsão continua da empresa (decisão `demand-forecast/decisions/0001`) |
+| Histórico de vendas: Visualizar e filtros | `feat/historico-vendas` | `nextflow-hist` / `nextflow-front-hist` | Commitado: back `05f5cd6` (`GET /api/orders` com `userId`, `productId`, `minTotal`, `maxTotal`), front `25bea30`. Mexe em `sales-history.provider.tsx`, como a `feat/filtro-loja`: conflito pequeno no merge |
+| Venda rápida: leitor, e-mail, rodapé | `feat/venda-rapida-ajustes` | `nextflow-venda` / `nextflow-front-venda` | Front commitado (`07b44c7`). Back **sem commit** (e-mail no `POST /api/clients/quick`, validador, 2 testes em `RegistryApiTests`). "Atualizar preços" removido |
+| Ajustes da lista da previsão | `feat/forecast-acoes` (só front) | `nextflow-front-forecast` | Branch criada em `167d07b`, **sem mudança** ainda |
+| Transferir (F3.4b) | — | — | Opcional; só investigação, sem código |
+
+**Ordem sugerida para juntar** (quando o Daniel aprovar): `feat/bloco-c-previsao` e `feat/bloco-c-front` primeiro; depois
+`feat/filtro-loja`, `feat/historico-vendas` (resolver o `sales-history.provider.tsx`), `feat/venda-rapida-ajustes` e `feat/forecast-acoes`;
+tudo na `homolog` (docs na `main`). Push só quando ele pedir.
+
+## Backlog do Daniel (08/11/2026, sem cartão ainda)
+1. Filtros em todas as listagens.
+2. Ver as vendas e os pedidos de compra a partir do cliente e do fornecedor.
+3. Mobile quebrado (layout do front no celular).
+4. "Ver mais" nos blocos do painel.
+5. Pedidos de compra (melhorias a detalhar com o Daniel).
+
 ## Resumo do momento
+- **Bloco C, 08/11 à tarde:** back completo (F3.1–F3.7, F3.6a–c, F3.4c, tolerância ±15%, modelo reserva da IA `dcd1e3b`, suíte 1003/1003) e
+  front F3.8a–i completo na `feat/bloco-c-front` (`167d07b`). Falta: QA visual e do bloco pelo Daniel, e o merge na `homolog`.
 - **Bloco B** (F2.1, F2.3, F2.4, F2.7, F2.8, F2.9): pronto e commitado, **aguardando QA do Daniel**.
 - **F1.7 Lotes (FEFO)**: pronta, aprovada na review (com correções), **aguardando QA do Daniel**.
 - **F2.5 Pedido com orçamento**: **fora do escopo** (decisão do Daniel, 07/11).
 - **F2.10 Push e troca do staging**: a cargo do Daniel.
+- **Bloco C** (F3.1 a F3.5 e F3.7): implementado no back e **revisado pelo padrão em 08/11** (commit `d27ae54`, 969/969 testes verdes),
+  branch local `feat/bloco-c-previsao` (sem push), aguardando QA. O que falta, em fatias mínimas: `bloco-c-restante.md` (F3.6a, F3.6b, F3.6c e F3.4c feitas, em review).
+  O front das telas T-DF foi feito em 08/11 (F3.8a–i, ver linhas abaixo). Aprovado o bloco, tudo vai para a `homolog` (back e front) e os docs para a `main`.
 - QA final é sempre do Daniel, por bloco.
 
 ### Pendências abertas
@@ -25,9 +56,14 @@
 5. Correções de venda rápida e promoções (front 0ca12b0, d1bdaab, 71a0faf, 6e86e80, ac6cb93) e histórico de vendas
    (back 2e2c200, front 8d08c68): aguardam QA.
 6. Cadastros de 07/11 (busca de cidade, filtros e abas de cliente/fornecedor, paginação): aguardam QA.
-7. Motor de previsão mostra itens zerados (de temporada) como "Comprar alta": bug conhecido, entra na F3.7; aguarda
-   decisão do Daniel sobre quando atacar.
+7. Motor de previsão mostrava itens zerados (de temporada) como "Comprar alta": corrigido na F3.7 (trava de temporada) e, em 08/11,
+   previsão zerada na janela de compra vira "Sem ação" (Hold com motivo, RN-DF24). **A confirmar com o Daniel** (proposta e rótulo na tela).
+   Junto: a IA não promove sem gatilho do cálculo (um "Manter" do cálculo não vira "Promover", RN-DF25).
 8. F1.6 segue "Under review" desde 02/11, sem registro de review: confirmar se fecha junto com o QA do bloco A.
+9. Front: o enum `TLeadTimeSource` (History=1, ProductSupplier=2, Supplier=3) **não está** no `src/types/enums.ts` do front no WSL
+   (o commit `0617ca0` ficou numa branch do Windows). **Resolvido na F3.8a** (front `d3ee3b6`).
+10. Aplicar Comprar: `PurchaseOrderRules.Check` roda uma vez por fornecedor sobre os itens somados por variação, então o índice
+    `groups[i].items[k]` do 422 pode não bater com a linha enviada. Corrigido na F3.4c (a106162).
 
 | Fatia | Bloco | Status | Commit | Nota curta |
 |--|--|--|--|--|
@@ -52,11 +88,31 @@
 | F2.5 Pedido com orçamento | B | Fora do escopo | | Decisão do Daniel (07/11) |
 | F2.10 Push e troca do staging | B | A fazer (Daniel) | | Com o Daniel: os commits já estão no `origin/homolog`; falta a troca do staging na VM |
 | QA do bloco B | B | A fazer | | Daniel, manual; inclui F1.7 e os ajustes de cadastros e vendas |
-| F3.1 Dados derivados | C | A fazer | | |
-| F3.2 Motor portado + F3.7 | C | A fazer | | densa |
-| F3.3 Análise em segundo plano | C | A fazer | | |
-| F3.4 Ações (sem Transferir) | C | A fazer | | densa |
-| F3.5 Painel e notificações | C | A fazer | | |
+| F3.1 Dados derivados | C | Under review | a0cdbaa (back, branch `feat/bloco-c-previsao`) | Commitada junto com a F3.2. 3 tabelas derivadas (`product_sales_monthly`, `stock_daily_snapshots`, `product_seasonality`), migration `AddDerivedForecastData`, `DerivedDataCalculator` puro, `DerivedDataService.RebuildAsync` (recalcula tudo num commit dentro de `ExecuteInTransactionAsync`, exceção ao ADR 0010) e `DerivedDataSeeder` (ordem 70). 10 testes unitários e 4 de integração verdes (recálculo bate com o seed e é idempotente); review em duas rodadas, aprovada com ressalvas já corrigidas. `dotnet format` só acusa o whitespace antigo de `ProductUseCases.cs` e `StockAvailabilityUseCases.cs`. A validar com o Daniel: dia sem estoque do produto (soma dos locais vendáveis) e fórmula da demanda perdida |
+| F3.2 Motor portado + F3.7 | C | Under review | a0cdbaa + e0c922a + ef54da0 (back, `feat/bloco-c-previsao`), 0617ca0 (front, só `enums.ts`) | Motor, guardrails, lotes de 40, rateio, F3.7. **08/11:** pendências da review fechadas com testes (mínimo/múltiplo após a IA, teto de 90%, contraexemplo da rajada, cancelamento e índice único, leitura direta do `ForecastInputBuilder`); desvio corrigido: a IA promovia sem gatilho do cálculo (ADR 0005); **previsão zerada vira "Sem ação"** (Hold com motivo; proposta a confirmar). Segue aberto: consulta do builder no repositório e política de dados enviados à IA |
+| F3.3 Análise em segundo plano | C | Under review | fa2feff (back, `feat/bloco-c-previsao`) | `POST generate` (409 com outra em andamento), fila em memória + `BackgroundService` (recalcula derivados e roda o motor; órfã vira `Failed` na subida), agendamento semanal (`forecast_settings`, `GET/PUT /api/settings/forecast`), leitura de análises, status, lotes, histórico e recomendações com filtros. Testes escritos junto com o código. A validar: horário perdido com a API desligada não é recuperado |
+| F3.4 Ações (sem Transferir) | C | Under review | 4270254 (back, `feat/bloco-c-previsao`) | densa. Detalhe (T-DF3) e previsão do produto (T-DF5); Comprar → pedido em Orçamento por fornecedor (regras do pedido de compra, avisos não bloqueiam); cancelar o pedido devolve a recomendação a Pendente; Promover → promoção `AiRecommendation` com FK; Descartar com motivo. Migration `AddForecastActions`. Pede review separada |
+| F3.5 Painel e notificações | C | Under review | 518e9b3 (back, `feat/bloco-c-previsao`) | Rotas da T-DF1 (`/api/dashboard/*` e `forecasts/latest/top`), `notifications` por usuário ativo, sino (T-DF12), aviso de análise concluída e resumo diário de estoque baixo e lote vencendo (L-DF4). O front ainda chama `/api/dashboard/stats` (não existe) |
+| Review do bloco C (F3.1–F3.5, F3.7) | C | Aprovada | d27ae54 (back, `feat/bloco-c-previsao`) | Review pelo padrão em 08/11: só nomes de teste sem `_When_`, uma consulta de sobreposição por variação ao promover e `dotnet format`. Suíte 969/969 |
+| F3.6a Precisão: cálculo puro | C | Under review | d0f9526 (back, `feat/bloco-c-previsao`) | `ForecastAccuracyCalculator` + `ForecastBiasEnum`, 17 casos unitários escritos antes do código; suíte 986/986, format limpo. Cartão `F3.6a.md`. Resto da F3.6, F3.4c, F3.4b e front F3.8a–i em `bloco-c-restante.md` |
+| F3.6b Precisão: projeção de referência | C | Under review | 9bd4812 (back) | consulta `GetAccuracyRows` (última análise concluída antes do mês × `product_sales_monthly`), 3 testes de integração. Cartão `F3.6b.md` |
+| F3.6c Precisão: rotas | C | Under review | a8ee2e2 (back) | T-DF10 (resumo e lista por produto, só Admin) e `accuracy` no T-DF5; 5 testes de integração; suíte 996/996, format limpo. Cartão `F3.6c.md` |
+| Tolerância da precisão ±15% | C | Under review | b852dfc (back) | Decisão do Daniel em 08/11 (era ±20%); RN-DF24, RN-DF25 e RN-DF26 (limite 5%, ruptura > 50%) aprovadas. Suíte 996/996, format limpo |
+| F3.8a Front: enums e tipos da previsão | C | Under review | d3ee3b6 (front, `feat/bloco-c-front`) | `TLeadTimeSource` e `TForecastBias` em `enums.ts`; `forecast.interface.ts` igual aos DTOs do back; tipos antigos em `legacy-forecast.interface.ts`. Build ok, eslint de `src` limpo |
+| F3.4c 422 do Aplicar Comprar | C | Under review | a106162 (back) | erro de item volta para as linhas enviadas; 2 testes de integração; suíte 991/991, format limpo. Cartão `F3.4c.md` |
+| IA: modelo reserva | C | Under review | dcd1e3b (back) | Prazo por tentativa, 2 tentativas por modelo, `Ai:FallbackModel` (`AI_FALLBACK_MODEL`, padrão `gemini-flash-lite-latest`); `aiModel` grava quem respondeu. Corrige análises "Concluída sem IA" pelo 503 do flash-latest. Suíte 1003/1003. Detalhe em `architecture/integrations/gemini.md` |
+| F3.8b Front: painel inicial | C | QA Daniel | 9dc28b2 (front, `feat/bloco-c-front`) | Rotas da T-DF1 e `forecasts/latest/top` no lugar de `/api/dashboard/stats` |
+| F3.8c Front: sino | C | QA Daniel | a46062c (front) | T-DF12: contador, 20 últimas, marcar uma/todas |
+| F3.8d Front: lista da análise | C | QA Daniel | c0b56dd (front) | `/forecast` (T-DF2): última análise, filtros, gerar com progresso e 409 |
+| F3.8e Front: detalhe | C | QA Daniel | 6516be4 (front) | T-DF3 em Sheet lateral (aberto pelo nome do produto) e aba Previsão do produto (T-DF5); promoções ficam na aba vizinha |
+| F3.8f Front: Comprar | C | QA Daniel | cc05b4e (front) | Dialog T-DF4; avisos de mínimo/múltiplo por linha no front; sem aviso de validade (`maxByShelfLife` fora do DTO) |
+| F3.8g Front: Promover e Descartar | C | QA Daniel | 8447362 (front) | T-DF6 (só Admin, prévia por `promotions/preview`) e T-DF8; "máximo permitido" não aparece (`maxDiscountPercent` fora do DTO) |
+| F3.8h Front: histórico e agendamento | C | QA Daniel | ec8ba07 (front) | `/forecast/history` e `/settings/forecast`; análise antiga em `/forecast?run=<id>`, só leitura |
+| F3.8i Front: precisão | C | QA Daniel | 167d07b (front) | `/forecast/accuracy` (só Admin), gráfico com linha de 15%, tabela por produto. Front do bloco C completo |
+| Loja selecionada filtra o sistema | — | Em dev | 7f88de0 + 3b0e8ad (front, `feat/filtro-loja`); back sem commit | Ver "Em andamento" |
+| Histórico de vendas: Visualizar e filtros | B | Em dev | 05f5cd6 (back), 25bea30 (front), `feat/historico-vendas` | Ver "Em andamento" |
+| Venda rápida: ajustes de 08/11 | B | Em dev | 07b44c7 (front, `feat/venda-rapida-ajustes`); back sem commit | Ver "Em andamento" |
+| Ajustes da lista da previsão | C | Em dev | — (`feat/forecast-acoes`, sem commit) | Ver "Em andamento" |
 | QA do bloco C | C | A fazer | | |
 | F1.7 Lotes | — | QA Daniel | dbb2d78 (WIP), 3cc3c2b, cd63b00, edeb5f5, ee72e6b, f939777, e844367 (back); b1fb15b, 137898f, e55b1c6, 7758c76, 88c46bf, cc14847, e7cb149 (front) | **Aprovada na review (07/11), aguardando QA. Selo amarelo "vence em até 30 dias" (e7cb149) aguarda QA visual; janela de 30 dias não confirmada pelo Daniel.** Densa, pede thread de review separada. Cartão escrito nesta fatia (F1.7.md). Tabela `lots` (código único por variação, validade) e FK em saldo e movimento (migration AddLots); ledger exige lote na entrada de produto com lote e reparte a saída por FEFO; recebimento com `lots` por item somando a quantidade; ajuste com `lotId`/`newLot`; aba Lotes (`GET /products/{id}/lots`) com dias para vencer e alerta de 30 dias; `lotCode` no kardex; trava de `tracksLots` com saldo (RN-CE55); seed com lote nos alimentos (180 dias). RN-CE15 implementada mas segue a validar. Build -warnaserror ok; suíte 807/809 antes do ajuste dos 2 testes do seed, depois 78/78 nas fatias de lote e seed; tsc e lint dos arquivos do front ok. Review (07/11): aprovada com ressalvas; correções f939777, e844367 (back) e 7758c76, 88c46bf, cc14847 (front): saída FEFO com negativo nunca cria saldo sem lote, testes dos critérios 4 a 6, erro do lote novo no campo. Decisões do Daniel: `balanceAfter` = saldo do lote (T8, RN-CE01) e lote negativo só some com ajuste (card, RN-CE15). Suíte completa 815/815 |
-| Opcionais: F2.2, F2.6, F1.9, F1.10, F3.4b, F3.6 | — | A fazer | | só depois do bloco C, se o escopo permitir (F2.5 saiu do escopo em 07/11) |
+| Opcionais: F2.2, F2.6, F1.9, F1.10, F3.4b | — | A fazer | | só depois do bloco C, se o escopo permitir (F2.5 saiu do escopo em 07/11). A F3.6 (a/b/c) foi feita em 08/11. F3.4b (Transferir) em investigação desde 08/11 à tarde, sem código |
