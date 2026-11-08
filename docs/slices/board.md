@@ -23,7 +23,9 @@ o trabalho volta a ser por branch no checkout principal, sem pasta por tarefa.
 | Venda rápida: leitor, e-mail, rodapé | `97f78b5` | `f2e9101` | Back `825e5b8`: e-mail opcional no `POST /api/clients/quick` |
 | Ajustes da lista da previsão | — | `13a0622` | Front `f689cae`: ações só no detalhe e contadores nas abas |
 | Seed: fotos dos produtos demo | `08e33bb` | — | `c46b1c0`: `DemoPhotosSeeder` (ordem 80, só com `Seed:Demo:Enabled`) baixa do Unsplash e sobe no Silo; só produto demo sem imagem, foto que falha vira `LogWarning`. Suíte 1012/1012, format e build `-warnaserror` ok |
-| Transferir (F3.4b) | — | — | Opcional; só investigação, sem código |
+| Seed completo para testes | (branch `feat/seed-completo`) | — | Vendedores, coleções, promoções e pedidos de compra em todos os status, lotes vencendo em até 30 dias e retomada do histórico interrompido (`implementation-log.md`, 08/11 à noite). Aguarda aprovação para commit e merge |
+| Transferir (F3.4b) | `feat/seed-completo` (back, sem commit) | `feat/ajustes-vendas-compras` (front, sem commit) | **Feita** (08/11 noite), 3 partes: transferência de estoque (`StockTransfer`, `IStockLedger.PostResolved`, `POST /api/stock-transfers`, botão na aba Estoque); gatilho `TransferTrigger` no motor ("Manter" vira "Transferir"), `POST .../transfer` e dialog no detalhe; seed com transferência errada Shopping → Centro. Migration `AddStockTransfers`. Testes: 4 de API, 4 do gatilho, 2 da previsão |
+| Comprar dividido por loja (F3.9) | `feat/seed-completo` (back, sem commit) | `feat/ajustes-vendas-compras` (front, sem commit) | **Feita** (08/11 noite): RN-DF27/28 aprovadas; `store-split`, tabela `forecast_recommendation_purchase_orders` (migration `AddRecommendationPurchaseOrders`), dialog com "Dividir entre lojas"; 33 testes do back e 5 do dialog passam |
 
 Push: back e front até `97f78b5`/`13a0622` já estão no `origin/homolog`; o merge do seeder (`08e33bb`) está **local, sem push**.
 

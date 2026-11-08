@@ -14,6 +14,8 @@ o padrão do local de entrega no formulário é `stores.defaultReceiveLocationId
 total, criado em, previsão de chegada (criado/enviado + prazo efetivo), recebido em, **lead time real** (dias, quando recebido),
 badge "Gerado pela IA" (vínculo com recomendação, RN-DF15), badge "Atrasado" (pendente com previsão vencida).
 **Filtros:** busca (nº, fornecedor), status, fornecedor, local de entrega, período de criação, "só da IA", "só atrasados".
+Status aceita vários valores separados por vírgula (`status=Budget,Pending`, 08/11/2026); a tela abre com Orçamento e Pendente
+marcados, num filtro de seleção múltipla fora do painel. Ações da linha: Visualizar, Receber (só Pendente), Editar e Cancelar.
 **Ordenação:** nº, criado em, previsão de chegada, total.
 **Ações:** novo (T-CP2), ver (T-CP3), editar (só Orçamento/Pendente), receber (T-CP4, só Pendente), cancelar (T-CP5).
 
@@ -52,6 +54,7 @@ Edição só em Orçamento ou Pendente; recebido não altera (RN-CP03). `version
 GET  /api/purchase-orders/{id}/form                      → PurchaseOrderFormDto
 GET  /api/purchase-orders/item-suggestion?supplierId&variantId&storeId → PurchaseItemSuggestionDto
 GET  /api/purchase-orders/variant-options?supplierId&search&onlyLinked=true&limit=20 → PurchaseVariantOptionDto[]   (F2.7: busca de itens; onlyLinked=false = "mostrar todos")
+PurchaseVariantOptionDto { variantId; productId; productName; variantLabel; sku; isLinked; barcode?; imageUrl?; averageCost? }   // barcode, imageUrl e averageCost desde 08/11/2026
 POST /api/purchase-orders/{id}/cancel { version; reason } → PurchaseOrderDetailDto
 POST /api/purchase-orders            ← SavePurchaseOrderDto → PurchaseOrderDetailDto
 PUT  /api/purchase-orders/{id}       ← SavePurchaseOrderDto → PurchaseOrderDetailDto
