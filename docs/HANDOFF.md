@@ -60,6 +60,18 @@ Login de dev: `admin@nextflow.com` (senha `DevelopmentPassword` em `UsersSeeder.
 - Falta: review das fatias (F3.4 densa), front das telas T-DF (o painel do front chama `/api/dashboard/stats`, que não existe; as rotas
   são as do contrato T-DF1), QA do bloco C e as decisões listadas nos cartões.
 
+## 0.2 Atualização de 08/11/2026 (madrugada, depois da review)
+- Review pelo padrão das F3.1 a F3.5 e F3.7 concluída: commit `d27ae54` na `feat/bloco-c-previsao` do back, 969/969 testes verdes,
+  `dotnet format` limpo. Tudo local, **sem push**. O repo de trabalho é `~/Projetos/nextflow/nextflow` no WSL (as cópias
+  `nextflow-blococ` e `nextflow-docs-blococ` foram só para não mexer na `homolog` durante o trabalho).
+- Regras novas registradas (a confirmar com o Daniel): **RN-DF24** previsão zerada na janela de compra vira "Sem ação" (Hold com
+  motivo) e **RN-DF25** a IA não promove sem gatilho do cálculo.
+- Pendências: enum `TLeadTimeSource` ausente no `enums.ts` do front do WSL (F3.8a); índice do 422 no Aplicar Comprar quando a mesma
+  variação vem em duas linhas (F3.4c).
+- **O que falta do bloco C**, em fatias mínimas com aceite e testes: `slices/bloco-c-restante.md`. Em dev: F3.6a (cálculo puro da precisão).
+- **Ao aprovar o bloco:** merge de `feat/bloco-c-previsao` na `homolog` (back e, quando houver, front) e de `docs/bloco-c-previsao` na
+  `main` dos docs. Push só quando o Daniel pedir.
+
 ## 1. Onde está o quê
 | Repo | Remoto | Branch de trabalho | Último commit (07/11) |
 |--|--|--|--|
