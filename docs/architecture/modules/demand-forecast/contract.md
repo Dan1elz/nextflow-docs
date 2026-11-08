@@ -169,12 +169,12 @@ Tabela por produto: classe, meses medidos, erro médio %, último mês (previsto
 Usa só meses **completos** já encerrados (RN-DF19). Exclui meses com ruptura total? **Lacuna L-DF3**.
 ```ts
 GET /api/forecasts/accuracy/summary?months=12 → ForecastAccuracySummaryDto
-GET /api/forecasts/accuracy/products?offset&limit&filters → PaginationDto<ForecastAccuracyProductDto>
-ForecastAccuracySummaryDto { monthly: { month; mapePercent; productsMeasured }[]; byAbcClass: { abcClass; mapePercent }[];
-  byCategory: { categoryPath; mapePercent }[]; withinTolerancePercent }
+GET /api/forecasts/accuracy/products?offset&limit&filters → PaginationDto<ForecastAccuracyProductDto>   // 12 meses; filtros search, abcClass, bias; só Admin
+ForecastAccuracySummaryDto { monthly: { month; mapePercent: number | null; productsMeasured }[]; byAbcClass: { abcClass; mapePercent }[];
+  byCategory: { categoryPath; mapePercent }[]; withinTolerancePercent: number | null }   // um item por mês da janela (F3.6c); só Admin
 ForecastAccuracyProductDto { productId; productName; abcClass?; monthsMeasured; mapePercent; bias: "Under" | "Over" | "Balanced";
   lastMonth?: { month; projected; actual } }
-ForecastAccuracyItemDto { month; projected; actual; errorPercent }
+ForecastAccuracyItemDto { month; projected; actual; errorPercent: number | null }   // ProductForecastDto.accuracy (T-DF5); nulo = mês fora (ruptura ou vendido zero)
 ```
 
 ## T-DF11. Agendamento (`/settings/forecast`)
