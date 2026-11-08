@@ -9,7 +9,7 @@
 
 | Fatia | Entrega mínima | Aceite | Testes |
 |--|--|--|--|
-| **F3.6a** Precisão: cálculo puro | `ForecastAccuracyCalculator` (erro % do mês, MAPE e viés do produto, ±20%, ruptura > 50% e vendido zero fora) | ver `F3.6a.md` | 11 unitários (`ForecastAccuracyCalculatorTests`) |
+| **F3.6a** Precisão: cálculo puro | `ForecastAccuracyCalculator` (erro % do mês, MAPE e viés do produto, ±15% (era ±20% até 08/11, `b852dfc`), ruptura > 50% e vendido zero fora) | ver `F3.6a.md` | 11 unitários (`ForecastAccuracyCalculatorTests`) |
 | **F3.6b** Precisão: projeção de referência (feita, `9bd4812`, `F3.6b.md`) | Consulta no repositório: por produto e mês **completo**, a projeção da última análise concluída com `referenceDate` antes do 1º dia do mês, junto com `product_sales_monthly` (vendido e dias sem estoque) | Mês sem análise anterior não aparece; análise `Failed` é ignorada; mês corrente não entra (RN-DF19) | Integração `ForecastAccuracyQueryTests`: 3 casos acima com 2 análises montadas à mão |
 | **F3.6c** Precisão: rotas (feita, `a8ee2e2`, `F3.6c.md`) | `GET /api/forecasts/accuracy/summary?months=12` e `GET /api/forecasts/accuracy/products` (T-DF10) e `accuracy` preenchido em `GET /api/forecasts/products/{id}` (T-DF5) | Resumo por mês, classe ABC e categoria; tabela paginada com viés e último mês; só Admin | Integração em `ForecastApiTests`: resumo, lista paginada, 403 para não Admin, `accuracy` no T-DF5 |
 | **F3.4c** 422 do Aplicar Comprar por fornecedor (feita, `a106162`, `F3.4c.md`) | `PurchaseOrderRules.Check` roda uma vez por grupo (fornecedor) sobre os itens **somados por variação**, então o índice `groups[i].items[k]` do erro é o da lista somada, não o da linha enviada. Mapear o erro de volta para a(s) linha(s) originais | Fornecedor inativo no 2º grupo → 422 em `groups[1].supplierId`; variação inativa repetida em duas linhas → 422 nas duas linhas certas; nada gravado | Integração em `ForecastActionsTests` (2 casos) |
@@ -30,5 +30,5 @@
 | **F3.8i** Precisão | T-DF10, depois da F3.6c | Gráfico por mês e tabela por produto |
 
 ## Fecha o bloco
-- QA do bloco C pelo Daniel (decisões abertas nos cartões F3.1 a F3.6a e RN-DF24/25).
+- QA do bloco C pelo Daniel (RN-DF24, RN-DF25 e RN-DF26 aprovadas em 08/11; demais decisões abertas nos cartões F3.1 a F3.5).
 - Merge na `homolog`: back `feat/bloco-c-previsao`, front (enums + telas) e docs `docs/bloco-c-previsao` → `main`. Push só quando o Daniel pedir.

@@ -28,11 +28,10 @@
 | RN-DF21 | A recomendação é por produto e a quantidade é rateada nas variações pela proporção histórica de venda da grade | Item 5 (e RN-CE16) | 2026-10-28 | validado |
 | RN-DF22 | Limites da IA mantidos (prioriza, explica, ajusta quantidade entre 0,5× e 1,5× do calculado, confiança sempre do cálculo); Transferir entra como ação nova | Item 6 | 2026-10-28 | validado |
 | RN-DF23 | A análise roda em segundo plano (status "Em andamento" com progresso dos lotes); só uma por vez; ao terminar gera notificação | Lacuna L-DF1 | 2026-10-28 | validado |
-| RN-DF24 | Previsão zerada na janela de compra (lead time + 30 dias) vira **"Sem ação"**: grava `Hold` com o motivo "Sem ação: nenhuma demanda prevista nos próximos N dias", nunca "Comprar" (o enum não muda; o rótulo "Sem ação" × "Manter" na tela é decisão do front) | Review F3.2/F3.7 (08/11) | 2026-11-08 | proposta (a confirmar com o Daniel) |
-| RN-DF25 | A IA não cria ação sem gatilho do cálculo: "Promover" só vale quando o cálculo achou excesso em baixa temporada ou validade (RN-DF07); um "Manter" do cálculo não vira "Promover" pela IA (complementa RN-DF11 e ADR 0005) | Review F3.2 (08/11) | 2026-11-08 | comportamento atual (a confirmar) |
+| RN-DF24 | Previsão zerada na janela de compra (lead time + 30 dias) vira **"Sem ação"**: grava `Hold` com o motivo "Sem ação: nenhuma demanda prevista nos próximos N dias", nunca "Comprar" (o enum não muda; o rótulo "Sem ação" × "Manter" na tela é decisão do front) | Review F3.2/F3.7 (08/11) | 2026-11-08 | validado (Daniel, 08/11: sem aviso separado por ora) |
+| RN-DF25 | A IA não cria ação sem gatilho do cálculo: "Promover" só vale quando o cálculo achou excesso em baixa temporada ou validade (RN-DF07); um "Manter" do cálculo não vira "Promover" pela IA (complementa RN-DF11 e ADR 0005) | Review F3.2 (08/11) | 2026-11-08 | validado (Daniel, 08/11) |
+| RN-DF26 | Precisão (RN-DF19): produto "dentro da tolerância" quando o erro médio (MAPE) é **≤ 15%**; viés só quando a média do erro com sinal passa de **±5%**; mês com **mais de 50% dos dias sem estoque** fica fora da medição, assim como vendido zero com previsto acima de zero | F3.6a, L-DF3 | 2026-11-08 | validado (Daniel, 08/11: tolerância 20% → 15%) |
 
 ## Perguntas em aberto
 - RN-DF08: 10% de margem mínima é regra do lojista ou um palpite técnico? Deveria ser configurável?
 - RN-DF06: janela fixa de 30 dias após o lead time faz sentido para todo segmento?
-- RN-DF19 / L-DF3 (proposta da F3.6a, 08/11): mês com mais da metade dos dias sem estoque fica fora da medição de precisão;
-  vendido zero com previsto acima de zero também fica fora. Tolerância ±20% e viés por ±5% são palpites técnicos.

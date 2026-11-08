@@ -164,9 +164,9 @@ GET /api/forecasts/{runId}/batches       → { batchNumber; productsCount; statu
 ```
 
 ## T-DF10. Precisão da previsão (`/forecast/accuracy`)
-Visão geral: erro médio % por mês (últimos 12), por classe ABC e por categoria; % de produtos dentro de ±20%.
+Visão geral: erro médio % por mês (últimos 12), por classe ABC e por categoria; % de produtos dentro de ±15% (RN-DF26).
 Tabela por produto: classe, meses medidos, erro médio %, último mês (previsto × vendido), tendência (subestima/superestima).
-Usa só meses **completos** já encerrados (RN-DF19). Exclui meses com ruptura total? **Lacuna L-DF3**.
+Usa só meses **completos** já encerrados (RN-DF19). Meses com mais de 50% dos dias sem estoque ficam fora (L-DF3, resolvida pela RN-DF26).
 ```ts
 GET /api/forecasts/accuracy/summary?months=12 → ForecastAccuracySummaryDto
 GET /api/forecasts/accuracy/products?offset&limit&filters → PaginationDto<ForecastAccuracyProductDto>   // 12 meses; filtros search, abcClass, bias; só Admin
@@ -215,7 +215,7 @@ NotificationDto { id; type: NotificationType; title; message; link?; createdAt; 
 ## Lacunas encontradas neste módulo
 - **L-DF1** Geração demorada (vários lotes de IA): recomendação — análise assíncrona em background (`Running`), progresso por polling de `/status` e notificação ao terminar; hoje o `POST generate` é síncrono.
 - **L-DF2** Horizonte "maior lead time + 3, até 6" é da análise inteira; produtos de lead time curto recebem projeção longa sem necessidade. Recomendação: projeção sempre até o horizonte (útil no gráfico), mas a necessidade de compra usa o lead time de cada produto (como hoje).
-- **L-DF3** Precisão em meses com ruptura: vender 0 por falta não é erro da previsão. Recomendação: excluir da média meses com > 50% dos dias sem estoque e sinalizar.
+- **L-DF3** Precisão em meses com ruptura: vender 0 por falta não é erro da previsão. Recomendação: excluir da média meses com > 50% dos dias sem estoque e sinalizar. **Resolvida em 08/11 (RN-DF26).**
 - **L-DF4** Notificações de estoque baixo e lote vencendo: recomendação — gerar 1 resumo diário (job), não por evento.
 - **L-DF5** "Comprar" de produto com grade: rateio com variação sem histórico (tamanho novo). Recomendação: proporção igual entre as variações sem histórico, editável no dialog.
 - **L-DF6** Recomendação Transferir é por local, mas a previsão é da empresa (RN-CE17). Recomendação: Transferir usa só saldo × mínimo/cobertura por local (sem previsão por local) até existir previsão por loja.
