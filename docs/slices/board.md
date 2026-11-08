@@ -14,7 +14,7 @@
 - **F2.5 Pedido com orçamento**: **fora do escopo** (decisão do Daniel, 07/11).
 - **F2.10 Push e troca do staging**: a cargo do Daniel.
 - **Bloco C** (F3.1 a F3.5 e F3.7): implementado no back e **revisado pelo padrão em 08/11** (commit `d27ae54`, 969/969 testes verdes),
-  branch local `feat/bloco-c-previsao` (sem push), aguardando QA. O que falta, em fatias mínimas: `bloco-c-restante.md` (F3.6a feita, em review).
+  branch local `feat/bloco-c-previsao` (sem push), aguardando QA. O que falta, em fatias mínimas: `bloco-c-restante.md` (F3.6a, F3.6b e F3.4c feitas, em review).
   O front das telas T-DF ainda não existe. Aprovado o bloco, tudo vai para a `homolog` (back e front) e os docs para a `main`.
 - QA final é sempre do Daniel, por bloco.
 
@@ -35,7 +35,7 @@
 9. Front: o enum `TLeadTimeSource` (History=1, ProductSupplier=2, Supplier=3) **não está** no `src/types/enums.ts` do front no WSL
    (o commit `0617ca0` ficou numa branch do Windows). Entra na F3.8a.
 10. Aplicar Comprar: `PurchaseOrderRules.Check` roda uma vez por fornecedor sobre os itens somados por variação, então o índice
-    `groups[i].items[k]` do 422 pode não bater com a linha enviada. Aceito na review; correção mínima na F3.4c.
+    `groups[i].items[k]` do 422 pode não bater com a linha enviada. Corrigido na F3.4c (a106162).
 
 | Fatia | Bloco | Status | Commit | Nota curta |
 |--|--|--|--|--|
@@ -67,6 +67,8 @@
 | F3.5 Painel e notificações | C | Under review | 518e9b3 (back, `feat/bloco-c-previsao`) | Rotas da T-DF1 (`/api/dashboard/*` e `forecasts/latest/top`), `notifications` por usuário ativo, sino (T-DF12), aviso de análise concluída e resumo diário de estoque baixo e lote vencendo (L-DF4). O front ainda chama `/api/dashboard/stats` (não existe) |
 | Review do bloco C (F3.1–F3.5, F3.7) | C | Aprovada | d27ae54 (back, `feat/bloco-c-previsao`) | Review pelo padrão em 08/11: só nomes de teste sem `_When_`, uma consulta de sobreposição por variação ao promover e `dotnet format`. Suíte 969/969 |
 | F3.6a Precisão: cálculo puro | C | Under review | d0f9526 (back, `feat/bloco-c-previsao`) | `ForecastAccuracyCalculator` + `ForecastBiasEnum`, 17 casos unitários escritos antes do código; suíte 986/986, format limpo. Cartão `F3.6a.md`. Resto da F3.6, F3.4c, F3.4b e front F3.8a–i em `bloco-c-restante.md` |
+| F3.6b Precisão: projeção de referência | C | Under review | 9bd4812 (back) | consulta `GetAccuracyRows` (última análise concluída antes do mês × `product_sales_monthly`), 3 testes de integração. Cartão `F3.6b.md` |
+| F3.4c 422 do Aplicar Comprar | C | Under review | a106162 (back) | erro de item volta para as linhas enviadas; 2 testes de integração; suíte 991/991, format limpo. Cartão `F3.4c.md` |
 | QA do bloco C | C | A fazer | | |
 | F1.7 Lotes | — | QA Daniel | dbb2d78 (WIP), 3cc3c2b, cd63b00, edeb5f5, ee72e6b, f939777, e844367 (back); b1fb15b, 137898f, e55b1c6, 7758c76, 88c46bf, cc14847, e7cb149 (front) | **Aprovada na review (07/11), aguardando QA. Selo amarelo "vence em até 30 dias" (e7cb149) aguarda QA visual; janela de 30 dias não confirmada pelo Daniel.** Densa, pede thread de review separada. Cartão escrito nesta fatia (F1.7.md). Tabela `lots` (código único por variação, validade) e FK em saldo e movimento (migration AddLots); ledger exige lote na entrada de produto com lote e reparte a saída por FEFO; recebimento com `lots` por item somando a quantidade; ajuste com `lotId`/`newLot`; aba Lotes (`GET /products/{id}/lots`) com dias para vencer e alerta de 30 dias; `lotCode` no kardex; trava de `tracksLots` com saldo (RN-CE55); seed com lote nos alimentos (180 dias). RN-CE15 implementada mas segue a validar. Build -warnaserror ok; suíte 807/809 antes do ajuste dos 2 testes do seed, depois 78/78 nas fatias de lote e seed; tsc e lint dos arquivos do front ok. Review (07/11): aprovada com ressalvas; correções f939777, e844367 (back) e 7758c76, 88c46bf, cc14847 (front): saída FEFO com negativo nunca cria saldo sem lote, testes dos critérios 4 a 6, erro do lote novo no campo. Decisões do Daniel: `balanceAfter` = saldo do lote (T8, RN-CE01) e lote negativo só some com ajuste (card, RN-CE15). Suíte completa 815/815 |
 | Opcionais: F2.2, F2.6, F1.9, F1.10, F3.4b | — | A fazer | | só depois do bloco C, se o escopo permitir (F2.5 saiu do escopo em 07/11). A F3.6 começou em 08/11, fatiada em F3.6a/b/c |
