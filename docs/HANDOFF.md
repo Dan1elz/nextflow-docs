@@ -68,7 +68,7 @@ Login de dev: `admin@nextflow.com` (senha `DevelopmentPassword` em `UsersSeeder.
   motivo) e **RN-DF25** a IA não promove sem gatilho do cálculo.
 - Pendências: enum `TLeadTimeSource` ausente no `enums.ts` do front do WSL (F3.8a); índice do 422 no Aplicar Comprar quando a mesma
   variação vem em duas linhas (F3.4c).
-- **O que falta do bloco C**, em fatias mínimas com aceite e testes: `slices/bloco-c-restante.md`. Em dev: F3.6a (cálculo puro da precisão).
+- **O que falta do bloco C**, em fatias mínimas com aceite e testes: `slices/bloco-c-restante.md`. F3.6a (cálculo puro da precisão) feita, em review; próxima: F3.6b.
 - **Ao aprovar o bloco:** merge de `feat/bloco-c-previsao` na `homolog` (back e, quando houver, front) e de `docs/bloco-c-previsao` na
   `main` dos docs. Push só quando o Daniel pedir.
 
