@@ -72,6 +72,12 @@ QuickSaleDto {
 QuickSalePreviewDto { items: { variantId; listPrice; unitPrice; discount; lineTotal; promotion?: { id; discountPercent } }[];
   subtotal; discountTotal; total; paid; remaining; change? }   // remaining ≥ 0; change só com cashReceived e dinheiro
 ```
+> **Ajustes de 08/11/2026 (em andamento na branch `feat/venda-rapida-ajustes`, sem push):**
+> - **Leitor de código:** Enter com código exato adiciona direto (já era assim); quando não acha, a tela avisa e seleciona o termo
+>   para a próxima leitura, e o Enter sem código exato **não** pega mais o 1º da lista. Com as setas, o Enter escolhe o destacado.
+> - **Botão "Atualizar preços" removido:** a prévia (`/quick/preview`) já usa o preço atual, a linha avisa "Preço mudou" e o
+>   `errors.confirm` ao concluir cobre a troca entre busca e conclusão. Substitui a decisão da F2.4 sobre o botão.
+> - **Rodapé novo** (só front) e **e-mail opcional** no cadastro rápido de cliente (ver `purchasing/contract.md`, T-CD4).
 
 ## T-VD3. Pedidos — listagem (`/orders`)
 **Carrega** (`OrderListItemDto`): nº, data de criação, canal (Balcão/Pedido), cliente (nome ou "Consumidor final"), loja,
@@ -87,6 +93,11 @@ GET /api/orders?offset&limit&filters&sort&order&storeId
 OrderListItemDto { id; number; createdAt; channel: OrderChannel; clientName?: string; storeName; userName;
   itemCount; total; status: OrderStatus; validUntil?: DateOnly; daysToExpire?: number; paidAt? }
 ```
+> **Histórico de vendas (`/sales/history`, 08/11/2026, em andamento na branch `feat/historico-vendas`, sem push):** usa a mesma
+> `GET /api/orders`, que passa a aceitar também `userId` (vendedor), `productId` (pedido com algum item do produto), `minTotal` e
+> `maxTotal` (faixa de valor), além do cliente. Na tela, cada linha tem um botão único **Visualizar** (abre T-VD5) no lugar do menu
+> de três pontos. Sem migration. Com a branch `feat/filtro-loja`, a busca refaz ao trocar a loja do topo e, em "Todas as lojas", a
+> tabela mostra a coluna Loja.
 
 ## T-VD4. Orçamento — criar / editar (`/orders/create`, `/orders/:id/edit`)
 Só existe edição enquanto **Orçamento** e não expirado (RN-VD04/16).

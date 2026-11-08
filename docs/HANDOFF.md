@@ -1,5 +1,6 @@
-# Handoff — Nextflow (estado em 07/11/2026)
+# Handoff — Nextflow (estado em 08/11/2026, tarde)
 
+> **Comece pela seção 0.3** (08/11 à tarde: estado atual, "Em andamento" e ponto de retomada). As seções 0 a 0.2 são o histórico do bloco C.
 > Atualizado em 07/11 à noite (seção 0). Para continuar o trabalho de outro PC sem ajuda. Conferido contra o `git log` da `homolog` dos dois repos e contra
 > os arquivos de setup reais. Detalhe de cada fatia: `slices/board.md` e os cartões `slices/F*.md`.
 
@@ -72,6 +73,45 @@ Login de dev: `admin@nextflow.com` (senha `DevelopmentPassword` em `UsersSeeder.
 - **Ao aprovar o bloco:** merge de `feat/bloco-c-previsao` na `homolog` (back e, quando houver, front) e de `docs/bloco-c-previsao` na
   `main` dos docs. Push só quando o Daniel pedir.
 
+## 0.3 Atualização de 08/11/2026 (tarde): bloco C completo, front incluso; frentes novas em andamento
+
+**Feito e commitado (local, sem push)**
+- **Back do bloco C completo** na `feat/bloco-c-previsao` (`~/Projetos/nextflow/nextflow`): F3.6a–c (precisão, `d0f9526`, `9bd4812`,
+  `a8ee2e2`), F3.4c (`a106162`), tolerância de acerto **±15%** (`b852dfc`, era ±20%) e o **modelo reserva da IA** (`dcd1e3b`). Suíte 1003/1003.
+- **Regras aprovadas pelo Daniel em 08/11:** RN-DF24 (previsão zerada na janela de compra vira "Sem ação"), RN-DF25 (IA não promove sem
+  gatilho do cálculo) e RN-DF26 (dentro da tolerância com MAPE ≤ 15%; viés só acima de ±5%; mês com mais de 50% dos dias sem estoque fora).
+- **Front do bloco C completo** (F3.8a–i) na `feat/bloco-c-front` (`~/Projetos/nextflow/nextflow-front`, último `167d07b`), saindo da
+  `homolog` com o redesign: painel, sino, `/forecast`, detalhe em Sheet lateral e aba Previsão do produto, Comprar, Promover e Descartar,
+  histórico, agendamento e `/forecast/accuracy`. Linhas e hashes em `slices/board.md`; o que ficou de fora de cada tela em `slices/bloco-c-restante.md`.
+- **Modelo reserva:** o `gemini-flash-latest` deu 503 "high demand" e prendeu a conexão por até 141 s, então as análises saíam "Concluída
+  sem IA". Agora o prazo é por tentativa, 2 tentativas por modelo, e cai para `Ai:FallbackModel` (`AI_FALLBACK_MODEL`, padrão
+  `gemini-flash-lite-latest`). Detalhe em `architecture/integrations/gemini.md`.
+- **`.env` do dev** (`~/Projetos/nextflow/nextflow/.env`, fora do git, chmod 600): só `AI_PROVIDER`, `AI_API_KEY` e
+  `AI_MODEL=gemini-flash-latest`; o resto segue os padrões do compose. Sugestão em aberto: trocar `AI_MODEL` para o lite no dev
+  (análise de ~15 s em vez de ~3,5 min enquanto o flash-latest estiver sobrecarregado).
+
+**Em andamento (no fim da tarde de 08/11)**
+Cada frente é uma branch local com git worktree no WSL; back sai da `feat/bloco-c-previsao`, front da `feat/bloco-c-front`. Tabela
+completa (pastas, commits, o que está sem commit) em `slices/board.md`, seção "Em andamento".
+- **`feat/filtro-loja`**: a loja do topo filtra painel, listas e o novo pedido de compra (que passa a exigir loja). Na previsão, a análise
+  segue **da empresa inteira**; com loja no topo, a lista, o detalhe e o card do painel mostram o saldo e o "a caminho" da loja ao lado do total
+  (`demand-forecast/decisions/0001-previsao-da-empresa-com-estoque-da-loja.md`). Front commitado; **back sem commit**.
+- **`feat/historico-vendas`**: botão único Visualizar e filtros de cliente, vendedor, produto e faixa de valor (`GET /api/orders`).
+  Commitado nos dois repos. Conflito pequeno previsto com a `feat/filtro-loja` em `sales-history.provider.tsx`.
+- **`feat/venda-rapida-ajustes`**: leitor com Enter direto e aviso quando não acha, e-mail opcional no cadastro rápido de cliente, rodapé
+  novo, sem o botão "Atualizar preços". Front commitado; **back sem commit**.
+- **`feat/forecast-acoes`** (só front): ajustes da lista da previsão; branch criada, sem mudança ainda.
+- **F3.4b Transferir**: opcional, só investigação.
+
+**Backlog do Daniel (sem cartão):** filtros em todas as listagens; ver vendas e pedidos de compra pelo cliente e pelo fornecedor;
+mobile quebrado; "ver mais" no painel; melhorias em pedidos de compra.
+
+**Retomar por aqui**
+1. Fechar as frentes em andamento (commitar o back de `feat/filtro-loja` e `feat/venda-rapida-ajustes`, rodar suíte e `eslint src`).
+2. QA do Daniel: telas do bloco C e as frentes da tarde.
+3. Com a aprovação, juntar na `homolog` na ordem do `slices/board.md` (bloco C primeiro) e os docs na `main`. Push só quando ele pedir.
+4. Depois, o backlog acima (cada item vira cartão antes do código).
+
 ## 1. Onde está o quê
 | Repo | Remoto | Branch de trabalho | Último commit (07/11) |
 |--|--|--|--|
@@ -101,8 +141,8 @@ Login de dev: `admin@nextflow.com` (senha `DevelopmentPassword` em `UsersSeeder.
 | — | F1.7 Lotes com validade (FEFO) | **Pronta, aprovada na review, aguardando QA** |
 | B | F2.5 pedido com orçamento | **Fora do escopo** (Daniel, 07/11). A tela `/orders` mostra um aviso no lugar |
 | B | F2.10 push e troca do staging | A cargo do Daniel |
-| C Previsão | F3.1, F3.2 + F3.7, F3.3, F3.4, F3.5 | A fazer (próxima etapa) |
-| Opcional | F2.2, F2.6, F1.9, F1.10, F3.4b, F3.6 | Só depois do bloco C |
+| C Previsão | F3.1–F3.5, F3.7, F3.6a–c, F3.4c (back); F3.8a–i (front) | **Feito em branches locais (08/11), aguardando QA do Daniel** (seção 0.3) |
+| Opcional | F2.2, F2.6, F1.9, F1.10, F3.4b | Só depois do bloco C (a F3.6 foi feita em 08/11) |
 
 QA final é sempre do Daniel, por bloco.
 

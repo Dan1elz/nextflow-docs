@@ -1,6 +1,6 @@
 # Contrato — Inteligência de compras, painel e notificações
 
-> **Status:** rascunho para validação · **Atualizado:** 2026-10-28 · Convenções: `../../contracts/README.md`
+> **Status:** rascunho para validação · **Atualizado:** 2026-11-08 (front F3.8a–i implementado; `storeId` na leitura, em andamento) · Convenções: `../../contracts/README.md`
 > Regras: `business-rules.md` (RN-DF*), `../catalog-inventory/business-rules.md` (RN-CE*) · DER: `../../diagrams/der-consolidado.md` (seção Previsão)
 > Contrato anterior (versão em produção na `task-17`): `nextflow/docs/AI_FORECAST_SPEC.md` §7 — este documento o substitui quando implementado.
 
@@ -77,6 +77,13 @@ ForecastRecommendationListItemDto { id; productId; productName; imageUrl?; categ
   deadline?: DateOnly; preferredSupplierId?; preferredSupplierName?;
   reasonShort: string; aiAdjusted: boolean; appliedLink?: { type: SourceType; id; number? } }
 ```
+> **Loja selecionada (08/11/2026, em andamento na branch `feat/filtro-loja`, back sem commit e front `7f88de0` + `3b0e8ad`, sem push).**
+> A análise continua **da empresa inteira** (não há previsão por loja; `decisions/0001-previsao-da-empresa-com-estoque-da-loja.md`).
+> Com uma loja no topo, o front manda `storeId` em `GET /api/forecasts/latest/top`, `GET /api/forecasts/{runId}/recommendations`
+> e `GET /api/forecasts/recommendations/{id}`, e a API preenche dois campos novos em `ForecastRecommendationListItemDto`:
+> `storeCurrentStock?` (saldo da loja) e `storeIncomingStock?` ("a caminho" para os locais da loja, RN-CP05), nulos sem `storeId`.
+> A tela mostra esses números ao lado do total da empresa, com aviso de que a sugestão vale para todas as lojas. Os blocos do painel
+> (vendas, gráfico, estoque baixo, lotes vencendo) passam a mandar o `storeId` que o contrato já previa.
 
 ## T-DF3. Detalhe da recomendação / previsão do produto (drawer na `/forecast` e aba "Previsão" do produto = T-DF5)
 Mesma visão nos dois lugares. Na aba do produto, mostra a recomendação pendente mais recente (se houver) e o histórico.

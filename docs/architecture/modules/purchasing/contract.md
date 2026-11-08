@@ -1,6 +1,6 @@
 # Contrato — Compras e cadastros (fornecedores, clientes)
 
-> **Status:** rascunho para validação · **Atualizado:** 2026-11-07 (F2.7) · Convenções: `../../contracts/README.md`
+> **Status:** rascunho para validação · **Atualizado:** 2026-11-08 (loja do topo no novo pedido, e-mail no cadastro rápido; ambos em andamento) · Convenções: `../../contracts/README.md`
 > Regras: `business-rules.md` (RN-CP*), `../registry/business-rules.md` (RN-CD*), `../catalog-inventory/business-rules.md` (RN-CE*)
 > DER: `../../diagrams/der-consolidado.md`
 
@@ -37,6 +37,9 @@ decimais, **pedido mínimo**, **múltiplo** (RN-CE27/CE30), último custo pago a
 disponível na loja e a caminho (outras compras Orçamento/Pendente, RN-CP05).
 Campos por linha: quantidade (unidade de venda, sem caixa, RN-CE30), custo unitário (editável), subtotal (calculado na API no save).
 Para produto com grade: atalho "adicionar grade" abre a matriz de variações do produto com quantidade por variação.
+> **Loja do topo (08/11/2026, em andamento na branch `feat/filtro-loja` do front, sem push):** o novo pedido **exige** uma loja
+> selecionada no topo (em "Todas as lojas" a tela pede para escolher), o combo de local de entrega mostra só os locais dessa loja e
+> trava o local de recebimento padrão; trocar a loja recomeça o formulário. A listagem (T-CP1) refaz a busca ao trocar a loja.
 
 **Validações:** fornecedor ativo; local ativo; ≥ 1 item (RN-CP01); quantidade > 0 e respeitando casas decimais;
 quantidade ≥ mínimo e múltiplo do par produto × fornecedor — **aviso com confirmação** (`errors.confirm`), não bloqueio (L-CP2);
@@ -217,7 +220,8 @@ ClientRequestDto { name; lastName?; cpf?; birthDate?: DateOnly }
 ClientResponseDto { id; name; lastName?; cpf?; birthDate?; isActive; mainAddress?: AddressResponseDto; mainContact?: ContactResponseDto;
   orderCount; totalSpent; averageTicket; lastPurchaseOn? /* zero ou nulos até a fase 2 */; createdAt; updatedAt? }
 ClientOptionDto { id; label /* "Ana Souza · 123.***.***-00" */; phone? }      // só ativos, até 20
-QuickCreateClientRequestDto { name; phone }
+QuickCreateClientRequestDto { name; phone; email? }   // email: 08/11/2026, branch feat/venda-rapida-ajustes (em andamento)
+// email opcional vira contato tipo Email, não principal, no mesmo commit; inválido → 422 em `email`. Sem migration.
 
 // Fase 2 (ainda não existe)
 GET /api/clients/{id}/orders?offset&limit → PaginationDto<OrderListItemDto>   // DTO do contrato de vendas

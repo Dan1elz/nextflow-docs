@@ -141,3 +141,10 @@ Reprovadas na rodada retroativa e corrigidas. O núcleo confere com o atrena e o
 - **F3.5:** rotas do painel (T-DF1), `notifications` por usuário ativo (migration `AddNotifications`), sino (T-DF12), aviso ao fim da
   análise e resumo diário (L-DF4).
 - **Processo:** nas F3.3 a F3.5 os testes foram escritos junto com o código (não antes); sem review separada ainda.
+
+### Bloco C: precisão, front e modelo reserva (08/11/2026)
+- **Back (`feat/bloco-c-previsao`):** F3.6a–c (precisão: cálculo puro, projeção de referência, rotas T-DF10 e `accuracy` no T-DF5), F3.4c (422 do Aplicar Comprar nas linhas enviadas), tolerância ±15% (`b852dfc`) e modelo reserva da IA (`dcd1e3b`: prazo por tentativa, 2 tentativas por modelo, `Ai:FallbackModel` = `gemini-flash-lite-latest`). Suíte 1003/1003.
+- **Regras aprovadas pelo Daniel:** RN-DF24, RN-DF25, RN-DF26.
+- **Front (`feat/bloco-c-front`):** F3.8a–i. Limites aceitos: sem aviso de validade no Comprar (`maxByShelfLife` fora do DTO), sem "máximo permitido" no Promover (`maxDiscountPercent` fora do DTO), avisos de mínimo/múltiplo calculados no front porque o back aplica `ConfirmWarnings = true`.
+- **Decisão:** previsão segue da empresa inteira; com loja no topo mostra o estoque da loja ao lado (`demand-forecast/decisions/0001`).
+- **Em andamento à tarde:** `feat/filtro-loja`, `feat/historico-vendas`, `feat/venda-rapida-ajustes`, `feat/forecast-acoes` (estado em `slices/board.md`, seção "Em andamento").
