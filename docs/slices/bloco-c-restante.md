@@ -19,7 +19,7 @@
 
 | Fatia | Entrega mínima | Aceite |
 |--|--|--|
-| **F3.8a** Enums e tipos | `TLeadTimeSource` (History=1, ProductSupplier=2, Supplier=3) e os tipos dos DTOs da previsão em `src/types` | Build e lint limpos; nomes iguais ao back (enums trafegam pelo nome) |
+| **F3.8a** Enums e tipos (feita, front `d3ee3b6`, branch `feat/bloco-c-front`) | `TLeadTimeSource` (History=1, ProductSupplier=2, Supplier=3) e os tipos dos DTOs da previsão em `src/types` | Build e lint limpos; nomes iguais ao back (enums trafegam pelo nome) |
 | **F3.8b** Painel inicial | Trocar `/api/dashboard/stats` (não existe) pelas rotas de T-DF1 e `forecasts/latest/top` | Painel carrega sem 404 com o seed |
 | **F3.8c** Sino | T-DF12: contador, lista das 20 últimas, marcar uma/todas | Marca como lida e o contador cai |
 | **F3.8d** Lista da análise | `/forecast` (T-DF2): última análise, filtros, botão gerar com progresso e 409 tratado | Gerar mostra "Em andamento" e recarrega ao terminar |
