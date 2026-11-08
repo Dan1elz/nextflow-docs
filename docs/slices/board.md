@@ -33,7 +33,7 @@
    Junto: a IA não promove sem gatilho do cálculo (um "Manter" do cálculo não vira "Promover", RN-DF25).
 8. F1.6 segue "Under review" desde 02/11, sem registro de review: confirmar se fecha junto com o QA do bloco A.
 9. Front: o enum `TLeadTimeSource` (History=1, ProductSupplier=2, Supplier=3) **não está** no `src/types/enums.ts` do front no WSL
-   (o commit `0617ca0` ficou numa branch do Windows). Entra na F3.8a.
+   (o commit `0617ca0` ficou numa branch do Windows). **Resolvido na F3.8a** (front `d3ee3b6`).
 10. Aplicar Comprar: `PurchaseOrderRules.Check` roda uma vez por fornecedor sobre os itens somados por variação, então o índice
     `groups[i].items[k]` do 422 pode não bater com a linha enviada. Corrigido na F3.4c (a106162).
 
