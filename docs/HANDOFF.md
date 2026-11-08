@@ -1,6 +1,6 @@
-# Handoff — Nextflow (estado em 08/11/2026, tarde)
+# Handoff — Nextflow (estado em 08/11/2026, noite)
 
-> **Comece pela seção 0.3** (08/11 à tarde: estado atual, "Em andamento" e ponto de retomada). As seções 0 a 0.2 são o histórico do bloco C.
+> **Comece pela seção 0.4** (08/11 à noite: tudo junto na `homolog`). As seções 0 a 0.3 são o histórico do bloco C e das frentes da tarde.
 > Atualizado em 07/11 à noite (seção 0). Para continuar o trabalho de outro PC sem ajuda. Conferido contra o `git log` da `homolog` dos dois repos e contra
 > os arquivos de setup reais. Detalhe de cada fatia: `slices/board.md` e os cartões `slices/F*.md`.
 
@@ -111,6 +111,18 @@ mobile quebrado; "ver mais" no painel; melhorias em pedidos de compra.
 2. QA do Daniel: telas do bloco C e as frentes da tarde.
 3. Com a aprovação, juntar na `homolog` na ordem do `slices/board.md` (bloco C primeiro) e os docs na `main`. Push só quando ele pedir.
 4. Depois, o backlog acima (cada item vira cartão antes do código).
+
+## 0.4 Atualização de 08/11/2026 (noite): tudo junto na homolog
+- **Back e front:** bloco C, `feat/filtro-loja`, `feat/historico-vendas`, `feat/venda-rapida-ajustes` e (só front) `feat/forecast-acoes`
+  juntados na `homolog` e já no `origin/homolog` (back `97f78b5`, front `13a0622`). Hashes de cada merge em `slices/board.md`,
+  seção "Juntado na homolog".
+- **Seed de fotos:** `DemoPhotosSeeder` (`c46b1c0`) baixa as fotos dos produtos demo do Unsplash (ids do catálogo v1) e sobe no Silo,
+  só para produto demo sem imagem; sem rede, a foto fica de fora com aviso no log e o startup segue. Juntado na `homolog` do back
+  (`08e33bb`), **sem push**. Suíte 1012/1012, `dotnet format` limpo, build `-warnaserror` ok.
+- **Organização:** branches das frentes apagadas e worktrees removidos (`nextflow-loja`, `nextflow-hist`, `nextflow-venda`,
+  `nextflow-front-*`, `nextflow-seedimg`). Daqui em diante, uma branch por frente no checkout principal, sem pasta por tarefa.
+- **Retomar por aqui:** (1) push do back quando o Daniel pedir; (2) QA do Daniel dos blocos A, B e C e das frentes; (3) backlog do
+  Daniel (`slices/board.md`), cada item vira cartão antes do código.
 
 ## 1. Onde está o quê
 | Repo | Remoto | Branch de trabalho | Último commit (07/11) |

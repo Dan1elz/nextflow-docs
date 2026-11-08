@@ -8,24 +8,24 @@
 > citados abaixo já estão no `origin/homolog` (back até `89d3c3c`, front até `c442a77`). Visão geral e setup de outra
 > máquina: `../HANDOFF.md`.
 
-> **Atualizado de novo em 08/11/2026 (tarde)**: linhas do bloco C, front F3.8b–i, modelo reserva da IA e a seção "Em andamento" abaixo.
-> As branches do bloco C e as desta tarde são **locais, sem push**.
+> **Atualizado de novo em 08/11/2026 (noite)**: bloco C, as frentes da tarde e o seeder de fotos foram juntados na `homolog` dos dois
+> repos (seção "Juntado na homolog" abaixo). As branches foram apagadas e não há mais worktree.
 
-## Em andamento (08/11/2026, tarde)
-Trabalho começado nesta tarde, cada um numa branch local com git worktree no WSL (`~/Projetos/nextflow/<pasta>`). Nada tem push.
-Back das três saem da `feat/bloco-c-previsao` (`dcd1e3b`); front sai da `feat/bloco-c-front` (`167d07b`).
+## Juntado na homolog (08/11/2026, noite)
+Tudo abaixo está na `homolog` (merge `--no-ff`). As branches foram apagadas depois do merge e as pastas de worktree removidas:
+o trabalho volta a ser por branch no checkout principal, sem pasta por tarefa.
 
-| Frente | Branch | Pastas (back / front) | Estado no fim da tarde |
+| Frente | Back (merge) | Front (merge) | Nota |
 |--|--|--|--|
-| Loja selecionada filtra o sistema | `feat/filtro-loja` | `nextflow-loja` / `nextflow-front-loja` | Front commitado (`7f88de0` painel, histórico, compras e novo pedido seguem a loja; `3b0e8ad` previsão mostra o estoque da loja). Back **sem commit**: `storeId` nas leituras da previsão, `storeCurrentStock`/`storeIncomingStock`, teste em `ForecastActionsTests`. Previsão continua da empresa (decisão `demand-forecast/decisions/0001`) |
-| Histórico de vendas: Visualizar e filtros | `feat/historico-vendas` | `nextflow-hist` / `nextflow-front-hist` | Commitado: back `05f5cd6` (`GET /api/orders` com `userId`, `productId`, `minTotal`, `maxTotal`), front `25bea30`. Mexe em `sales-history.provider.tsx`, como a `feat/filtro-loja`: conflito pequeno no merge |
-| Venda rápida: leitor, e-mail, rodapé | `feat/venda-rapida-ajustes` | `nextflow-venda` / `nextflow-front-venda` | Front commitado (`07b44c7`). Back **sem commit** (e-mail no `POST /api/clients/quick`, validador, 2 testes em `RegistryApiTests`). "Atualizar preços" removido |
-| Ajustes da lista da previsão | `feat/forecast-acoes` (só front) | `nextflow-front-forecast` | Branch criada em `167d07b`, **sem mudança** ainda |
+| Bloco C (previsão) | `39bd1ff` | `d370ae5` | F3.1–F3.7, F3.6a–c, F3.4c, modelo reserva da IA; front F3.8a–i |
+| Loja selecionada filtra o sistema | `aabd69b` | `c0dc719` | Back `dc5e0bc`: `storeId` nas leituras da previsão (`storeCurrentStock`/`storeIncomingStock`) |
+| Histórico de vendas: Visualizar e filtros | `d48a259` | `077ce5d` | `GET /api/orders` com `userId`, `productId`, `minTotal`, `maxTotal` |
+| Venda rápida: leitor, e-mail, rodapé | `97f78b5` | `f2e9101` | Back `825e5b8`: e-mail opcional no `POST /api/clients/quick` |
+| Ajustes da lista da previsão | — | `13a0622` | Front `f689cae`: ações só no detalhe e contadores nas abas |
+| Seed: fotos dos produtos demo | `08e33bb` | — | `c46b1c0`: `DemoPhotosSeeder` (ordem 80, só com `Seed:Demo:Enabled`) baixa do Unsplash e sobe no Silo; só produto demo sem imagem, foto que falha vira `LogWarning`. Suíte 1012/1012, format e build `-warnaserror` ok |
 | Transferir (F3.4b) | — | — | Opcional; só investigação, sem código |
 
-**Ordem sugerida para juntar** (quando o Daniel aprovar): `feat/bloco-c-previsao` e `feat/bloco-c-front` primeiro; depois
-`feat/filtro-loja`, `feat/historico-vendas` (resolver o `sales-history.provider.tsx`), `feat/venda-rapida-ajustes` e `feat/forecast-acoes`;
-tudo na `homolog` (docs na `main`). Push só quando ele pedir.
+Push: back e front até `97f78b5`/`13a0622` já estão no `origin/homolog`; o merge do seeder (`08e33bb`) está **local, sem push**.
 
 ## Backlog do Daniel (08/11/2026, sem cartão ainda)
 1. Filtros em todas as listagens.
@@ -35,8 +35,8 @@ tudo na `homolog` (docs na `main`). Push só quando ele pedir.
 5. Pedidos de compra (melhorias a detalhar com o Daniel).
 
 ## Resumo do momento
-- **Bloco C, 08/11 à tarde:** back completo (F3.1–F3.7, F3.6a–c, F3.4c, tolerância ±15%, modelo reserva da IA `dcd1e3b`, suíte 1003/1003) e
-  front F3.8a–i completo na `feat/bloco-c-front` (`167d07b`). Falta: QA visual e do bloco pelo Daniel, e o merge na `homolog`.
+- **Bloco C, 08/11:** back completo (F3.1–F3.7, F3.6a–c, F3.4c, tolerância ±15%, modelo reserva da IA `dcd1e3b`) e front F3.8a–i,
+  **juntados na `homolog`** com as frentes da tarde e o seeder de fotos (suíte 1012/1012). Falta: QA visual e do bloco pelo Daniel.
 - **Bloco B** (F2.1, F2.3, F2.4, F2.7, F2.8, F2.9): pronto e commitado, **aguardando QA do Daniel**.
 - **F1.7 Lotes (FEFO)**: pronta, aprovada na review (com correções), **aguardando QA do Daniel**.
 - **F2.5 Pedido com orçamento**: **fora do escopo** (decisão do Daniel, 07/11).

@@ -148,3 +148,8 @@ Reprovadas na rodada retroativa e corrigidas. O núcleo confere com o atrena e o
 - **Front (`feat/bloco-c-front`):** F3.8a–i. Limites aceitos: sem aviso de validade no Comprar (`maxByShelfLife` fora do DTO), sem "máximo permitido" no Promover (`maxDiscountPercent` fora do DTO), avisos de mínimo/múltiplo calculados no front porque o back aplica `ConfirmWarnings = true`.
 - **Decisão:** previsão segue da empresa inteira; com loja no topo mostra o estoque da loja ao lado (`demand-forecast/decisions/0001`).
 - **Em andamento à tarde:** `feat/filtro-loja`, `feat/historico-vendas`, `feat/venda-rapida-ajustes`, `feat/forecast-acoes` (estado em `slices/board.md`, seção "Em andamento").
+
+### Merge na homolog e seed de fotos (08/11/2026, noite)
+- Bloco C e as frentes da tarde (`filtro-loja`, `historico-vendas`, `venda-rapida-ajustes`, `forecast-acoes`) juntados na `homolog` dos dois repos; hashes em `slices/board.md`.
+- `DemoPhotosSeeder` (ordem 80): fotos dos produtos demo baixadas do Unsplash e gravadas no Silo como o upload da tela; idempotente (só produto sem imagem) e tolerante a falha de rede (`LogWarning`). Testes com fonte fake, sem rede.
+- Processo: worktrees por frente abandonados; uma branch por vez no checkout principal.
