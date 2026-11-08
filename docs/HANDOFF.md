@@ -52,6 +52,14 @@ Com o Ryuk desligado, uma execução de teste interrompida deixa um container `p
 **Ambiente local de hoje**: Docker Desktop + WSL2 no Windows; compose de dev `nextflow-v2-development` (Postgres 5435, API 8081, storage 9010), front por `npm run dev` (5173, `.env` com `VITE_API_URL=http://localhost:8081`).
 Login de dev: `admin@nextflow.com` (senha `DevelopmentPassword` em `UsersSeeder.cs`). O seed de 36 meses leva alguns minutos no primeiro startup e agora também roda o recálculo dos dados derivados.
 
+## 0.1 Atualização de 08/11/2026 (madrugada): bloco C concluído no back
+- Retomado da branch do rodr1go22: correções e testes da review da F3.2, desvio do ADR 0005 corrigido (IA promovia sem gatilho),
+  previsão zerada vira "Sem ação" (a confirmar), e F3.3, F3.4 e F3.5 implementadas. Commits locais na `feat/bloco-c-previsao` do back:
+  `e0c922a`, `ef54da0`, `fa2feff`, `4270254`, `518e9b3` (sem push). Cartões `slices/F3.3.md`, `F3.4.md`, `F3.5.md`.
+- Três migrations novas depois de `AddForecastEngine`: `AddForecastSettings`, `AddForecastActions`, `AddNotifications`.
+- Falta: review das fatias (F3.4 densa), front das telas T-DF (o painel do front chama `/api/dashboard/stats`, que não existe; as rotas
+  são as do contrato T-DF1), QA do bloco C e as decisões listadas nos cartões.
+
 ## 1. Onde está o quê
 | Repo | Remoto | Branch de trabalho | Último commit (07/11) |
 |--|--|--|--|

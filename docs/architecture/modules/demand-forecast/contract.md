@@ -204,6 +204,14 @@ NotificationDto { id; type: NotificationType; title; message; link?; createdAt; 
 `DismissReason` BoughtElsewhere=1, DisagreeQuantity=2, WillDiscontinue=3, Other=4 ·
 `NotificationType` NewRecommendations=1, LotExpiring=2, LowStock=3
 
+
+> **Nota F3.3–F3.5 (08/11/2026), divergências do implementado:** `ForecastRunSummaryDto` ganhou `referenceDate` e `finishedAt`, e
+> `horizonStart`/`horizonEnd` vêm nulos enquanto a análise roda; `ForecastRecommendationListItemDto` ganhou `forecastRunId`; o descarte
+> (T-DF8) devolve a linha atualizada e exige corpo (mesmo `{}`); o detalhe (T-DF3) traz `dismissReasonCode`/`dismissNote` e
+> `calculation.nextMonthDemand`/`nextMonthSeasonalIndex`; `ProductForecastDto.seasonality[].categoryIndex` vem nulo (o índice da categoria
+> não é gravado) e `accuracy` vazio até a F3.6; `ForecastSettingsDto` traz `nextScheduledAt`. Enums trafegam pelo nome (os números do
+> back diferem desta tabela, ex.: `ForecastRunStatus` Running=1).
+
 ## Lacunas encontradas neste módulo
 - **L-DF1** Geração demorada (vários lotes de IA): recomendação — análise assíncrona em background (`Running`), progresso por polling de `/status` e notificação ao terminar; hoje o `POST generate` é síncrono.
 - **L-DF2** Horizonte "maior lead time + 3, até 6" é da análise inteira; produtos de lead time curto recebem projeção longa sem necessidade. Recomendação: projeção sempre até o horizonte (útil no gráfico), mas a necessidade de compra usa o lead time de cada produto (como hoje).

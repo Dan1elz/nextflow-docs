@@ -128,3 +128,16 @@ Reprovadas na rodada retroativa e corrigidas. O núcleo confere com o atrena e o
 
 ### Review da F3.2 + F3.7 (07/11/2026)
 - Aprovada com ressalvas por agente validador (sem bloqueantes). Aplicadas no código: mínimo/múltiplo nos guardrails da IA, trava de rajada restrita a item novo sem índice, fechamento do run como `Failed` no cancelamento, reorganização de `IStockBalanceRepository` e `VariantShare`. Pendentes: teto de 90% no desconto da IA e os testes dos itens acima (lista em `slices/F3.2.md`). Execução interrompida por queda de energia e retomada; o agente de correções foi parado a pedido, e o estado foi commitado em `a0cdbaa`.
+
+### Continuação do bloco C (08/11/2026, madrugada)
+- **Branch:** `feat/bloco-c-previsao` do back, commits locais `e0c922a`, `ef54da0`, `fa2feff`, `4270254`, `518e9b3` sobre `a0cdbaa` (sem push).
+- **F3.2/F3.7:** pendências da review fechadas com testes; desvio do ADR 0005 corrigido (a IA promovia sem gatilho do cálculo);
+  previsão zerada na janela de compra vira "Sem ação" (Hold com motivo), proposta a confirmar.
+- **F3.3:** fila em memória (`IForecastQueue`) + `ForecastRunWorker` (recalcula derivados e roda o motor), análise órfã vira `Failed` na
+  subida, `ForecastScheduler` semanal (`forecast_settings`, migration `AddForecastSettings`), rotas de leitura (T-DF2, T-DF9, T-DF11).
+- **F3.4:** detalhe e previsão do produto (T-DF3, T-DF5), Comprar (pedido em Orçamento por fornecedor, reaproveita `PurchaseOrderRules`),
+  cancelar o pedido devolve a recomendação a Pendente, Promover (origem `AiRecommendation`, FK), Descartar com `DismissReason`
+  (migration `AddForecastActions`).
+- **F3.5:** rotas do painel (T-DF1), `notifications` por usuário ativo (migration `AddNotifications`), sino (T-DF12), aviso ao fim da
+  análise e resumo diário (L-DF4).
+- **Processo:** nas F3.3 a F3.5 os testes foram escritos junto com o código (não antes); sem review separada ainda.
