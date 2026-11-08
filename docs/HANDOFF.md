@@ -1,6 +1,6 @@
-# Handoff — Nextflow (estado em 08/11/2026, noite)
+# Handoff — Nextflow (estado em 08/11/2026, madrugada)
 
-> **Comece pela seção 0.4** (08/11 à noite: tudo junto na `homolog`). As seções 0 a 0.3 são o histórico do bloco C e das frentes da tarde.
+> **Comece pela seção 0.5** (estado atual, sem commit, e o que o Daniel pediu por último). As seções 0 a 0.4 são histórico.
 > Atualizado em 07/11 à noite (seção 0). Para continuar o trabalho de outro PC sem ajuda. Conferido contra o `git log` da `homolog` dos dois repos e contra
 > os arquivos de setup reais. Detalhe de cada fatia: `slices/board.md` e os cartões `slices/F*.md`.
 
@@ -112,6 +112,84 @@ mobile quebrado; "ver mais" no painel; melhorias em pedidos de compra.
 3. Com a aprovação, juntar na `homolog` na ordem do `slices/board.md` (bloco C primeiro) e os docs na `main`. Push só quando ele pedir.
 4. Depois, o backlog acima (cada item vira cartão antes do código).
 
+## 0.6 Atualização de 08/11/2026 (noite): pedidos fechados e tudo na homolog
+- **Commits do back** (`feat/seed-completo`, cada um compila sozinho): `2f5e513` filtros (status em lista, `eventId`), `97a70e7`
+  promoção (PUT), `d9c9a76` previsão (painel "ver mais", F3.9 + divisão por loja gravada pela análise, F3.4b, busca de itens da
+  compra; migrations `AddRecommendationPurchaseOrders` → `AddStockTransfers` → `AddRecommendationStores`), `688b9ff` seed (depende da
+  F3.4b). Merge na `homolog` `8cfa41a`. **Front:** `0b4c779` em `feat/ajustes-vendas-compras`, merge `bda3a20`.
+- **Testes:** back 1045/1046 na suíte completa (a divisão por loja e `Should_SplitBuyAcrossStores_When_AnalysisRuns` passaram); a falha
+  do `Should_RunInBackground_When_Generating` era o teste somando só Comprar + Promover + Manter: na suíte completa outros testes deixam
+  estoque desequilibrado e saem recomendações "Transferir". Corrigido; testes da previsão 35/35, `dotnet format` limpo. Front 81/81,
+  build ok, lint de `src` ok (o `npm run lint` acusa os exemplos da skill em `.agents/skills/shadcn/assets/showcase`, fora do app).
+- **Pedido 1 (diálogos):** o comprar não exige o local de entrega do grupo quando todos os itens estão divididos por loja (mostra
+  "cada loja recebe no próprio local"); loja dividida sem local de recebimento padrão vira erro na linha. Layout: falta o Daniel conferir.
+- **Pedido 2 (divisão por loja):** coluna Sugestão mostra a parte de cada loja, detalhe ganha "Divisão por loja" e o comprar abre já
+  dividido quando `storeSplit` tem 2+ lojas. Não feito (opcional): mandar a divisão no payload da IA.
+- **Pedido 3:** "Promover selecionados" é a tela `/forecast/promote?ids=…` (`BulkPromoteForm`; aberta direto, recarrega pelos ids).
+- **Pedido 4:** `/dashboard/low-stock` e `/dashboard/expiring-lots`; `storeId`/`storeName` nos itens; cada ação troca a loja do topo
+  antes de abrir (comprar com a IA, novo pedido, promover, dar baixa). Em "todas as lojas" a linha mostra "Loja › Local".
+- **Dev:** backend reiniciado. Para ver a divisão por loja e "Transferir", gerar nova análise (as recomendações antigas não têm divisão).
+- **Continuam pendentes de decisão:** exceção ao ADR 0010 no seed; janela de 90 dias da participação por loja; janela de 30 dias do
+  alerta de vencimento.
+
+## 0.5 Atualização de 08/11/2026 (madrugada): muito feito, NADA commitado, pedidos em aberto
+
+### Onde está o código (tudo no disco, sem commit)
+| Repo | Branch | Conteúdo |
+|--|--|--|
+| `~/Projetos/nextflow/nextflow` (back) | `feat/seed-completo` (saiu da `homolog` `08e33bb`) | seed completo, filtro de status com lista, edição de promoção, filtro `eventId`, painel "ver mais", F3.9, F3.4b |
+| `~/Projetos/nextflow/nextflow-front` | `feat/ajustes-vendas-compras` (saiu da `homolog` `13a0622`) | todas as telas abaixo |
+| `~/Projetos/nextflow/nextflow-docs` | `main` | regras, contratos, cartões F3.9 e F3.4b, log |
+
+Ao commitar, separar o back em partes (commit por caminho): seed; filtros (`FilterExpressionBuilder`, `eventId`); promoção (PUT);
+painel; F3.9; F3.4b. Depois merge na `homolog` e push (o Daniel pediu "corrigidos esses, atualiza a doc e sobe tudo pra homolog").
+
+### Migrations novas (nesta ordem)
+`AddRecommendationPurchaseOrders` (F3.9, com SQL que preenche os pedidos já aplicados) → `AddStockTransfers` (F3.4b; **já aplicada
+no banco de dev** pelo `dotnet watch`, não remover) → `AddRecommendationStores` (divisão por loja gravada pela análise, recém-criada,
+ainda não testada).
+
+### Feito nesta sessão (detalhe em `implementation-log.md`)
+- Seed: vendedores, coleções, promoções e pedidos de compra em todos os status, lotes vencendo, retomada do histórico (transação por
+  dia), depósito só com o que não vence, fotos, e transferência errada Shopping → Centro em 4 alimentos (gera "Transferir").
+- Telas: search select, detalhe de venda (cores), histórico (nº abre detalhe), pedidos de compra (filtro de status múltiplo, Receber,
+  layout em 2 colunas, busca de item igual à venda), venda rápida repaginada + leitor fora da busca, baixa de lote, mobile (cards,
+  abas em grade, `meta.hideOnMobile`/`meta.label`), margem no produto, promoções (editar agendada, visualizar), coleções e
+  calendário (visualizar), painel com "ver mais", previsão com promover/descartar selecionados.
+- F3.9 (comprar dividido por loja) e F3.4b (Transferir completo) implementadas; regras RN-DF27/28/29 e RN-CE62 aprovadas.
+
+### Estado dos testes
+- Front: 80/80, build e lint ok (antes dos pedidos abaixo).
+- Back: última suíte completa 1044/1045. Falhou `ForecastApiTests.Should_RunInBackground_When_Generating` (passa sozinho;
+  investigar se é instabilidade ou efeito do seed novo). Depois disso entraram `AddRecommendationStores`, o cálculo por loja no motor
+  (`ForecastEngine.WithStoreSplit`) e o teste `Should_SplitBuyAcrossStores_When_AnalysisRuns`: **nada disso foi rodado ainda**.
+- Ajustei 2 testes do `ForecastEngineTests` para a ação Transferir (itens e motivo sem IA).
+
+### Pedidos do Daniel em aberto (último recado, com prints)
+1. **Layout quebrado nos diálogos** (Transferir estoque: botão vazando e nomes cortados; Gerar pedido de compra: barra de rolagem
+   horizontal e "Escolha o local" vazio com "todas as lojas"). Já feito: `DialogContent` com `[&>*]:min-w-0` e largura
+   `calc(100%-2rem)`; card do Transferir com "De/Para" quebrando linha. **Falta conferir** e, no comprar, não exigir local do grupo
+   quando todos os itens estão divididos por loja.
+2. **A análise deve recomendar a quantidade de cada loja**, não só o total. Feito no back (não testado): `ForecastRecommendationStore`
+   (tabela `forecast_recommendation_stores`), `ForecastEngine.WithStoreSplit` divide todo "Comprar" pela falta de cada loja e acrescenta
+   "Por loja: …" ao motivo (e ao motivo calculado), `ListItem.storeSplit`, e o `store-split` usa a divisão gravada. **Falta:** rodar os
+   testes; no front, mostrar a divisão na coluna Sugestão e no detalhe, e abrir o dialog de comprar já dividido (ligar
+   `enableSplit` automático quando `storeSplit` tem 2+ lojas). Opcional: mandar a divisão no payload da IA para ela explicar.
+3. **"Promover selecionados" deve ser uma tela, não modal.** Proposta: rota `/forecast/promote?ids=…` reaproveitando o
+   `BulkPromoteForm` de `bulk-promote-dialog.tsx`.
+4. **"Ver mais" do painel deve ser tela, e as ações devem trocar a loja do topo** (com "todas as lojas" o comprar não sabe a loja).
+   Proposta: rotas `/dashboard/low-stock` e `/dashboard/expiring-lots` (conteúdo dos dialogs de `dashboard-more-dialogs.tsx`), back
+   devolvendo `storeId` em `LowStockItemDto` e `ExpiringLotItemDto` (a linha do repositório já tem `LocationId`), e cada ação chama
+   `setStoreId(item.storeId)` (`useCurrentStore`) antes de abrir o comprar, o promover ou a aba Lotes.
+5. Depois: atualizar os docs (contratos das rotas novas, board, este handoff) e **subir tudo para a `homolog`** (commit por partes,
+   merge, push).
+
+### Lembretes
+- Classe nova no back exige `docker compose -f compose.development.yaml restart backend` (o hot reload não registra na DI).
+- Dev: front `http://localhost:5174`, API `8081`, login `admin@nextflow.com` / `!Admin123`. Para ver "Transferir", gerar nova análise.
+- Pendências de decisão do Daniel: exceção ao ADR 0010 no seed (transação por dia); janela de 90 dias da participação por loja;
+  janela fixa de 30 dias do alerta de vencimento.
+
 ## 0.4 Atualização de 08/11/2026 (noite): tudo junto na homolog
 - **Back e front:** bloco C, `feat/filtro-loja`, `feat/historico-vendas`, `feat/venda-rapida-ajustes` e (só front) `feat/forecast-acoes`
   juntados na `homolog` e já no `origin/homolog` (back `97f78b5`, front `13a0622`). Hashes de cada merge em `slices/board.md`,
@@ -121,6 +199,9 @@ mobile quebrado; "ver mais" no painel; melhorias em pedidos de compra.
   (`08e33bb`), **sem push**. Suíte 1012/1012, `dotnet format` limpo, build `-warnaserror` ok.
 - **Organização:** branches das frentes apagadas e worktrees removidos (`nextflow-loja`, `nextflow-hist`, `nextflow-venda`,
   `nextflow-front-*`, `nextflow-seedimg`). Daqui em diante, uma branch por frente no checkout principal, sem pasta por tarefa.
+- **Seed completo (`feat/seed-completo`, back):** vendedores, coleções, promoções e pedidos de compra em todos os status, lotes
+  vencendo em até 30 dias e retomada do histórico interrompido. O banco de dev de 08/11 tinha o histórico cortado em abr/2025
+  (seed interrompido), então para testar: `docker compose -f compose.development.yaml down -v` e subir de novo.
 - **Retomar por aqui:** (1) push do back quando o Daniel pedir; (2) QA do Daniel dos blocos A, B e C e das frentes; (3) backlog do
   Daniel (`slices/board.md`), cada item vira cartão antes do código.
 

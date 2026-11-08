@@ -242,6 +242,9 @@ abertura → 422 em `unitCost` (L5); Ajuste sem observação → 422 em `note` (
 contrário (RN-CE14; RN-CE03 obsoleta).
 ```ts
 POST /api/stock-movements/manual   ← ManualMovementDto   → 204   // API: ManualMovementRequestDto
+POST /api/stock-transfers  { fromLocationId; toLocationId; note?; items: [{ variantId; quantity }] } → 201 StockTransferDto
+     // F3.4b, RN-CE62: saída TransferOut por FEFO e entrada TransferIn nos mesmos lotes, sem custo; 422 em items[i].quantity
+     // sem saldo, toLocationId igual à origem ou inativo. GET /api/stock-transfers/{id}. Tela: "Transferir" na aba Estoque do T3
 ManualMovementDto { variantId; locationId; lotId?; newLot?: { code /* até 40 */; expiresOn } /* só entrada */; type: MovementType; reason: MovementReason; quantity /* > 0 */; unitCost? /* só Opening, > 0 */; note? /* obrigatória em Adjustment, até 500 */ }
 ```
 

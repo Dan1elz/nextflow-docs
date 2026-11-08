@@ -32,8 +32,12 @@ GET /api/forecasts/latest/top?limit=5     → ForecastTopDto
 
 SalesKpisDto { month: string /* "2026-10" */; revenue; orderCount; averageTicket; grossMargin; grossMarginPercent;
   revenueVsLastYearPercent?: number; revenueVsLastMonthPercent?: number }
-LowStockSummaryDto { count; items: { productId; productName; variantId; variantLabel; locationName; available; minQuantity }[] }
-ExpiringLotsSummaryDto { count; totalCostValue; items: { productName; variantLabel; lotCode; locationName; expiresOn; daysToExpire; quantity }[] }
+LowStockSummaryDto { count; items: { productId; productName; variantId; variantLabel; locationId; locationName; storeId; storeName;
+  available; minQuantity; recommendationId?; recommendationAction? }[] }
+ExpiringLotsSummaryDto { count; totalCostValue; items: { productId; variantId; productName; variantLabel; lotId; lotCode; locationId;
+  locationName; storeId; storeName; expiresOn; daysToExpire; quantity; recommendationId?; recommendationAction? }[] }
+// `limit` (5 a 200) nas duas rotas: o "ver mais" vira tela (`/dashboard/low-stock`, `/dashboard/expiring-lots`) e cada ação
+// troca a loja do topo para `storeId` da linha antes de abrir comprar, promover ou a aba Lotes (08/11/2026).
 UpcomingEventDto { eventId; name; nextDate: DateOnly; demandStartsOn: DateOnly; productCount }
 SalesChartDto { months: { month: string; revenue; revenueLastYear? }[] }
 ForecastTopDto { run?: ForecastRunSummaryDto; recommendations: ForecastRecommendationListItemDto[] }   // run nulo = nunca rodou
@@ -56,7 +60,10 @@ confiança, estoque atual (empresa), a chegar, cobertura em dias, demanda projet
 (com unidade), desconto sugerido (Promover), origem → destino (Transferir), **comprar até** (`deadline`), fornecedor preferido,
 motivo (resumido; completo no detalhe), selo "IA ajustou", status.
 **Ações por linha:** ver detalhe (T-DF3), Comprar (T-DF4), Aplicar desconto (T-DF6), Transferir (T-DF7), Descartar (T-DF8).
-**Seleção múltipla:** "Comprar selecionados" (só linhas Comprar pendentes) → T-DF4 com vários produtos.
+**Seleção múltipla:** "Comprar selecionados" (só linhas Comprar pendentes) → T-DF4 com vários produtos; "Promover selecionados"
+(Admin, só Promover pendentes) → tela `/forecast/promote?ids=…` (desconto e dias por linha); "Descartar selecionados".
+Com `storeSplit` de 2+ lojas, a coluna Sugestão mostra a parte de cada loja, o detalhe ganha "Divisão por loja" e o comprar
+abre já dividido (sem exigir o local de entrega do grupo quando todos os itens estão divididos).
 
 ```ts
 POST /api/forecasts/generate                      → ForecastRunSummaryDto (status Running)   // Admin; 409 se já há uma em andamento
@@ -74,6 +81,8 @@ ForecastRecommendationListItemDto { id; productId; productName; imageUrl?; categ
   currentStock; incomingStock; coverageDays?; projectedDemand; saleUnit; decimalPlaces;
   suggestedQuantity?; suggestedDiscountPercent?; suggestedPromotionDays?;
   transfer?: { fromLocationName; toLocationName };
+  storeSplit: { storeId; storeName; sharePercent; shortfall; quantity }[];  // RN-DF27: parte de cada loja no "Comprar", gravada pela
+                                                                           // análise (`forecast_recommendation_stores`); vazio com 1 loja
   deadline?: DateOnly; preferredSupplierId?; preferredSupplierName?;
   reasonShort: string; aiAdjusted: boolean; appliedLink?: { type: SourceType; id; number? } }
 ```
@@ -158,6 +167,13 @@ ApplyTransferDto { fromLocationId; toLocationId; items: { variantId; lotId?; qua
 ## T-DF8. Descartar
 Motivo opcional (lista: "Já comprei por fora", "Discordo da quantidade", "Produto vai sair de linha", Outro + texto).
 ```ts
+GET  /api/forecasts/recommendations/{id}/store-split → StoreSplitDto   // F3.9, RN-DF27: só "Comprar"; por loja (recebimento padrão,
+     participação nas vendas de 90 dias, saldo, a caminho, falta, quantidade) e, por variação, a quantidade de cada loja
+POST /api/forecasts/recommendations/purchase: a mesma recomendação pode ir em vários grupos do mesmo fornecedor (um por loja);
+     fornecedor diferente segue 422. Recomendação guarda todos os pedidos (RN-DF28)
+POST /api/forecasts/recommendations/{id}/transfer  { items?: [{ variantId, quantity }], note? } → 201 ListItem   // F3.4b:
+     só "Transferir" pendente; gera a transferência (RN-CE62) e a recomendação fica Aplicada (appliedLink.type = "Transfer")
+ListItem.transfer: { fromLocationId, fromLocationName, toLocationId, toLocationName, quantity } só na ação "Transferir" (antes sempre nulo)
 POST /api/forecasts/recommendations/{id}/dismiss  { reasonCode?: DismissReason; note?: string }
 ```
 

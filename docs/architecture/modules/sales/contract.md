@@ -184,6 +184,9 @@ PromotionListItemDto { id; productId; productName; variantId?; variantLabel?; di
 // Preço promocional = tabela × (1 − %/100), 2 casas, meio para cima, só no IProductPricingService. Cancelar: 204; Encerrada ou Cancelada → 400.
 GET  /api/promotions/preview?productId=&variantId=&discountPercent= → { variants: { variantId; variantLabel?; listPrice; promoPrice; averageCost?; marginPercent?; belowCost: boolean }[] }
 POST /api/promotions ← { productId; variantId?; discountPercent; startDate; endDate; reason?; confirmWarnings? }
+PUT  /api/promotions/{id}  PromotionRequestDto             // 200 PromotionListItemDto; só Agendada (400 nas demais);
+                                                          // produto não muda (422 productId); mesmas regras da criação
+                                                          // (RN-VD10, RN-VD11 sem contar ela mesma, RN-VD13). 08/11/2026
 POST /api/promotions/{id}/cancel                         // 204; só Agendada ou Vigente
 PromotionSummaryDto { id; discountPercent; endDate }     // usado em outras telas
 ```
