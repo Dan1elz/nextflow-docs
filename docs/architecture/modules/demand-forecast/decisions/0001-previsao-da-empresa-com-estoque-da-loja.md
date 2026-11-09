@@ -17,4 +17,7 @@ um rateio de compra entre lojas.
 ## Consequências
 - O motor, a IA e as tabelas da previsão não mudam; só a leitura soma o saldo por loja (`IStockBalanceRepository`) e o "a caminho" pelos
   locais de entrega da loja (`IPurchaseItemRepository`).
+- **Revisitada em 08/11/2026:** o Daniel quer a previsão por loja (sazonalidade e necessidade de cada loja), mas fica para depois
+  do TCC; o desenho está em `../../../../ideas/pos-tcc-previsao-por-loja.md`. Para a banca vale esta decisão, com a compra dividida
+  pela falta de cada loja (RN-DF27).
 - Transferir entre lojas (F3.4b, opcional) segue fora; quando entrar, é ela que aproveita a diferença entre lojas.

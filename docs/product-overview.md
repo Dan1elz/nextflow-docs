@@ -38,7 +38,7 @@ Fontes: Sebrae/CDL-BH (mapeamento Varejo Inteligente Conecta Brasil, 1.334 peque
 | Venda de balcão no caminho feliz e pedido com orçamento (validade e reserva) | PDV completo (caixa, TEF, cupom, offline), troca, fiado e venda a prazo |
 | Compras com local de entrega e lote/validade no recebimento | Recebimento parcial |
 | Promoções com período | Exclusão de venda atípica da análise |
-| **Sazonalidade com IA**: Comprar, Promover, Manter, **Transferir** | Previsão por loja (fica para depois; dado já é gravado) |
+| **Sazonalidade com IA**: Comprar, Promover, Manter, **Transferir** | Previsão por loja (pós-TCC; desenho em `ideas/pos-tcc-previsao-por-loja.md`) |
 | Painel de indicadores | Financeiro (caixa, contas, lucro), CRM, comissões, multi-tenant, e-commerce, NF-e |
 
 ## 5. Módulos (validados em 28/10/2026)
