@@ -13,7 +13,7 @@
 | Parte | Estado |
 |--|--|
 | Cap. 1 a 3 | Ajustes pontuais feitos (commit `481f488`), aguardando revisão do Daniel |
-| Cap. 4 Desenvolvimento | A fazer (roteiro abaixo) |
+| Cap. 4 Desenvolvimento | Reescrito por inteiro (44 figuras, 13 quadros), aguardando revisão; fonte em `ferramentas/cap4.py` |
 | Cap. 5 Resultados | A fazer |
 | Cap. 6 Considerações finais | A fazer |
 | Resumo, abstract, listas, folha de aprovação | Por último |
@@ -33,7 +33,20 @@
   "escopo redefinido" ou "nova versão"; mudança vira evolução natural ("posteriormente", "foi atualizado"). E o texto não
   pode dar a entender que o Daniel é dono ou responsável pelo produto: o trabalho é da equipe.
 
-## Capítulo 4 — Desenvolvimento (proposta de estrutura)
+## Capítulo 4 — Desenvolvimento
+O capítulo é gerado de `ferramentas/cap4.py` por `ferramentas/gerar_capitulo.py` (troca o capítulo inteiro, numera
+figuras e quadros, embute as imagens e marca tudo em verde). Correção de texto: editar o `cap4.py` e regerar sobre a
+versão commitada. Como o capítulo inteiro é novo, ele não usa alteração controlada; o texto antigo fica no git (`12fbc09`).
+
+**Pendências do cap. 4 (09/11)**
+- Figura `seq-3-compra`: cita RN-CP02 em "sem recebimento parcial"; o certo é RN-CP04 (Quadro 3). Regerar a imagem.
+- Print da precisão (`13-previsao-precisao`) está vazio ("Ainda sem meses medidos"): ficou fora; precisa de print com dados.
+- Print da previsão (`10-previsao`) é a página inteira e, para caber na folha, fica com letra pequena: melhor um recorte da tela.
+- RN-DF30 está no Quadro 3, mas a regra ainda está "a aprovar".
+- Nova referência: GOOGLE, Gemini API documentation (citada em 4.5 e 4.9).
+- Sumário, listas de figuras e quadros e o Apêndice A ficam para a etapa dos pré-textuais; os quadros do cap. 5 precisam ser renumerados (começam no 14).
+
+### Estrutura aprovada para o cap. 4 (proposta original)
 | Seção | Conteúdo | Fonte |
 |--|--|--|
 | 4.1 Visão geral | Micro ERP com inteligência de compras; "o backend calcula, a IA interpreta, o humano decide" | `product-overview.md`, ADR 0001, 0005 |
