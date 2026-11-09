@@ -245,7 +245,19 @@ if not m:
     raise SystemExit('título do capítulo não encontrado')
 a = m.end()
 j = x.find('%s</text:p>' % TITULO_SEGUINTE, a)
-b = x.rfind('<text:list ', a, j)
+if j >= 0:
+    b = x.rfind('<text:list ', a, j)
+else:
+    # título seguinte fora de lista (ex.: REFERÊNCIAS em <text:h>): para antes dele e dos parágrafos vazios que o precedem
+    j = x.find('>%s</text:span></text:h>' % TITULO_SEGUINTE, a)
+    if j < 0:
+        raise SystemExit('título seguinte não encontrado')
+    b = x.rfind('<text:h ', a, j)
+    while True:
+        mm = re.search(r'<text:p text:style-name="[^"]+"/>$', x[a:b])
+        if not mm:
+            break
+        b = a + mm.start()
 old = x[a:b]
 if 'text:change' in old:
     raise SystemExit('o capítulo tem alterações controladas pendentes; aceite-as antes de regerar')

@@ -15,7 +15,7 @@
 | Cap. 1 a 3 | Ajustes pontuais feitos (commit `481f488`), aguardando revisão do Daniel |
 | Cap. 4 Desenvolvimento | Reescrito por inteiro (44 figuras, 13 quadros), aguardando revisão; fonte em `ferramentas/cap4.py` |
 | Cap. 5 Resultados | Reescrito por inteiro (Quadros 14 a 16), aguardando revisão; fonte em `ferramentas/cap5.py` |
-| Cap. 6 Considerações finais | A fazer |
+| Cap. 6 Considerações finais | Reescrito (contribuições, parte acadêmica e trabalhos futuros), aguardando revisão; fonte em `ferramentas/cap6.py` |
 | Resumo, abstract, listas, folha de aprovação | Por último |
 
 ### O que mudou nos cap. 1 a 3 (resumo para a revisão)
