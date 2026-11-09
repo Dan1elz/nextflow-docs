@@ -14,7 +14,7 @@
 |--|--|
 | Cap. 1 a 3 | Ajustes pontuais feitos (commit `481f488`), aguardando revisão do Daniel |
 | Cap. 4 Desenvolvimento | Reescrito por inteiro (44 figuras, 13 quadros), aguardando revisão; fonte em `ferramentas/cap4.py` |
-| Cap. 5 Resultados | A fazer |
+| Cap. 5 Resultados | Reescrito por inteiro (Quadros 14 a 16), aguardando revisão; fonte em `ferramentas/cap5.py` |
 | Cap. 6 Considerações finais | A fazer |
 | Resumo, abstract, listas, folha de aprovação | Por último |
 
@@ -68,7 +68,21 @@ versão commitada. Como o capítulo inteiro é novo, ele não usa alteração co
 - Documentação da API do Google Gemini (seção 4.9).
 - Opcional: Amazon S3 (só se o texto citar o padrão S3 como fonte).
 
-## Capítulo 5 — Resultados
+## Montagem
+`ferramentas/montar.sh` refaz o `tcc.odt` do zero: original (`12fbc09`) → ajustes dos cap. 1 a 3 (`ops_cap1a3.py`, alterações
+controladas) → cap. 4 (`cap4.py`) → cap. 5 (`cap5.py`). Qualquer correção vai nos arquivos-fonte e o documento é remontado.
+Se o Daniel editar o `tcc.odt` à mão, commitar antes e levar a edição para a fonte, senão a próxima montagem a perde.
+
+## Capítulo 5 — feito em 09/11
+- Sem teste com usuários (decisão do Daniel, 09/11): a verificação virou testes automatizados (Quadro 14, 19 cenários,
+  cada um com teste aprovado na suíte), medição de tempo de resposta (Quadro 15) e avaliação heurística de Nielsen (Quadro 16).
+  O objetivo específico do cap. 1 foi ajustado ("testes automatizados, medições de tempo de resposta e avaliação heurística").
+- Suíte do back em 09/11: 1.059 casos (614 unidade, 445 integração), todos aprovados, 10 min 36 s. Front: 84 testes (Vitest).
+- Desempenho medido em 09/11 com `ferramentas/medir_desempenho.sh` numa API isolada (Postgres temporário na porta 56543,
+  banco novo com o seed: 42 produtos, 67.809 movimentações, 20.838 vendas; Ryzen 7 5700X, 16 GB), 20 execuções por rota.
+  Análise sem IA: 17 s para 42 produtos. O Postgres de dev não sobe enquanto o `pgsql-averba-replica` ocupa a porta 5435.
+
+### Proposta original do cap. 5
 - Quadro 25 (testes funcionais): preencher com cenários cobertos pelos testes automatizados de integração (mais de 1.000 testes).
 - Quadro 26 (desempenho, RNF003): medir no ambiente com o seed de 36 meses (listagem de produtos, kardex, painel, análise).
 - Precisão da previsão: números da tela `/forecast/accuracy` com o seed (tolerância de ±15%, RN-DF26).

@@ -23,6 +23,9 @@ OPS = [
     dict(para='desenvolver um painel administrativo para controle',
          old='desenvolver um painel administrativo para controle de usuários e níveis de permissão;',
          new='desenvolver um módulo de previsão de demanda que recomende ações de compra, promoção e transferência de estoque a partir do histórico de vendas;'),
+    dict(para='avaliar o desempenho e a usabilidade do sistema empregando testes práticos;',
+         old='avaliar o desempenho e a usabilidade do sistema empregando testes práticos;',
+         new='avaliar o funcionamento, o desempenho e a usabilidade do sistema por meio de testes automatizados, medições de tempo de resposta e avaliação heurística da interface;'),
     # 1.3 Justificativa
     dict(para='A implementação de um painel de controle de usuários é essencial',
          old='A implementação de um painel de controle de usuários é essencial, ao agregar valor e confiabilidade, provendo integridade aos dados e conformidade com níveis de permissão específicos.',

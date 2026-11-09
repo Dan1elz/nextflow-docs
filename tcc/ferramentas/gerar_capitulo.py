@@ -134,6 +134,7 @@ def figure(key, legenda, path, maxw):
 
 # ---------- quadros ----------
 tab_n = [0]
+TAB = 'TcTab%s_' % CAP.get('NUMERO', '4')
 
 def cell(spec, ncols_left):
     span = 1
@@ -155,7 +156,7 @@ def cell(spec, ncols_left):
 
 def table(widths, rows):
     tab_n[0] += 1
-    t = 'TcTab%d' % tab_n[0]
+    t = '%s%d' % (TAB, tab_n[0])
     extra_styles.append('<style:style style:name="%s" style:family="table"><style:table-properties style:width="%.4fin" '
                         'fo:margin-left="0in" table:align="left"/></style:style>' % (t, sum(widths)))
     cols = ''
@@ -210,7 +211,7 @@ def dd_rows(tabela, desc):
 
 # ---------- montagem ----------
 blocos = CAP['BLOCOS']
-nf = nq = 0
+nf, nq = CAP.get('FIG_INICIO', 0), CAP.get('QD_INICIO', 0)
 for b in blocos:
     if b[0] == 'fig':
         nf += 1; FIG[b[1]] = nf
@@ -261,7 +262,7 @@ for depois_de, ref in CAP.get('REFERENCIAS', []):
 
 # estilos automáticos
 add = ''.join(v for k, v in STYLES.items() if 'style:name="%s"' % k not in x) + ''.join(extra_styles)
-x = re.sub(r'<style:style style:name="TcTab\d+(C\d+)?"[^>]*>.*?</style:style>', '', x)  # regerar sem duplicar
+x = re.sub(r'<style:style style:name="%s\d+(C\d+)?"[^>]*>.*?</style:style>' % TAB, '', x)  # regerar sem duplicar
 x = x.replace('<office:automatic-styles>', '<office:automatic-styles>' + add, 1)
 
 import xml.etree.ElementTree as ET
