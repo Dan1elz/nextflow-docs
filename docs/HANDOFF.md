@@ -112,6 +112,18 @@ mobile quebrado; "ver mais" no painel; melhorias em pedidos de compra.
 3. Com a aprovação, juntar na `homolog` na ordem do `slices/board.md` (bloco C primeiro) e os docs na `main`. Push só quando ele pedir.
 4. Depois, o backlog acima (cada item vira cartão antes do código).
 
+## 0.7 Atualização de 08/11/2026 (noite, depois do push): IA na hora no painel, SEM commit
+- Pedidos do Daniel com prints: "Novo pedido de compra" do estoque baixo abria vazio; só alguns lotes tinham "Promover com a IA";
+  "tudo deveria ser com a IA" (quanto comprar e qual desconto); breadcrumb sem nome em várias telas.
+- Feito (cartão `slices/F3.10.md`, regra **RN-DF30 a aprovar**): rotas `GET /api/forecasts/suggestions/purchase` e `/promotion`;
+  botões de IA em toda linha do "ver mais"; pedido de compra pré-preenchido; breadcrumb completo.
+- Estado: back e front **sem commit** nas `homolog` locais (já em dia com o remoto antes disso). Back reiniciado no dev e rota
+  de compra conferida com curl (`ai=false`, sem gastar cota). Testes: back só os novos e vizinhos (27/27), suíte completa não rodada;
+  front 84/84, build e lint ok.
+
+- **Previsão por loja:** o Daniel pediu e depois decidiu deixar para depois do TCC ("vamos apresentar assim"). Desenho em
+  `ideas/pos-tcc-previsao-por-loja.md`; o ADR 0001 do módulo segue valendo para a banca.
+
 ## 0.6 Atualização de 08/11/2026 (noite): pedidos fechados e tudo na homolog
 - **Commits do back** (`feat/seed-completo`, cada um compila sozinho): `2f5e513` filtros (status em lista, `eventId`), `97a70e7`
   promoção (PUT), `d9c9a76` previsão (painel "ver mais", F3.9 + divisão por loja gravada pela análise, F3.4b, busca de itens da

@@ -29,6 +29,9 @@ o trabalho volta a ser por branch no checkout principal, sem pasta por tarefa.
 
 Push: back e front até `97f78b5`/`13a0622` já estão no `origin/homolog`; o merge do seeder (`08e33bb`) está **local, sem push**.
 
+## Ideias pós-TCC
+- Previsão por loja (sazonalidade e necessidade de cada loja, comprar já dividido): `../ideas/pos-tcc-previsao-por-loja.md`.
+
 ## Backlog do Daniel (08/11/2026, sem cartão ainda)
 1. Filtros em todas as listagens.
 2. Ver as vendas e os pedidos de compra a partir do cliente e do fornecedor.

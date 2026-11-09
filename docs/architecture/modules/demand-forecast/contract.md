@@ -167,6 +167,12 @@ ApplyTransferDto { fromLocationId; toLocationId; items: { variantId; lotId?; qua
 ## T-DF8. Descartar
 Motivo opcional (lista: "Já comprei por fora", "Discordo da quantidade", "Produto vai sair de linha", Outro + texto).
 ```ts
+GET  /api/forecasts/suggestions/purchase?variantId&locationId&ai=true → PurchaseSuggestionDto   // RN-DF30, F3.10
+  { productId; variantId; locationId; storeId; available; minQuantity; incoming; dailySales; leadTimeDays; supplierId?; supplierName?;
+    minOrderQty?; orderMultiple?; quantity; calculatedQuantity; reason; fromAi }   // ai=false: só o cálculo
+GET  /api/forecasts/suggestions/promotion?lotId&locationId → PromotionSuggestionDto                // RN-DF30, F3.10
+  { productId; productName; variantId; lotId; locationId; storeId; quantity; expiresOn; daysToExpire; dailySales; expectedSales;
+    maxDiscountPercent; discountPercent; promotionDays; calculatedDiscountPercent; reason; fromAi }
 GET  /api/forecasts/recommendations/{id}/store-split → StoreSplitDto   // F3.9, RN-DF27: só "Comprar"; por loja (recebimento padrão,
      participação nas vendas de 90 dias, saldo, a caminho, falta, quantidade) e, por variação, a quantidade de cada loja
 POST /api/forecasts/recommendations/purchase: a mesma recomendação pode ir em vários grupos do mesmo fornecedor (um por loja);
