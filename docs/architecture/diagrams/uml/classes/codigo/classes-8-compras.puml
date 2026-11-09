@@ -1,0 +1,105 @@
+@startuml classes-8-compras
+!include ../../estilo.iuml
+skinparam dpi 170
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderThickness 1.4
+  FontSize 14
+  AttributeFontSize 13
+}
+hide empty members
+skinparam class<<acesso>> {
+  BackgroundColor #FCE4EC
+  HeaderBackgroundColor #F8BBD0
+  BorderColor #C2185B
+}
+hide <<acesso>> stereotype
+skinparam class<<cadastro>> {
+  BackgroundColor #FFF8E1
+  HeaderBackgroundColor #FFE082
+  BorderColor #F9A825
+}
+hide <<cadastro>> stereotype
+skinparam class<<produto>> {
+  BackgroundColor #EDE7F6
+  HeaderBackgroundColor #D1C4E9
+  BorderColor #5E35B1
+}
+hide <<produto>> stereotype
+skinparam class<<estoque>> {
+  BackgroundColor #E8F5E9
+  HeaderBackgroundColor #C8E6C9
+  BorderColor #2E7D32
+}
+hide <<estoque>> stereotype
+skinparam class<<venda>> {
+  BackgroundColor #E3F2FD
+  HeaderBackgroundColor #BBDEFB
+  BorderColor #1565C0
+}
+hide <<venda>> stereotype
+skinparam class<<compra>> {
+  BackgroundColor #FFF3E0
+  HeaderBackgroundColor #FFCC80
+  BorderColor #EF6C00
+}
+hide <<compra>> stereotype
+skinparam class<<previsao>> {
+  BackgroundColor #E0F7FA
+  HeaderBackgroundColor #B2EBF2
+  BorderColor #00838F
+}
+hide <<previsao>> stereotype
+title <size:20>Classes — Pedidos de compra</size>
+
+class "PurchaseOrder\n<size:11><i>Pedido de compra</i></size>" as PurchaseOrder <<compra>> {
+  + Number : int
+  + Status : PurchaseStatusEnum
+  + Note : string?
+  + Total : decimal
+  + LeadTimeDays : int
+  + ExpectedOn : DateOnly
+  + SentAt : DateTime?
+  + ReceivedAt : DateTime?
+  + RealLeadTimeDays : int?
+  + CanceledAt : DateTime?
+  + CancelReason : string?
+  + IsOpen : bool {readOnly}
+  --
+  + PurchaseOrder(dto, storeId, createdById, leadTimeDays, createdOn)
+  + IsLate(today) : bool
+  + {static} EffectiveLeadTime(supplierLeadTimeDays, itemLeadTimeDays) : int
+  + Update(dto, storeId, leadTimeDays, baseDate) : void
+  + Send(utcNow, today) : void
+  + Receive(receivedById, utcNow, today, sentOn) : void
+  + Cancel(reason, utcNow) : void
+}
+class "PurchaseItem\n<size:11><i>Item do pedido de compra</i></size>" as PurchaseItem <<compra>> {
+  + Quantity : decimal
+  + UnitCost : decimal
+  + Subtotal : decimal
+  + SortOrder : short
+  + AverageCostAfter : decimal?
+  --
+  + PurchaseItem(dto, purchaseOrderId, sortOrder)
+  + RecordReceipt(averageCostAfter) : void
+  + Update(dto, sortOrder) : void
+}
+class "ProductVariant\n<size:11><i>ver Produto</i></size>" as ProductVariant <<produto>>
+class "StockLocation\n<size:11><i>ver Estoque</i></size>" as StockLocation <<estoque>>
+class "Store\n<size:11><i>ver Estoque</i></size>" as Store <<estoque>>
+class "Supplier\n<size:11><i>ver Cadastros</i></size>" as Supplier <<cadastro>>
+class "User\n<size:11><i>ver Acesso</i></size>" as User <<acesso>>
+
+PurchaseOrder "*" --> "1" Supplier : Supplier
+PurchaseOrder "*" --> "1" Store : Store
+PurchaseOrder "*" --> "1" StockLocation : ReceiveLocation
+PurchaseOrder "*" --> "1" User : CreatedBy
+PurchaseOrder "*" --> "0..1" User : ReceivedBy
+PurchaseOrder "1" *-- "*" PurchaseItem : Items
+PurchaseItem "*" --> "1" ProductVariant : Variant
+note as Base
+  Todas herdam de <b>BaseModel</b> (Id : Guid, CreatedAt : DateTime).
+  Atributos com set privado: só o construtor e os métodos mudam o estado.
+end note
+@enduml

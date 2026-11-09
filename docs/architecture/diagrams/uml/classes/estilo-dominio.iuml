@@ -1,0 +1,49 @@
+' Estilo do modelo de domínio (diagrama de classes de análise) do TCC: nomes em português, cor por módulo (igual ao DER).
+skinparam dpi 170
+skinparam classAttributeIconSize 0
+hide circle
+hide empty members
+hide stereotype
+skinparam class {
+  BorderThickness 1.6
+  FontSize 16
+  FontStyle bold
+  AttributeFontSize 14
+}
+skinparam ArrowFontSize 14
+skinparam ArrowFontStyle italic
+skinparam class<<acesso>> {
+  BackgroundColor #FCE4EC
+  HeaderBackgroundColor #F8BBD0
+  BorderColor #C2185B
+}
+skinparam class<<cadastro>> {
+  BackgroundColor #FFF8E1
+  HeaderBackgroundColor #FFE082
+  BorderColor #F9A825
+}
+skinparam class<<produto>> {
+  BackgroundColor #EDE7F6
+  HeaderBackgroundColor #D1C4E9
+  BorderColor #5E35B1
+}
+skinparam class<<estoque>> {
+  BackgroundColor #E8F5E9
+  HeaderBackgroundColor #C8E6C9
+  BorderColor #2E7D32
+}
+skinparam class<<venda>> {
+  BackgroundColor #E3F2FD
+  HeaderBackgroundColor #BBDEFB
+  BorderColor #1565C0
+}
+skinparam class<<compra>> {
+  BackgroundColor #FFF3E0
+  HeaderBackgroundColor #FFCC80
+  BorderColor #EF6C00
+}
+skinparam class<<previsao>> {
+  BackgroundColor #E0F7FA
+  HeaderBackgroundColor #B2EBF2
+  BorderColor #00838F
+}

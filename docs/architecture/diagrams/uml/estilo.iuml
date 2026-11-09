@@ -1,0 +1,32 @@
+' Estilo comum dos diagramas UML do TCC: preto e branco, fonte sem serifa, fundo branco (imprime bem e cabe em A4).
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam roundCorner 12
+skinparam ArrowColor #333333
+skinparam ArrowFontSize 11
+skinparam ArrowFontColor #333333
+skinparam actorStyle awesome
+skinparam actor {
+  BorderColor #222222
+  BackgroundColor white
+  FontStyle bold
+}
+skinparam usecase {
+  BorderColor #222222
+  BackgroundColor #F7F7F7
+  FontSize 12
+}
+skinparam rectangle {
+  BorderColor #555555
+  BackgroundColor white
+  FontStyle bold
+  FontSize 14
+}
+skinparam note {
+  BorderColor #999999
+  BackgroundColor #FFFDE7
+  FontSize 11
+}
+skinparam dpi 200

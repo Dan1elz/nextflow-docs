@@ -1,0 +1,52 @@
+---
+title: "Mapa geral dos módulos do banco (apêndice)"
+config:
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 18px
+---
+flowchart TB
+    m1["<b>1. Acesso e notificações</b><br/><br/>notifications<br/>user_stores<br/>users"]:::acesso
+    m2["<b>2. Cadastros de pessoas e localidade</b><br/><br/>addresses<br/>cities<br/>clients<br/>contacts<br/>countries<br/>states<br/>suppliers"]:::cadastro
+    m3["<b>3. Produto, variações e preço</b><br/><br/>price_history<br/>product_attribute_values<br/>product_attributes<br/>product_variant_values<br/>product_variants<br/>products"]:::produto
+    m4["<b>4. Classificação e fornecimento do produto</b><br/><br/>calendar_events<br/>categories<br/>category_products<br/>collections<br/>product_events<br/>product_suppliers"]:::produto
+    m5["<b>5. Lojas, locais, saldo e livro-razão</b><br/><br/>lots<br/>stock_balances<br/>stock_location_minimums<br/>stock_locations<br/>stock_movements<br/>stock_policies<br/>stores"]:::estoque
+    m6["<b>6. Transferência de estoque</b><br/><br/>stock_transfer_items<br/>stock_transfers"]:::estoque
+    m7["<b>7. Vendas e promoções</b><br/><br/>order_items<br/>orders<br/>payments<br/>promotions"]:::venda
+    m8["<b>8. Pedidos de compra</b><br/><br/>purchase_items<br/>purchase_orders"]:::compra
+    m9["<b>9. Previsão de demanda com IA: análise e recomendação</b><br/><br/>forecast_ai_batches<br/>forecast_projections<br/>forecast_recommendations<br/>forecast_runs<br/>forecast_settings"]:::previsao
+    m10["<b>10. Previsão de demanda com IA: aplicação da recomendação</b><br/><br/>forecast_recommendation_items<br/>forecast_recommendation_purchase_orders<br/>forecast_recommendation_stores"]:::previsao
+    m11["<b>11. Dados derivados para a previsão</b><br/><br/>product_sales_monthly<br/>product_seasonality<br/>stock_daily_snapshots"]:::previsao
+    m1 -->|"1 FK"| m5
+    m10 -->|"1 FK"| m3
+    m10 -->|"1 FK"| m5
+    m10 -->|"1 FK"| m8
+    m10 -->|"3 FKs"| m9
+    m11 -->|"3 FKs"| m3
+    m11 -->|"1 FK"| m5
+    m3 -->|"1 FK"| m4
+    m4 -->|"1 FK"| m2
+    m4 -->|"3 FKs"| m3
+    m5 -->|"4 FKs"| m3
+    m6 -->|"1 FK"| m3
+    m6 -->|"2 FKs"| m5
+    m6 -->|"1 FK"| m9
+    m7 -->|"1 FK"| m2
+    m7 -->|"3 FKs"| m3
+    m7 -->|"2 FKs"| m5
+    m7 -->|"1 FK"| m9
+    m8 -->|"1 FK"| m2
+    m8 -->|"1 FK"| m3
+    m8 -->|"2 FKs"| m5
+    m9 -->|"2 FKs"| m3
+    m9 -->|"2 FKs"| m5
+    m9 -->|"1 FK"| m6
+    m9 -->|"1 FK"| m7
+    m9 -->|"1 FK"| m8
+    classDef acesso fill:#FCE4EC,stroke:#C2185B,stroke-width:2px
+    classDef cadastro fill:#FFF8E1,stroke:#F9A825,stroke-width:2px
+    classDef produto fill:#EDE7F6,stroke:#5E35B1,stroke-width:2px
+    classDef estoque fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
+    classDef venda fill:#E3F2FD,stroke:#1565C0,stroke-width:2px
+    classDef compra fill:#FFF3E0,stroke:#EF6C00,stroke-width:2px
+    classDef previsao fill:#E0F7FA,stroke:#00838F,stroke-width:2px

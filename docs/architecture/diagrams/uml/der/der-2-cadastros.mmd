@@ -1,0 +1,77 @@
+---
+title: "Cadastros de pessoas e localidade"
+config:
+  er:
+    layoutDirection: TB
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 20px
+---
+erDiagram
+    clients["Cliente (clients)"] {
+        uuid id PK
+        varchar name
+        varchar last_name "opcional"
+        varchar cpf "opcional"
+        date birth_date "opcional"
+        bool is_active
+    }
+    suppliers["Fornecedor (suppliers)"] {
+        uuid id PK
+        varchar name
+        varchar cnpj
+        int lead_time_days
+        varchar note "opcional"
+        bool is_active
+    }
+    addresses["Endereço (addresses)"] {
+        uuid id PK
+        uuid city_id FK
+        smallint owner_type "dono: cliente ou fornecedor"
+        uuid owner_id "id do cliente ou fornecedor"
+        varchar zip_code
+        varchar street
+        varchar number
+        varchar complement "opcional"
+        varchar neighborhood
+        bool is_main
+    }
+    contacts["Contato (contacts)"] {
+        uuid id PK
+        smallint owner_type "dono: cliente ou fornecedor"
+        uuid owner_id "id do cliente ou fornecedor"
+        smallint type "telefone, e-mail ou WhatsApp"
+        varchar value
+        bool is_main
+    }
+    cities["Cidade (cities)"] {
+        uuid id PK
+        uuid state_id FK
+        varchar name
+        varchar ibge_code
+        varchar search_name
+    }
+    states["Estado (states)"] {
+        uuid id PK
+        uuid country_id FK
+        varchar name
+        varchar acronym
+        varchar ibge_code
+    }
+    countries["País (countries)"] {
+        uuid id PK
+        varchar name
+        varchar acronym_iso
+        varchar bacen_code "opcional"
+    }
+
+    cities ||--o{ addresses : "localiza"
+    states ||--o{ cities : "contém"
+    countries ||--o{ states : "contém"
+    clients ||..o{ addresses : "tem endereços"
+    suppliers ||..o{ addresses : "tem endereços"
+    clients ||..o{ contacts : "tem contatos"
+    suppliers ||..o{ contacts : "tem contatos"
+
+    classDef cadastro fill:#FFF8E1,stroke:#F9A825,stroke-width:2px
+    class addresses,cities,clients,contacts,countries,states,suppliers cadastro

@@ -1,0 +1,432 @@
+[
+  {
+    "file": "light/00-login.png",
+    "url": "/login",
+    "problems": []
+  },
+  {
+    "file": "light/01-painel.png",
+    "url": "/",
+    "problems": []
+  },
+  {
+    "file": "light/02-painel-estoque-baixo.png",
+    "url": "/dashboard/low-stock",
+    "problems": []
+  },
+  {
+    "file": "light/03-painel-lotes-vencendo.png",
+    "url": "/dashboard/expiring-lots",
+    "problems": []
+  },
+  {
+    "file": "light/10-previsao.png",
+    "url": "/forecast",
+    "problems": []
+  },
+  {
+    "file": "light/11-previsao-detalhe.png",
+    "url": "/forecast",
+    "problems": []
+  },
+  {
+    "file": "light/12-previsao-historico.png",
+    "url": "/forecast/history",
+    "problems": []
+  },
+  {
+    "file": "light/13-previsao-precisao.png",
+    "url": "/forecast/accuracy",
+    "problems": []
+  },
+  {
+    "file": "light/20-venda-rapida.png",
+    "url": "/sales/quick",
+    "problems": []
+  },
+  {
+    "file": "light/21-historico-vendas.png",
+    "url": "/sales/history",
+    "problems": []
+  },
+  {
+    "file": "light/22-historico-vendas-detalhe.png",
+    "url": "/sales/history",
+    "problems": []
+  },
+  {
+    "file": "light/30-pedidos-compra.png",
+    "url": "/purchase-orders",
+    "problems": []
+  },
+  {
+    "file": "light/31-pedido-compra-novo.png",
+    "url": "/purchase-orders/create",
+    "problems": []
+  },
+  {
+    "file": "light/32-pedido-compra-visualizar.png",
+    "url": "/purchase-orders/811b6ab3-436a-4d42-8cc9-edbb55605632/view",
+    "problems": []
+  },
+  {
+    "file": "light/33-pedido-compra-editar.png",
+    "url": "/purchase-orders/1af29989-3ac5-4cc4-b666-f26cf85b9b97/edit",
+    "problems": []
+  },
+  {
+    "file": "light/40-promocoes.png",
+    "url": "/promotions",
+    "problems": []
+  },
+  {
+    "file": "light/50-produtos.png",
+    "url": "/products",
+    "problems": []
+  },
+  {
+    "file": "light/51-produto-novo.png",
+    "url": "/products/create",
+    "problems": []
+  },
+  {
+    "file": "light/52-produto-visualizar.png",
+    "url": "/products/58b88b45-9479-460f-b16a-0254b268e7f8/view",
+    "problems": []
+  },
+  {
+    "file": "light/52b-produto-estoque.png",
+    "url": "/products/58b88b45-9479-460f-b16a-0254b268e7f8/view?step=2",
+    "problems": []
+  },
+  {
+    "file": "light/52c-produto-lotes.png",
+    "url": "/products/58b88b45-9479-460f-b16a-0254b268e7f8/view?step=3",
+    "problems": []
+  },
+  {
+    "file": "light/52d-produto-previsao.png",
+    "url": "/products/58b88b45-9479-460f-b16a-0254b268e7f8/view?step=7",
+    "problems": []
+  },
+  {
+    "file": "light/53-produto-editar.png",
+    "url": "/products/58b88b45-9479-460f-b16a-0254b268e7f8/edit",
+    "problems": []
+  },
+  {
+    "file": "light/54-categorias.png",
+    "url": "/categories",
+    "problems": []
+  },
+  {
+    "file": "light/55-colecoes.png",
+    "url": "/collections",
+    "problems": []
+  },
+  {
+    "file": "light/56-calendario.png",
+    "url": "/calendar-events",
+    "problems": []
+  },
+  {
+    "file": "light/57-movimentacoes.png",
+    "url": "/stock-movements",
+    "problems": []
+  },
+  {
+    "file": "light/60-clientes.png",
+    "url": "/clients",
+    "problems": []
+  },
+  {
+    "file": "light/61-cliente-visualizar.png",
+    "url": "/clients/6ec6dbc7-aa44-4fb2-84dc-880e7f63de1d/view",
+    "problems": []
+  },
+  {
+    "file": "light/62-cliente-novo.png",
+    "url": "/clients/create",
+    "problems": []
+  },
+  {
+    "file": "light/63-fornecedores.png",
+    "url": "/suppliers",
+    "problems": []
+  },
+  {
+    "file": "light/64-fornecedor-visualizar.png",
+    "url": "/suppliers/f1efe979-38a8-4146-86a4-8bfeca33526e/view",
+    "problems": []
+  },
+  {
+    "file": "light/65-fornecedor-novo.png",
+    "url": "/suppliers/create",
+    "problems": []
+  },
+  {
+    "file": "light/66-usuarios.png",
+    "url": "/users",
+    "problems": []
+  },
+  {
+    "file": "light/67-usuario-visualizar.png",
+    "url": "/users/e71066e9-4c58-4aae-ac54-2c8dfe1dded9/view",
+    "problems": []
+  },
+  {
+    "file": "light/68-usuario-novo.png",
+    "url": "/users/create",
+    "problems": []
+  },
+  {
+    "file": "light/70-lojas-e-locais.png",
+    "url": "/settings/stores",
+    "problems": []
+  },
+  {
+    "file": "light/71-politica-estoque.png",
+    "url": "/settings/stock-policy",
+    "problems": []
+  },
+  {
+    "file": "light/72-agendamento-previsao.png",
+    "url": "/settings/forecast",
+    "problems": []
+  },
+  {
+    "file": "light/73-perfil.png",
+    "url": "/profile",
+    "problems": []
+  },
+  {
+    "file": "dark/00-login.png",
+    "url": "/login",
+    "problems": []
+  },
+  {
+    "file": "dark/01-painel.png",
+    "url": "/",
+    "problems": []
+  },
+  {
+    "file": "dark/02-painel-estoque-baixo.png",
+    "url": "/dashboard/low-stock",
+    "problems": []
+  },
+  {
+    "file": "dark/03-painel-lotes-vencendo.png",
+    "url": "/dashboard/expiring-lots",
+    "problems": []
+  },
+  {
+    "file": "dark/10-previsao.png",
+    "url": "/forecast",
+    "problems": []
+  },
+  {
+    "file": "dark/11-previsao-detalhe.png",
+    "url": "/forecast",
+    "problems": []
+  },
+  {
+    "file": "dark/12-previsao-historico.png",
+    "url": "/forecast/history",
+    "problems": []
+  },
+  {
+    "file": "dark/13-previsao-precisao.png",
+    "url": "/forecast/accuracy",
+    "problems": []
+  },
+  {
+    "file": "dark/20-venda-rapida.png",
+    "url": "/sales/quick",
+    "problems": []
+  },
+  {
+    "file": "dark/21-historico-vendas.png",
+    "url": "/sales/history",
+    "problems": []
+  },
+  {
+    "file": "dark/22-historico-vendas-detalhe.png",
+    "url": "/sales/history",
+    "problems": []
+  },
+  {
+    "file": "dark/30-pedidos-compra.png",
+    "url": "/purchase-orders",
+    "problems": []
+  },
+  {
+    "file": "dark/31-pedido-compra-novo.png",
+    "url": "/purchase-orders/create",
+    "problems": []
+  },
+  {
+    "file": "dark/32-pedido-compra-visualizar.png",
+    "url": "/purchase-orders/811b6ab3-436a-4d42-8cc9-edbb55605632/view",
+    "problems": []
+  },
+  {
+    "file": "dark/33-pedido-compra-editar.png",
+    "url": "/purchase-orders/1af29989-3ac5-4cc4-b666-f26cf85b9b97/edit",
+    "problems": []
+  },
+  {
+    "file": "dark/40-promocoes.png",
+    "url": "/promotions",
+    "problems": []
+  },
+  {
+    "file": "dark/50-produtos.png",
+    "url": "/products",
+    "problems": []
+  },
+  {
+    "file": "dark/51-produto-novo.png",
+    "url": "/products/create",
+    "problems": []
+  },
+  {
+    "file": "dark/52-produto-visualizar.png",
+    "url": "/products/58b88b45-9479-460f-b16a-0254b268e7f8/view",
+    "problems": []
+  },
+  {
+    "file": "dark/52b-produto-estoque.png",
+    "url": "/products/58b88b45-9479-460f-b16a-0254b268e7f8/view?step=2",
+    "problems": []
+  },
+  {
+    "file": "dark/52c-produto-lotes.png",
+    "url": "/products/58b88b45-9479-460f-b16a-0254b268e7f8/view?step=3",
+    "problems": []
+  },
+  {
+    "file": "dark/52d-produto-previsao.png",
+    "url": "/products/58b88b45-9479-460f-b16a-0254b268e7f8/view?step=7",
+    "problems": []
+  },
+  {
+    "file": "dark/53-produto-editar.png",
+    "url": "/products/58b88b45-9479-460f-b16a-0254b268e7f8/edit",
+    "problems": []
+  },
+  {
+    "file": "dark/54-categorias.png",
+    "url": "/categories",
+    "problems": []
+  },
+  {
+    "file": "dark/55-colecoes.png",
+    "url": "/collections",
+    "problems": []
+  },
+  {
+    "file": "dark/56-calendario.png",
+    "url": "/calendar-events",
+    "problems": []
+  },
+  {
+    "file": "dark/57-movimentacoes.png",
+    "url": "/stock-movements",
+    "problems": []
+  },
+  {
+    "file": "dark/60-clientes.png",
+    "url": "/clients",
+    "problems": []
+  },
+  {
+    "file": "dark/61-cliente-visualizar.png",
+    "url": "/clients/6ec6dbc7-aa44-4fb2-84dc-880e7f63de1d/view",
+    "problems": []
+  },
+  {
+    "file": "dark/62-cliente-novo.png",
+    "url": "/clients/create",
+    "problems": []
+  },
+  {
+    "file": "dark/63-fornecedores.png",
+    "url": "/suppliers",
+    "problems": []
+  },
+  {
+    "file": "dark/64-fornecedor-visualizar.png",
+    "url": "/suppliers/f1efe979-38a8-4146-86a4-8bfeca33526e/view",
+    "problems": []
+  },
+  {
+    "file": "dark/65-fornecedor-novo.png",
+    "url": "/suppliers/create",
+    "problems": []
+  },
+  {
+    "file": "dark/66-usuarios.png",
+    "url": "/users",
+    "problems": []
+  },
+  {
+    "file": "dark/67-usuario-visualizar.png",
+    "url": "/users/e71066e9-4c58-4aae-ac54-2c8dfe1dded9/view",
+    "problems": []
+  },
+  {
+    "file": "dark/68-usuario-novo.png",
+    "url": "/users/create",
+    "problems": []
+  },
+  {
+    "file": "dark/70-lojas-e-locais.png",
+    "url": "/settings/stores",
+    "problems": []
+  },
+  {
+    "file": "dark/71-politica-estoque.png",
+    "url": "/settings/stock-policy",
+    "problems": []
+  },
+  {
+    "file": "dark/72-agendamento-previsao.png",
+    "url": "/settings/forecast",
+    "problems": []
+  },
+  {
+    "file": "dark/73-perfil.png",
+    "url": "/profile",
+    "problems": []
+  },
+  {
+    "file": "mobile/01-painel.png",
+    "url": "/",
+    "problems": []
+  },
+  {
+    "file": "mobile/10-previsao.png",
+    "url": "/forecast",
+    "problems": []
+  },
+  {
+    "file": "mobile/20-venda-rapida.png",
+    "url": "/sales/quick",
+    "problems": []
+  },
+  {
+    "file": "mobile/30-pedidos-compra.png",
+    "url": "/purchase-orders",
+    "problems": []
+  },
+  {
+    "file": "mobile/50-produtos.png",
+    "url": "/products",
+    "problems": []
+  },
+  {
+    "file": "mobile/52-produto-visualizar.png",
+    "url": "/products/58b88b45-9479-460f-b16a-0254b268e7f8/view",
+    "problems": []
+  }
+]

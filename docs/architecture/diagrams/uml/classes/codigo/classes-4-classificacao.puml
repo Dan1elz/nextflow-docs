@@ -1,0 +1,131 @@
+@startuml classes-4-classificacao
+!include ../../estilo.iuml
+skinparam dpi 170
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderThickness 1.4
+  FontSize 14
+  AttributeFontSize 13
+}
+hide empty members
+skinparam class<<acesso>> {
+  BackgroundColor #FCE4EC
+  HeaderBackgroundColor #F8BBD0
+  BorderColor #C2185B
+}
+hide <<acesso>> stereotype
+skinparam class<<cadastro>> {
+  BackgroundColor #FFF8E1
+  HeaderBackgroundColor #FFE082
+  BorderColor #F9A825
+}
+hide <<cadastro>> stereotype
+skinparam class<<produto>> {
+  BackgroundColor #EDE7F6
+  HeaderBackgroundColor #D1C4E9
+  BorderColor #5E35B1
+}
+hide <<produto>> stereotype
+skinparam class<<estoque>> {
+  BackgroundColor #E8F5E9
+  HeaderBackgroundColor #C8E6C9
+  BorderColor #2E7D32
+}
+hide <<estoque>> stereotype
+skinparam class<<venda>> {
+  BackgroundColor #E3F2FD
+  HeaderBackgroundColor #BBDEFB
+  BorderColor #1565C0
+}
+hide <<venda>> stereotype
+skinparam class<<compra>> {
+  BackgroundColor #FFF3E0
+  HeaderBackgroundColor #FFCC80
+  BorderColor #EF6C00
+}
+hide <<compra>> stereotype
+skinparam class<<previsao>> {
+  BackgroundColor #E0F7FA
+  HeaderBackgroundColor #B2EBF2
+  BorderColor #00838F
+}
+hide <<previsao>> stereotype
+title <size:20>Classes — Classificação e fornecimento do produto</size>
+
+class "Category\n<size:11><i>Categoria</i></size>" as Category <<produto>> {
+  + Name : string
+  + Description : string?
+  + IsActive : bool
+  --
+  + Category(dto)
+  + Update(dto) : void
+  + Delete() : void
+  + Reactivate() : void
+}
+class "CategoryProduct\n<size:11><i>Produto na categoria</i></size>" as CategoryProduct <<produto>> {
+  --
+  + CategoryProduct(categoryId, productId)
+}
+class "Collection\n<size:11><i>Coleção</i></size>" as Collection <<produto>> {
+  + Name : string
+  + StartsOn : DateOnly?
+  + EndsOn : DateOnly?
+  + IsActive : bool
+  --
+  + Collection(dto)
+  + Update(dto) : void
+  + Delete() : void
+  + Reactivate() : void
+}
+class "CalendarEvent\n<size:11><i>Evento do calendário</i></size>" as CalendarEvent <<produto>> {
+  + Name : string
+  + Scope : EventScopeEnum
+  + DateRule : DateRuleEnum
+  + Month : short?
+  + Day : short?
+  + Weekday : short?
+  + Nth : short?
+  + EasterOffsetDays : short?
+  + LeadDays : short
+  + IsActive : bool
+  --
+  + CalendarEvent(dto, scope)
+  + Update(dto) : void
+  + Delete() : void
+  + Reactivate() : void
+  + HasSameDefinition(dto) : bool
+  + DateIn(year) : DateOnly
+  + NextDate(today) : DateOnly
+}
+class "ProductEvent\n<size:11><i>Produto no evento</i></size>" as ProductEvent <<produto>> {
+  --
+  + ProductEvent(productId, eventId)
+}
+class "ProductSupplier\n<size:11><i>Fornecedor do produto</i></size>" as ProductSupplier <<produto>> {
+  + IsPreferred : bool
+  + SupplierSku : string?
+  + LeadTimeDays : int?
+  + MinOrderQty : decimal?
+  + OrderMultiple : decimal?
+  + LastCost : decimal?
+  --
+  + ProductSupplier(dto, productId)
+  + Update(dto) : void
+  + RecordLastCost(unitCost, utcNow) : void
+}
+class "Product\n<size:11><i>ver Produto</i></size>" as Product <<produto>>
+class "Supplier\n<size:11><i>ver Cadastros</i></size>" as Supplier <<cadastro>>
+
+Category "0..1" -- "*" Category : Children
+Category "1" -- "*" CategoryProduct : Products
+CategoryProduct "*" --> "1" Product : Product
+Collection "0..1" -- "*" Product : Products
+CalendarEvent "1" -- "*" ProductEvent : Products
+ProductEvent "*" --> "1" Product : Product
+ProductSupplier "*" --> "1" Product : Product
+ProductSupplier "*" --> "1" Supplier : Supplier
+note as Base
+  Todas herdam de <b>BaseModel</b> (Id : Guid, CreatedAt : DateTime).
+  Atributos com set privado: só o construtor e os métodos mudam o estado.
+end note
+@enduml

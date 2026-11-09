@@ -1,0 +1,136 @@
+@startuml classes-5-estoque
+!include ../../estilo.iuml
+skinparam dpi 170
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderThickness 1.4
+  FontSize 14
+  AttributeFontSize 13
+}
+hide empty members
+skinparam class<<acesso>> {
+  BackgroundColor #FCE4EC
+  HeaderBackgroundColor #F8BBD0
+  BorderColor #C2185B
+}
+hide <<acesso>> stereotype
+skinparam class<<cadastro>> {
+  BackgroundColor #FFF8E1
+  HeaderBackgroundColor #FFE082
+  BorderColor #F9A825
+}
+hide <<cadastro>> stereotype
+skinparam class<<produto>> {
+  BackgroundColor #EDE7F6
+  HeaderBackgroundColor #D1C4E9
+  BorderColor #5E35B1
+}
+hide <<produto>> stereotype
+skinparam class<<estoque>> {
+  BackgroundColor #E8F5E9
+  HeaderBackgroundColor #C8E6C9
+  BorderColor #2E7D32
+}
+hide <<estoque>> stereotype
+skinparam class<<venda>> {
+  BackgroundColor #E3F2FD
+  HeaderBackgroundColor #BBDEFB
+  BorderColor #1565C0
+}
+hide <<venda>> stereotype
+skinparam class<<compra>> {
+  BackgroundColor #FFF3E0
+  HeaderBackgroundColor #FFCC80
+  BorderColor #EF6C00
+}
+hide <<compra>> stereotype
+skinparam class<<previsao>> {
+  BackgroundColor #E0F7FA
+  HeaderBackgroundColor #B2EBF2
+  BorderColor #00838F
+}
+hide <<previsao>> stereotype
+title <size:20>Classes — Lojas, locais, saldo e livro-razão</size>
+
+class "Store\n<size:11><i>Loja</i></size>" as Store <<estoque>> {
+  + Name : string
+  + DefaultSaleLocationId : Guid?
+  + DefaultReceiveLocationId : Guid?
+  + IsActive : bool
+  --
+  + Store(dto)
+  + Update(dto) : void
+  + SetDefaults(saleLocationId, receiveLocationId) : void
+  + IsDefaultLocation(locationId) : bool
+  + Delete() : void
+  + Reactivate() : void
+}
+class "StockLocation\n<size:11><i>Local de estoque</i></size>" as StockLocation <<estoque>> {
+  + Name : string
+  + IsSellable : bool
+  + IsActive : bool
+  --
+  + StockLocation(dto)
+  + Update(dto) : void
+  + Delete() : void
+  + Reactivate() : void
+}
+class "StockBalance\n<size:11><i>Saldo</i></size>" as StockBalance <<estoque>> {
+  + Quantity : decimal
+  --
+  + StockBalance(line)
+  + Apply(signedQuantity) : void
+}
+class "Lot\n<size:11><i>Lote</i></size>" as Lot <<estoque>> {
+  + Code : string
+  + ExpiresOn : DateOnly
+  --
+  + Lot(variantId, code, expiresOn)
+  + {static} Normalize(code) : string
+}
+class "StockMovement\n<size:11><i>Movimentação (livro-razão)</i></size>" as StockMovement <<estoque>> {
+  + Type : MovementTypeEnum
+  + Reason : MovementReasonEnum
+  + Quantity : decimal
+  + UnitCost : decimal?
+  + BalanceAfter : decimal
+  + SourceType : SourceTypeEnum
+  + SourceId : Guid?
+  + Note : string?
+  --
+  + StockMovement(document, line, unitCost, balanceAfter)
+  + {static} Signed(line) : decimal
+}
+class "StockLocationMinimum\n<size:11><i>Mínimo por local</i></size>" as StockLocationMinimum <<estoque>> {
+  + MinQuantity : decimal
+  --
+  + StockLocationMinimum(variantId, locationId, minQuantity)
+  + Update(minQuantity) : void
+}
+class "StockPolicy\n<size:11><i>Política de estoque ABC</i></size>" as StockPolicy <<estoque>> {
+  + AbcClass : AbcClassEnum
+  + TargetCoverageDays : int
+  + SafetyDays : int
+  --
+  + StockPolicy(abcClass, dto)
+  + Update(dto) : void
+}
+class "ProductVariant\n<size:11><i>ver Produto</i></size>" as ProductVariant <<produto>>
+class "User\n<size:11><i>ver Acesso</i></size>" as User <<acesso>>
+
+Store "1" *-- "*" StockLocation : Locations
+StockLocation "1" -- "*" StockBalance : Balances
+StockBalance "*" --> "1" ProductVariant : Variant
+StockBalance "*" --> "0..1" Lot : Lot
+Lot "*" --> "1" ProductVariant : Variant
+StockMovement "*" --> "1" ProductVariant : Variant
+StockMovement "*" --> "1" StockLocation : Location
+StockMovement "*" --> "0..1" Lot : Lot
+StockMovement "*" --> "1" User : User
+StockLocationMinimum "*" --> "1" ProductVariant : Variant
+StockLocationMinimum "*" --> "1" StockLocation : Location
+note as Base
+  Todas herdam de <b>BaseModel</b> (Id : Guid, CreatedAt : DateTime).
+  Atributos com set privado: só o construtor e os métodos mudam o estado.
+end note
+@enduml

@@ -1,0 +1,77 @@
+---
+title: "Classificação e fornecimento do produto"
+config:
+  er:
+    layoutDirection: TB
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 20px
+---
+erDiagram
+    categories["Categoria (categories)"] {
+        uuid id PK
+        uuid parent_id FK "opcional"
+        varchar name
+        varchar description "opcional"
+        bool is_active
+    }
+    category_products["Produto na categoria (category_products)"] {
+        uuid id PK
+        uuid category_id FK
+        uuid product_id FK
+    }
+    collections["Coleção (collections)"] {
+        uuid id PK
+        varchar name
+        date starts_on "opcional"
+        date ends_on "opcional"
+        bool is_active
+    }
+    calendar_events["Evento do calendário (calendar_events)"] {
+        uuid id PK
+        varchar name
+        smallint scope "nacional ou da empresa"
+        smallint date_rule "fixa, Páscoa, n-ésimo dia, Black Friday"
+        smallint month "opcional"
+        smallint day "opcional"
+        smallint weekday "opcional"
+        smallint nth "opcional"
+        smallint easter_offset_days "opcional"
+        smallint lead_days "dias antes em que a venda sobe"
+        bool is_active
+    }
+    product_events["Produto no evento (product_events)"] {
+        uuid id PK
+        uuid product_id FK
+        uuid event_id FK
+    }
+    product_suppliers["Fornecedor do produto (product_suppliers)"] {
+        uuid id PK
+        uuid product_id FK
+        uuid supplier_id FK
+        bool is_preferred "fornecedor preferido"
+        varchar supplier_sku "opcional"
+        int lead_time_days "opcional"
+        numeric min_order_qty "opcional"
+        numeric order_multiple "opcional"
+        numeric last_cost "opcional"
+    }
+    products["Produto (products)"] {
+        uuid id PK "detalhado no DER 3"
+    }
+    suppliers["Fornecedor (suppliers)"] {
+        uuid id PK "detalhado no DER 2"
+    }
+
+    categories |o--o{ categories : "é pai de"
+    categories ||--o{ category_products : "classifica"
+    products ||--o{ category_products : "está em"
+    calendar_events ||--o{ product_events : "puxa a venda de"
+    products ||--o{ product_events : "vende em"
+    products ||--o{ product_suppliers : "é comprado de"
+    suppliers ||--o{ product_suppliers : "fornece"
+
+    classDef produto fill:#EDE7F6,stroke:#5E35B1,stroke-width:2px
+    class calendar_events,categories,category_products,collections,product_events,product_suppliers,products produto
+    classDef cadastro fill:#FFF8E1,stroke:#F9A825,stroke-width:2px
+    class suppliers cadastro

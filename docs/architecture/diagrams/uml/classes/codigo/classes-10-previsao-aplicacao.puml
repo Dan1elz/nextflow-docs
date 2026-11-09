@@ -1,0 +1,87 @@
+@startuml classes-10-previsao-aplicacao
+!include ../../estilo.iuml
+skinparam dpi 170
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderThickness 1.4
+  FontSize 14
+  AttributeFontSize 13
+}
+hide empty members
+skinparam class<<acesso>> {
+  BackgroundColor #FCE4EC
+  HeaderBackgroundColor #F8BBD0
+  BorderColor #C2185B
+}
+hide <<acesso>> stereotype
+skinparam class<<cadastro>> {
+  BackgroundColor #FFF8E1
+  HeaderBackgroundColor #FFE082
+  BorderColor #F9A825
+}
+hide <<cadastro>> stereotype
+skinparam class<<produto>> {
+  BackgroundColor #EDE7F6
+  HeaderBackgroundColor #D1C4E9
+  BorderColor #5E35B1
+}
+hide <<produto>> stereotype
+skinparam class<<estoque>> {
+  BackgroundColor #E8F5E9
+  HeaderBackgroundColor #C8E6C9
+  BorderColor #2E7D32
+}
+hide <<estoque>> stereotype
+skinparam class<<venda>> {
+  BackgroundColor #E3F2FD
+  HeaderBackgroundColor #BBDEFB
+  BorderColor #1565C0
+}
+hide <<venda>> stereotype
+skinparam class<<compra>> {
+  BackgroundColor #FFF3E0
+  HeaderBackgroundColor #FFCC80
+  BorderColor #EF6C00
+}
+hide <<compra>> stereotype
+skinparam class<<previsao>> {
+  BackgroundColor #E0F7FA
+  HeaderBackgroundColor #B2EBF2
+  BorderColor #00838F
+}
+hide <<previsao>> stereotype
+title <size:20>Classes — Previsão: aplicação da recomendação</size>
+
+class "ForecastRecommendationItem\n<size:11><i>Item da recomendação</i></size>" as ForecastRecommendationItem <<previsao>> {
+  + Quantity : decimal
+  + SharePercent : decimal
+  --
+  + ForecastRecommendationItem(recommendationId, dto)
+}
+class "ForecastRecommendationStore\n<size:11><i>Parte da loja na compra</i></size>" as ForecastRecommendationStore <<previsao>> {
+  + SharePercent : decimal
+  + Shortfall : decimal
+  + Quantity : decimal
+  --
+  + ForecastRecommendationStore(recommendationId, storeId, sharePercent, shortfall, quantity)
+}
+class "ForecastRecommendationPurchaseOrder\n<size:11><i>Pedido gerado pela recomendação</i></size>" as ForecastRecommendationPurchaseOrder <<previsao>> {
+  --
+  + ForecastRecommendationPurchaseOrder(recommendationId, purchaseOrderId)
+}
+class "ForecastRecommendation\n<size:11><i>ver Previsão (análise)</i></size>" as ForecastRecommendation <<previsao>>
+class "ProductVariant\n<size:11><i>ver Produto</i></size>" as ProductVariant <<produto>>
+class "PurchaseOrder\n<size:11><i>ver Compras</i></size>" as PurchaseOrder <<compra>>
+class "Store\n<size:11><i>ver Estoque</i></size>" as Store <<estoque>>
+
+ForecastRecommendationItem "*" --> "1" ForecastRecommendation : Recommendation
+ForecastRecommendationItem "*" --> "1" ProductVariant : Variant
+ForecastRecommendationStore "*" --> "1" ForecastRecommendation : Recommendation
+ForecastRecommendationStore "*" --> "1" Store : Store
+ForecastRecommendationPurchaseOrder "*" --> "1" ForecastRecommendation : Recommendation
+ForecastRecommendationPurchaseOrder "*" --> "1" PurchaseOrder : PurchaseOrder
+note as Base
+  Todas herdam de <b>BaseModel</b> (Id : Guid, CreatedAt : DateTime).
+  Atributos com set privado: só o construtor e os métodos mudam o estado.
+end note
+@enduml

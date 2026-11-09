@@ -1,0 +1,28 @@
+@startuml uc-5-vendas
+!include ../estilo.iuml
+left to right direction
+title Casos de uso — Vendas e promoções
+
+actor "Administrador" as Admin
+
+rectangle "Nextflow — Vendas" {
+  usecase "UC26 Realizar venda rápida\n(balcão)" as UC26
+  usecase "UC27 Buscar item por nome,\nSKU ou código de barras" as UC27
+  usecase "UC28 Registrar pagamentos\n(uma ou mais formas)" as UC28
+  usecase "UC07 Cadastrar cliente rápido" as UC07
+  usecase "Baixar estoque da venda\n(livro-razão, lote FEFO)" as BAIXA
+  usecase "UC29 Consultar histórico\nde vendas" as UC29
+  usecase "UC30 Gerenciar promoções\n(criar, editar agendada, cancelar)" as UC30
+  usecase "UC31 Confirmar promoção\nabaixo do custo" as UC31
+}
+
+Admin --> UC26
+Admin --> UC29
+Admin --> UC30
+UC26 ..> UC27 : <<include>>
+UC26 ..> UC28 : <<include>>
+UC26 ..> BAIXA : <<include>>
+UC07 .> UC26 : <<extend>>
+UC31 .> UC30 : <<extend>>
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml uc-6-compras
+!include ../estilo.iuml
+left to right direction
+title Casos de uso — Compras
+
+actor "Administrador" as Admin
+
+rectangle "Nextflow — Compras" {
+  usecase "UC32 Elaborar pedido de compra\n(orçamento)" as UC32
+  usecase "UC33 Sugerir custo e regras\ndo fornecedor" as UC33
+  usecase "UC34 Enviar pedido ao fornecedor" as UC34
+  usecase "UC35 Receber pedido" as UC35
+  usecase "UC36 Informar lote e validade" as UC36
+  usecase "Lançar entrada no livro-razão\ne atualizar custo médio" as ENTRADA
+  usecase "UC37 Cancelar pedido" as UC37
+}
+
+Admin --> UC32
+Admin --> UC34
+Admin --> UC35
+Admin --> UC37
+UC32 ..> UC33 : <<include>>
+UC35 ..> ENTRADA : <<include>>
+UC36 .> UC35 : <<extend>>
+
+@enduml

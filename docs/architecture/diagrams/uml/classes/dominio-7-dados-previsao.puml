@@ -1,0 +1,44 @@
+@startuml dominio-7-dados-previsao
+!include ../estilo.iuml
+!include estilo-dominio.iuml
+title <size:22>Modelo de domínio — Dados que alimentam a previsão</size>
+
+class "Venda mensal do produto" as VendaMensal <<previsao>> {
+  ano : Inteiro
+  mês : Inteiro
+  quantidadeVendida : Decimal
+  vendidaEmPromoção : Decimal
+  diasSemEstoque : Inteiro
+  demandaPerdida : Decimal
+  preçoMédio : Decimal
+  receita : Decimal
+}
+class "Sazonalidade do produto" as Sazonalidade <<previsao>> {
+  mês : Inteiro
+  índiceSazonal : Decimal
+  mesesDeHistórico : Inteiro
+}
+class "Fotografia diária do estoque" as Foto <<previsao>> {
+  dia : Data
+  quantidadeNoFechamento : Decimal
+}
+class "Produto" as Produto <<produto>>
+class "Variação do produto" as Variacao <<produto>>
+class "Local de estoque" as Local <<estoque>>
+class "Venda" as Venda <<venda>>
+class "Movimentação (livro-razão)" as Mov <<estoque>>
+
+Produto "1" -- "*" VendaMensal : vende por mês
+Produto "1" -- "12" Sazonalidade : tem um índice por mês
+Variacao "1" -- "*" Foto : fotografada
+Local "1" -- "*" Foto : em
+Venda ..> VendaMensal : é resumida em
+Mov ..> Foto : calcula o saldo do dia
+VendaMensal ..> Sazonalidade : calcula
+
+legend bottom left
+  <b>Dados derivados:</b> não são digitados; são recalculados das vendas e do livro-razão para a previsão não ler milhares de
+  vendas a cada análise. O <b>índice sazonal</b> diz quanto cada mês vende em relação à média (1,00 = média);
+  os <b>dias sem estoque</b> evitam que um mês de ruptura pareça um mês fraco.
+endlegend
+@enduml

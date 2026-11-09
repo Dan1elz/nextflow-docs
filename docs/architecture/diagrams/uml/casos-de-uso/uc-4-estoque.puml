@@ -1,0 +1,29 @@
+@startuml uc-4-estoque
+!include ../estilo.iuml
+left to right direction
+title Casos de uso — Estoque
+
+actor "Administrador" as Admin
+
+rectangle "Nextflow — Estoque" {
+  usecase "UC19 Gerenciar lojas\ne locais de estoque" as UC19
+  usecase "UC20 Definir política de estoque\n(curva ABC e mínimos)" as UC20
+  usecase "UC21 Consultar estoque\npor local e por lote" as UC21
+  usecase "UC22 Registrar ajuste ou perda" as UC22
+  usecase "UC23 Dar baixa em lote vencido" as UC23
+  usecase "UC24 Transferir estoque\nentre locais" as UC24
+  usecase "UC25 Consultar movimentações\n(kardex)" as UC25
+  usecase "Lançar no livro-razão" as LEDGER
+}
+
+Admin --> UC19
+Admin --> UC20
+Admin --> UC21
+Admin --> UC22
+Admin --> UC24
+Admin --> UC25
+UC23 .> UC22 : <<extend>>
+UC22 ..> LEDGER : <<include>>
+UC24 ..> LEDGER : <<include>>
+
+@enduml

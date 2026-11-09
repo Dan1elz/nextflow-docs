@@ -1,0 +1,117 @@
+---
+title: "Previsão de demanda com IA: análise e recomendação"
+config:
+  er:
+    layoutDirection: TB
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 20px
+---
+erDiagram
+    forecast_runs["Análise de previsão (forecast_runs)"] {
+        uuid id PK
+        uuid requested_by FK "opcional"
+        smallint trigger "manual ou agendada"
+        smallint horizon_months "meses projetados"
+        smallint status "em andamento, concluída, sem IA, falhou"
+        date reference_date
+        timestamptz started_at
+        timestamptz finished_at "opcional"
+        int duration_ms "opcional"
+        varchar ai_provider "opcional"
+        varchar ai_model "opcional"
+        text summary "opcional"
+        text error_message "opcional"
+        int products_analyzed
+        int products_sent_to_ai
+        int batches_total
+        int batches_completed
+        int batches_failed
+    }
+    forecast_recommendations["Recomendação (forecast_recommendations)"] {
+        uuid id PK
+        uuid forecast_run_id FK
+        uuid product_id FK
+        uuid applied_by FK "opcional"
+        uuid applied_purchase_order_id FK "opcional"
+        uuid applied_promotion_id FK "opcional"
+        uuid applied_transfer_id FK "opcional"
+        uuid transfer_from_location_id FK "opcional"
+        uuid transfer_to_location_id FK "opcional"
+        smallint action "comprar, promover, manter, transferir"
+        smallint priority "baixa, média, alta"
+        smallint confidence "baixa, média, alta"
+        smallint status "pendente, aplicada, descartada, expirada"
+        numeric suggested_quantity "opcional"
+        numeric calculated_quantity "opcional"
+        numeric suggested_discount_percent "opcional"
+        int suggested_promotion_days "opcional"
+        date deadline "opcional"
+        varchar reason
+        varchar reason_calculated
+        bool ai_adjusted
+        numeric current_stock
+        numeric incoming_stock
+        numeric projected_demand
+        numeric next_month_demand
+        numeric coverage_days "opcional"
+        numeric next_month_seasonal_index
+        numeric safety_stock
+        int lead_time_days
+        smallint lead_time_source "de onde veio o prazo de entrega"
+        smallint months_of_history
+        bool based_on_last_year
+        timestamptz applied_at "opcional"
+        varchar dismiss_reason "opcional"
+        smallint dismiss_reason_code "motivo do descarte, opcional"
+    }
+    forecast_ai_batches["Lote enviado à IA (forecast_ai_batches)"] {
+        uuid id PK
+        uuid forecast_run_id FK
+        smallint batch_number
+        int products_count
+        uuid_array product_ids "produtos enviados no lote"
+        smallint status "pendente, enviado, concluído, falhou"
+        varchar error_message "opcional"
+        int duration_ms "opcional"
+        timestamptz sent_at "opcional"
+        timestamptz finished_at "opcional"
+    }
+    forecast_projections["Projeção mensal (forecast_projections)"] {
+        uuid id PK
+        uuid forecast_run_id FK
+        uuid product_id FK
+        smallint year
+        smallint month
+        numeric projected_quantity
+    }
+    forecast_settings["Agendamento da previsão (forecast_settings)"] {
+        uuid id PK
+        uuid updated_by FK "opcional"
+        bool schedule_enabled
+        smallint weekday "dia da análise semanal"
+        time time
+        int ai_batch_size
+    }
+    products["Produto (products)"] {
+        uuid id PK "detalhado no DER 3"
+    }
+    users["Usuário (users)"] {
+        uuid id PK "detalhado no DER 1"
+    }
+
+    forecast_runs ||--o{ forecast_ai_batches : "envia à IA"
+    forecast_runs ||--o{ forecast_projections : "projeta"
+    products ||--o{ forecast_projections : "é projetado"
+    users |o--o{ forecast_recommendations : "aplica"
+    forecast_runs ||--o{ forecast_recommendations : "recomenda"
+    products ||--o{ forecast_recommendations : "recebe recomendação"
+    users |o--o{ forecast_runs : "pede"
+    users |o--o{ forecast_settings : "configura"
+
+    classDef previsao fill:#E0F7FA,stroke:#00838F,stroke-width:2px
+    class forecast_ai_batches,forecast_projections,forecast_recommendations,forecast_runs,forecast_settings previsao
+    classDef produto fill:#EDE7F6,stroke:#5E35B1,stroke-width:2px
+    class products produto
+    classDef acesso fill:#FCE4EC,stroke:#C2185B,stroke-width:2px
+    class users acesso

@@ -1,0 +1,79 @@
+---
+title: "Previsão de demanda com IA: aplicação da recomendação"
+config:
+  er:
+    layoutDirection: TB
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 20px
+---
+erDiagram
+    forecast_recommendation_items["Item da recomendação (forecast_recommendation_items)"] {
+        uuid id PK
+        uuid recommendation_id FK
+        uuid variant_id FK
+        numeric quantity
+        numeric share_percent
+    }
+    forecast_recommendation_stores["Parte da loja na compra (forecast_recommendation_stores)"] {
+        uuid id PK
+        uuid recommendation_id FK
+        uuid store_id FK
+        numeric share_percent
+        numeric shortfall
+        numeric quantity
+    }
+    forecast_recommendation_purchase_orders["Pedido gerado pela recomendação (forecast_recommendation_purchase_orders)"] {
+        uuid id PK
+        uuid recommendation_id FK
+        uuid purchase_order_id FK
+    }
+    forecast_recommendations["Recomendação (forecast_recommendations)"] {
+        uuid id PK "detalhado no DER 9"
+        uuid applied_promotion_id FK "opcional"
+        uuid applied_purchase_order_id FK "opcional"
+        uuid applied_transfer_id FK "opcional"
+        uuid transfer_from_location_id FK "opcional"
+        uuid transfer_to_location_id FK "opcional"
+    }
+    product_variants["Variação do produto (product_variants)"] {
+        uuid id PK "detalhado no DER 3"
+    }
+    stores["Loja (stores)"] {
+        uuid id PK "detalhado no DER 5"
+    }
+    purchase_orders["Pedido de compra (purchase_orders)"] {
+        uuid id PK "detalhado no DER 8"
+    }
+    promotions["Promoção (promotions)"] {
+        uuid id PK "detalhado no DER 7"
+    }
+    stock_transfers["Transferência (stock_transfers)"] {
+        uuid id PK "detalhado no DER 6"
+    }
+    stock_locations["Local de estoque (stock_locations)"] {
+        uuid id PK "detalhado no DER 5"
+    }
+
+    forecast_recommendations ||--o{ forecast_recommendation_items : "rateia nas variações"
+    product_variants ||--o{ forecast_recommendation_items : "recebe parte"
+    purchase_orders ||--o{ forecast_recommendation_purchase_orders : "veio da recomendação"
+    forecast_recommendations ||--o{ forecast_recommendation_purchase_orders : "gera pedidos"
+    forecast_recommendations ||--o{ forecast_recommendation_stores : "divide por loja"
+    stores ||--o{ forecast_recommendation_stores : "recebe parte"
+    promotions |o--o{ forecast_recommendations : "nasceu de"
+    purchase_orders |o--o{ forecast_recommendations : "nasceu de"
+    stock_transfers |o--o{ forecast_recommendations : "nasceu de"
+    stock_locations |o--o{ forecast_recommendations : "origem da transferência"
+    stock_locations |o--o{ forecast_recommendations : "destino da transferência"
+
+    classDef previsao fill:#E0F7FA,stroke:#00838F,stroke-width:2px
+    class forecast_recommendation_items,forecast_recommendation_purchase_orders,forecast_recommendation_stores,forecast_recommendations previsao
+    classDef produto fill:#EDE7F6,stroke:#5E35B1,stroke-width:2px
+    class product_variants produto
+    classDef venda fill:#E3F2FD,stroke:#1565C0,stroke-width:2px
+    class promotions venda
+    classDef compra fill:#FFF3E0,stroke:#EF6C00,stroke-width:2px
+    class purchase_orders compra
+    classDef estoque fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
+    class stock_locations,stock_transfers,stores estoque

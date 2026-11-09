@@ -1,0 +1,81 @@
+@startuml classes-0-camadas
+!include ../estilo.iuml
+skinparam dpi 170
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderThickness 1.4
+  FontSize 14
+  AttributeFontSize 13
+}
+skinparam package {
+  FontSize 16
+  BorderThickness 1.6
+}
+hide empty members
+title <size:20>Camadas da arquitetura no fluxo da venda rápida</size>
+
+package "Apresentação — API (Controllers)" #FAFAFA {
+  class SalesController <<Controller>> {
+    + CreateQuick(dto : QuickSaleDto) : IActionResult
+  }
+}
+
+package "Aplicação — Nextflow Application" #E3F2FD {
+  class CreateQuickSaleUseCase <<UseCase>> {
+    + Execute(dto : QuickSaleDto, userId : Guid) : ResultDto<OrderDetailDto>
+  }
+  class StockLedger <<Service>> {
+    + Post(document, lines) : List<ValidationFailure>
+  }
+  class ProductPricingService <<Service>> {
+    + GetEffectivePrice(variant) : decimal
+  }
+}
+
+package "Domínio — Nextflow Domain" #E8F5E9 {
+  interface ICreateQuickSaleUseCase
+  interface IStockLedger
+  interface IProductPricingService
+  interface IOrderRepository
+  interface IUnitOfWork {
+    + CommitAsync() : Task
+  }
+  class Order <<Entity>> {
+    + Status : OrderStatusEnum
+    + Total : decimal
+    + AddItem(item) : void
+    + AddPayment(payment) : void
+  }
+}
+
+package "Infraestrutura — Nextflow Infrastructure" #FFF3E0 {
+  class OrderRepository <<Repository>> {
+    + AddAsync(order : Order) : Task
+  }
+  class UnitOfWork {
+    + CommitAsync() : Task
+  }
+  class AppDbContext <<EF Core>>
+}
+
+SalesController --> ICreateQuickSaleUseCase : chama
+CreateQuickSaleUseCase ..|> ICreateQuickSaleUseCase
+CreateQuickSaleUseCase --> IOrderRepository : persiste
+CreateQuickSaleUseCase --> IStockLedger : baixa o estoque
+CreateQuickSaleUseCase --> IProductPricingService : preço efetivo
+CreateQuickSaleUseCase --> IUnitOfWork : um commit
+CreateQuickSaleUseCase --> Order : cria
+StockLedger ..|> IStockLedger
+ProductPricingService ..|> IProductPricingService
+OrderRepository ..|> IOrderRepository : implementa
+UnitOfWork ..|> IUnitOfWork : implementa
+OrderRepository --> AppDbContext
+UnitOfWork --> AppDbContext
+
+legend bottom left
+  <b>Regra de dependência:</b> todas as setas apontam para o <b>Domínio</b>. Ele não conhece banco nem HTTP;
+  a Infraestrutura implementa as interfaces do Domínio (inversão de dependência) e a injeção de dependência
+  liga cada interface à sua implementação na inicialização.
+  ──▷ (tracejada) implementa a interface     ──> usa
+endlegend
+@enduml

@@ -1,0 +1,25 @@
+@startuml uc-8-painel
+!include ../estilo.iuml
+left to right direction
+title Casos de uso — Painel e notificações
+
+actor "Administrador" as Admin
+actor "Agendador\n(diário)" as Agendador
+actor "Serviço de IA\n(Gemini)" as IA
+
+rectangle "Nextflow — Painel" {
+  usecase "UC48 Acompanhar o painel\n(vendas, margem, alertas)" as UC48
+  usecase "UC49 Ver estoque baixo\ne lotes vencendo" as UC49
+  usecase "UC50 Pedir sugestão de compra\nou de desconto à IA" as UC50
+  usecase "UC51 Receber notificações" as UC51
+  usecase "UC52 Enviar resumo diário\nde alertas" as UC52
+}
+
+Admin --> UC48
+Admin --> UC51
+UC52 <-- Agendador
+UC49 .up.> UC48 : <<extend>>
+UC50 .up.> UC49 : <<extend>>
+UC50 --> IA
+UC52 .up.> UC51 : <<include>>
+@enduml

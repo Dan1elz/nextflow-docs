@@ -1,0 +1,131 @@
+@startuml classes-7-vendas
+!include ../../estilo.iuml
+skinparam dpi 170
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderThickness 1.4
+  FontSize 14
+  AttributeFontSize 13
+}
+hide empty members
+skinparam class<<acesso>> {
+  BackgroundColor #FCE4EC
+  HeaderBackgroundColor #F8BBD0
+  BorderColor #C2185B
+}
+hide <<acesso>> stereotype
+skinparam class<<cadastro>> {
+  BackgroundColor #FFF8E1
+  HeaderBackgroundColor #FFE082
+  BorderColor #F9A825
+}
+hide <<cadastro>> stereotype
+skinparam class<<produto>> {
+  BackgroundColor #EDE7F6
+  HeaderBackgroundColor #D1C4E9
+  BorderColor #5E35B1
+}
+hide <<produto>> stereotype
+skinparam class<<estoque>> {
+  BackgroundColor #E8F5E9
+  HeaderBackgroundColor #C8E6C9
+  BorderColor #2E7D32
+}
+hide <<estoque>> stereotype
+skinparam class<<venda>> {
+  BackgroundColor #E3F2FD
+  HeaderBackgroundColor #BBDEFB
+  BorderColor #1565C0
+}
+hide <<venda>> stereotype
+skinparam class<<compra>> {
+  BackgroundColor #FFF3E0
+  HeaderBackgroundColor #FFCC80
+  BorderColor #EF6C00
+}
+hide <<compra>> stereotype
+skinparam class<<previsao>> {
+  BackgroundColor #E0F7FA
+  HeaderBackgroundColor #B2EBF2
+  BorderColor #00838F
+}
+hide <<previsao>> stereotype
+title <size:20>Classes — Vendas e promoções</size>
+
+class "Order\n<size:11><i>Venda</i></size>" as Order <<venda>> {
+  + Number : int
+  + Status : OrderStatusEnum
+  + Channel : OrderChannelEnum
+  + Subtotal : decimal
+  + DiscountTotal : decimal
+  + Total : decimal
+  + CashReceived : decimal?
+  + Change : decimal?
+  + PaidAt : DateTime?
+  --
+  + Order(dto, saleLocationId, userId, paidAt)
+  + AddItem(item) : void
+  + AddPayment(payment) : void
+  + RecordCash(cashReceived, cashPaid) : void
+}
+class "OrderItem\n<size:11><i>Item da venda</i></size>" as OrderItem <<venda>> {
+  + Position : int
+  + Quantity : decimal
+  + ListPrice : decimal
+  + UnitPrice : decimal
+  + Discount : decimal
+  + LineTotal : decimal
+  + UnitCost : decimal?
+  + GrossTotal : decimal {readOnly}
+  --
+  + OrderItem(dto, variant, unitPrice, promotion)
+  + {static} GrossOf(unitPrice, quantity) : decimal
+}
+class "Payment\n<size:11><i>Pagamento</i></size>" as Payment <<venda>> {
+  + Method : PaymentMethodEnum
+  + Amount : decimal
+  --
+  + Payment(dto)
+}
+class "Promotion\n<size:11><i>Promoção</i></size>" as Promotion <<venda>> {
+  + DiscountPercent : decimal
+  + StartDate : DateOnly
+  + EndDate : DateOnly
+  + Reason : string?
+  + Source : PromotionSourceEnum
+  + ForecastRecommendationId : Guid?
+  + BelowCostConfirmed : bool
+  + IsActive : bool
+  + CanceledAt : DateTime?
+  --
+  + Promotion(dto, createdById, belowCostConfirmed)
+  + Promotion(dto, forecastRecommendationId, createdById, belowCostConfirmed)
+  + Reschedule(dto, belowCostConfirmed) : void
+  + Cancel() : void
+  + AppliesTo(variantId) : bool
+  + IsCurrentOn(today) : bool
+  + StatusOn(today) : PromotionStatusEnum
+}
+class "Client\n<size:11><i>ver Cadastros</i></size>" as Client <<cadastro>>
+class "Product\n<size:11><i>ver Produto</i></size>" as Product <<produto>>
+class "ProductVariant\n<size:11><i>ver Produto</i></size>" as ProductVariant <<produto>>
+class "StockLocation\n<size:11><i>ver Estoque</i></size>" as StockLocation <<estoque>>
+class "Store\n<size:11><i>ver Estoque</i></size>" as Store <<estoque>>
+class "User\n<size:11><i>ver Acesso</i></size>" as User <<acesso>>
+
+Order "*" --> "1" Store : Store
+Order "*" --> "1" StockLocation : SaleLocation
+Order "*" --> "0..1" Client : Client
+Order "*" --> "1" User : User
+Order "1" *-- "*" OrderItem : Items
+Order "1" *-- "*" Payment : Payments
+OrderItem "*" --> "1" ProductVariant : Variant
+OrderItem "*" --> "0..1" Promotion : Promotion
+Promotion "*" --> "1" Product : Product
+Promotion "*" --> "0..1" ProductVariant : Variant
+Promotion "*" --> "1" User : CreatedBy
+note as Base
+  Todas herdam de <b>BaseModel</b> (Id : Guid, CreatedAt : DateTime).
+  Atributos com set privado: só o construtor e os métodos mudam o estado.
+end note
+@enduml

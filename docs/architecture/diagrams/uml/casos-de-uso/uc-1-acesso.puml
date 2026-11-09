@@ -1,0 +1,22 @@
+@startuml uc-1-acesso
+!include ../estilo.iuml
+left to right direction
+title Casos de uso — Acesso e segurança
+
+actor "Administrador" as Admin
+
+rectangle "Nextflow — Acesso e segurança" {
+  usecase "UC01 Autenticar-se" as UC01
+  usecase "UC02 Manter o próprio perfil\ne trocar a senha" as UC02
+  usecase "UC03 Gerenciar usuários" as UC03
+  usecase "UC04 Ativar ou desativar usuário" as UC04
+  usecase "UC05 Selecionar a loja de trabalho" as UC05
+}
+
+Admin --> UC01
+Admin --> UC02
+Admin --> UC03
+Admin --> UC05
+UC04 .> UC03 : <<extend>>
+
+@enduml

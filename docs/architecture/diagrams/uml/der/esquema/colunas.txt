@@ -1,0 +1,441 @@
+addresses|id|uuid|NO||1||
+addresses|owner_type|smallint|NO||2|16|0
+addresses|owner_id|uuid|NO||3||
+addresses|zip_code|character varying|NO|8|4||
+addresses|street|character varying|NO|150|5||
+addresses|number|character varying|NO|20|6||
+addresses|complement|character varying|YES|100|7||
+addresses|neighborhood|character varying|NO|100|8||
+addresses|city_id|uuid|NO||9||
+addresses|is_main|boolean|NO||10||
+addresses|updated_at|timestamp with time zone|YES||11||
+addresses|created_at|timestamp with time zone|NO||12||
+calendar_events|id|uuid|NO||1||
+calendar_events|name|character varying|NO|100|2||
+calendar_events|scope|smallint|NO||3|16|0
+calendar_events|date_rule|smallint|NO||4|16|0
+calendar_events|month|smallint|YES||5|16|0
+calendar_events|day|smallint|YES||6|16|0
+calendar_events|weekday|smallint|YES||7|16|0
+calendar_events|nth|smallint|YES||8|16|0
+calendar_events|easter_offset_days|smallint|YES||9|16|0
+calendar_events|lead_days|smallint|NO||10|16|0
+calendar_events|is_active|boolean|NO||11||
+calendar_events|updated_at|timestamp with time zone|YES||12||
+calendar_events|created_at|timestamp with time zone|NO||13||
+categories|id|uuid|NO||1||
+categories|parent_id|uuid|YES||2||
+categories|name|character varying|NO|100|3||
+categories|description|character varying|YES|500|4||
+categories|is_active|boolean|NO||5||
+categories|updated_at|timestamp with time zone|YES||6||
+categories|created_at|timestamp with time zone|NO||7||
+category_products|id|uuid|NO||1||
+category_products|category_id|uuid|NO||2||
+category_products|product_id|uuid|NO||3||
+category_products|created_at|timestamp with time zone|NO||4||
+cities|id|uuid|NO||1||
+cities|name|character varying|NO|100|2||
+cities|ibge_code|character varying|NO|7|3||
+cities|state_id|uuid|NO||4||
+cities|created_at|timestamp with time zone|NO||5||
+cities|search_name|character varying|NO|100|6||
+clients|id|uuid|NO||1||
+clients|name|character varying|NO|100|2||
+clients|last_name|character varying|YES|100|3||
+clients|cpf|character varying|YES|11|4||
+clients|birth_date|date|YES||5||
+clients|is_active|boolean|NO||6||
+clients|updated_at|timestamp with time zone|YES||7||
+clients|created_at|timestamp with time zone|NO||8||
+collections|id|uuid|NO||1||
+collections|name|character varying|NO|100|2||
+collections|starts_on|date|YES||3||
+collections|ends_on|date|YES||4||
+collections|is_active|boolean|NO||5||
+collections|updated_at|timestamp with time zone|YES||6||
+collections|created_at|timestamp with time zone|NO||7||
+contacts|id|uuid|NO||1||
+contacts|owner_type|smallint|NO||2|16|0
+contacts|owner_id|uuid|NO||3||
+contacts|type|smallint|NO||4|16|0
+contacts|value|character varying|NO|150|5||
+contacts|is_main|boolean|NO||6||
+contacts|updated_at|timestamp with time zone|YES||7||
+contacts|created_at|timestamp with time zone|NO||8||
+countries|id|uuid|NO||1||
+countries|name|character varying|NO|100|2||
+countries|acronym_iso|character varying|NO|2|3||
+countries|bacen_code|character varying|YES|5|4||
+countries|created_at|timestamp with time zone|NO||5||
+forecast_ai_batches|id|uuid|NO||1||
+forecast_ai_batches|forecast_run_id|uuid|NO||2||
+forecast_ai_batches|batch_number|smallint|NO||3|16|0
+forecast_ai_batches|products_count|integer|NO||4|32|0
+forecast_ai_batches|product_ids|ARRAY|NO||5||
+forecast_ai_batches|status|smallint|NO||6|16|0
+forecast_ai_batches|error_message|character varying|YES|500|7||
+forecast_ai_batches|duration_ms|integer|YES||8|32|0
+forecast_ai_batches|sent_at|timestamp with time zone|YES||9||
+forecast_ai_batches|finished_at|timestamp with time zone|YES||10||
+forecast_ai_batches|created_at|timestamp with time zone|NO||11||
+forecast_projections|id|uuid|NO||1||
+forecast_projections|forecast_run_id|uuid|NO||2||
+forecast_projections|product_id|uuid|NO||3||
+forecast_projections|year|smallint|NO||4|16|0
+forecast_projections|month|smallint|NO||5|16|0
+forecast_projections|projected_quantity|numeric|NO||6|14|3
+forecast_projections|created_at|timestamp with time zone|NO||7||
+forecast_recommendation_items|id|uuid|NO||1||
+forecast_recommendation_items|recommendation_id|uuid|NO||2||
+forecast_recommendation_items|variant_id|uuid|NO||3||
+forecast_recommendation_items|quantity|numeric|NO||4|14|3
+forecast_recommendation_items|share_percent|numeric|NO||5|7|4
+forecast_recommendation_items|created_at|timestamp with time zone|NO||6||
+forecast_recommendation_purchase_orders|id|uuid|NO||1||
+forecast_recommendation_purchase_orders|recommendation_id|uuid|NO||2||
+forecast_recommendation_purchase_orders|purchase_order_id|uuid|NO||3||
+forecast_recommendation_purchase_orders|created_at|timestamp with time zone|NO||4||
+forecast_recommendation_stores|id|uuid|NO||1||
+forecast_recommendation_stores|recommendation_id|uuid|NO||2||
+forecast_recommendation_stores|store_id|uuid|NO||3||
+forecast_recommendation_stores|share_percent|numeric|NO||4|6|2
+forecast_recommendation_stores|shortfall|numeric|NO||5|14|3
+forecast_recommendation_stores|quantity|numeric|NO||6|14|3
+forecast_recommendation_stores|created_at|timestamp with time zone|NO||7||
+forecast_recommendations|id|uuid|NO||1||
+forecast_recommendations|forecast_run_id|uuid|NO||2||
+forecast_recommendations|product_id|uuid|NO||3||
+forecast_recommendations|action|smallint|NO||4|16|0
+forecast_recommendations|priority|smallint|NO||5|16|0
+forecast_recommendations|confidence|smallint|NO||6|16|0
+forecast_recommendations|status|smallint|NO||7|16|0
+forecast_recommendations|suggested_quantity|numeric|YES||8|14|3
+forecast_recommendations|calculated_quantity|numeric|YES||9|14|3
+forecast_recommendations|suggested_discount_percent|numeric|YES||10|5|2
+forecast_recommendations|suggested_promotion_days|integer|YES||11|32|0
+forecast_recommendations|deadline|date|YES||12||
+forecast_recommendations|reason|character varying|NO|1000|13||
+forecast_recommendations|reason_calculated|character varying|NO|1000|14||
+forecast_recommendations|ai_adjusted|boolean|NO||15||
+forecast_recommendations|current_stock|numeric|NO||16|14|3
+forecast_recommendations|incoming_stock|numeric|NO||17|14|3
+forecast_recommendations|projected_demand|numeric|NO||18|14|3
+forecast_recommendations|next_month_demand|numeric|NO||19|14|3
+forecast_recommendations|coverage_days|numeric|YES||20|8|1
+forecast_recommendations|next_month_seasonal_index|numeric|NO||21|8|4
+forecast_recommendations|safety_stock|numeric|NO||22|14|3
+forecast_recommendations|lead_time_days|integer|NO||23|32|0
+forecast_recommendations|lead_time_source|smallint|NO||24|16|0
+forecast_recommendations|months_of_history|smallint|NO||25|16|0
+forecast_recommendations|based_on_last_year|boolean|NO||26||
+forecast_recommendations|applied_at|timestamp with time zone|YES||27||
+forecast_recommendations|applied_by|uuid|YES||28||
+forecast_recommendations|applied_purchase_order_id|uuid|YES||29||
+forecast_recommendations|applied_promotion_id|uuid|YES||30||
+forecast_recommendations|dismiss_reason|character varying|YES|255|31||
+forecast_recommendations|updated_at|timestamp with time zone|YES||32||
+forecast_recommendations|created_at|timestamp with time zone|NO||33||
+forecast_recommendations|dismiss_reason_code|smallint|YES||34|16|0
+forecast_recommendations|applied_transfer_id|uuid|YES||35||
+forecast_recommendations|transfer_from_location_id|uuid|YES||36||
+forecast_recommendations|transfer_to_location_id|uuid|YES||37||
+forecast_runs|id|uuid|NO||1||
+forecast_runs|trigger|smallint|NO||2|16|0
+forecast_runs|requested_by|uuid|YES||3||
+forecast_runs|horizon_months|smallint|NO||4|16|0
+forecast_runs|status|smallint|NO||5|16|0
+forecast_runs|reference_date|date|NO||6||
+forecast_runs|started_at|timestamp with time zone|NO||7||
+forecast_runs|finished_at|timestamp with time zone|YES||8||
+forecast_runs|duration_ms|integer|YES||9|32|0
+forecast_runs|ai_provider|character varying|YES|40|10||
+forecast_runs|ai_model|character varying|YES|80|11||
+forecast_runs|summary|text|YES||12||
+forecast_runs|error_message|text|YES||13||
+forecast_runs|products_analyzed|integer|NO||14|32|0
+forecast_runs|products_sent_to_ai|integer|NO||15|32|0
+forecast_runs|batches_total|integer|NO||16|32|0
+forecast_runs|batches_completed|integer|NO||17|32|0
+forecast_runs|batches_failed|integer|NO||18|32|0
+forecast_runs|created_at|timestamp with time zone|NO||19||
+forecast_settings|id|uuid|NO||1||
+forecast_settings|schedule_enabled|boolean|NO||2||
+forecast_settings|weekday|smallint|NO||3|16|0
+forecast_settings|time|time without time zone|NO||4||
+forecast_settings|ai_batch_size|integer|NO||5|32|0
+forecast_settings|updated_by|uuid|YES||6||
+forecast_settings|updated_at|timestamp with time zone|YES||7||
+forecast_settings|created_at|timestamp with time zone|NO||8||
+lots|id|uuid|NO||1||
+lots|variant_id|uuid|NO||2||
+lots|code|character varying|NO|40|3||
+lots|expires_on|date|NO||4||
+lots|created_at|timestamp with time zone|NO||5||
+notifications|id|uuid|NO||1||
+notifications|user_id|uuid|NO||2||
+notifications|type|smallint|NO||3|16|0
+notifications|title|character varying|NO|120|4||
+notifications|message|character varying|NO|500|5||
+notifications|link|character varying|YES|300|6||
+notifications|digest_date|date|YES||7||
+notifications|read_at|timestamp with time zone|YES||8||
+notifications|created_at|timestamp with time zone|NO||9||
+order_items|id|uuid|NO||1||
+order_items|order_id|uuid|NO||2||
+order_items|position|integer|NO||3|32|0
+order_items|variant_id|uuid|NO||4||
+order_items|quantity|numeric|NO||5|14|3
+order_items|list_price|numeric|NO||6|12|2
+order_items|unit_price|numeric|NO||7|12|2
+order_items|discount|numeric|NO||8|12|2
+order_items|line_total|numeric|NO||9|12|2
+order_items|promotion_id|uuid|YES||10||
+order_items|unit_cost|numeric|YES||11|14|4
+order_items|created_at|timestamp with time zone|NO||12||
+orders|id|uuid|NO||1||
+orders|number|integer|NO||2|32|0
+orders|store_id|uuid|NO||3||
+orders|sale_location_id|uuid|NO||4||
+orders|client_id|uuid|YES||5||
+orders|user_id|uuid|NO||6||
+orders|status|smallint|NO||7|16|0
+orders|channel|smallint|NO||8|16|0
+orders|subtotal|numeric|NO||9|12|2
+orders|discount_total|numeric|NO||10|12|2
+orders|total|numeric|NO||11|12|2
+orders|cash_received|numeric|YES||12|12|2
+orders|change|numeric|YES||13|12|2
+orders|paid_at|timestamp with time zone|YES||14||
+orders|created_at|timestamp with time zone|NO||15||
+payments|id|uuid|NO||1||
+payments|order_id|uuid|NO||2||
+payments|method|smallint|NO||3|16|0
+payments|amount|numeric|NO||4|12|2
+payments|created_at|timestamp with time zone|NO||5||
+price_history|id|uuid|NO||1||
+price_history|variant_id|uuid|NO||2||
+price_history|price|numeric|NO||3|12|2
+price_history|valid_from|date|NO||4||
+price_history|valid_to|date|YES||5||
+price_history|changed_by|uuid|NO||6||
+price_history|created_at|timestamp with time zone|NO||7||
+product_attribute_values|id|uuid|NO||1||
+product_attribute_values|attribute_id|uuid|NO||2||
+product_attribute_values|value|character varying|NO|50|3||
+product_attribute_values|sort_order|smallint|NO||4|16|0
+product_attribute_values|created_at|timestamp with time zone|NO||5||
+product_attributes|id|uuid|NO||1||
+product_attributes|product_id|uuid|NO||2||
+product_attributes|name|character varying|NO|50|3||
+product_attributes|sort_order|smallint|NO||4|16|0
+product_attributes|created_at|timestamp with time zone|NO||5||
+product_events|id|uuid|NO||1||
+product_events|product_id|uuid|NO||2||
+product_events|event_id|uuid|NO||3||
+product_events|created_at|timestamp with time zone|NO||4||
+product_sales_monthly|id|uuid|NO||1||
+product_sales_monthly|product_id|uuid|NO||2||
+product_sales_monthly|year|smallint|NO||3|16|0
+product_sales_monthly|month|smallint|NO||4|16|0
+product_sales_monthly|quantity_sold|numeric|NO||5|14|3
+product_sales_monthly|quantity_sold_on_promo|numeric|NO||6|14|3
+product_sales_monthly|days_out_of_stock|smallint|NO||7|16|0
+product_sales_monthly|lost_demand_qty|numeric|NO||8|14|3
+product_sales_monthly|avg_price|numeric|NO||9|14|2
+product_sales_monthly|revenue|numeric|NO||10|14|2
+product_sales_monthly|created_at|timestamp with time zone|NO||11||
+product_seasonality|id|uuid|NO||1||
+product_seasonality|product_id|uuid|NO||2||
+product_seasonality|month|smallint|NO||3|16|0
+product_seasonality|seasonal_index|numeric|NO||4|8|4
+product_seasonality|months_of_history|smallint|NO||5|16|0
+product_seasonality|created_at|timestamp with time zone|NO||6||
+product_suppliers|id|uuid|NO||1||
+product_suppliers|product_id|uuid|NO||2||
+product_suppliers|supplier_id|uuid|NO||3||
+product_suppliers|is_preferred|boolean|NO||4||
+product_suppliers|supplier_sku|character varying|YES|50|5||
+product_suppliers|lead_time_days|integer|YES||6|32|0
+product_suppliers|min_order_qty|numeric|YES||7|12|3
+product_suppliers|order_multiple|numeric|YES||8|12|3
+product_suppliers|updated_at|timestamp with time zone|YES||9||
+product_suppliers|created_at|timestamp with time zone|NO||10||
+product_suppliers|last_cost|numeric|YES||11|14|4
+product_variant_values|id|uuid|NO||1||
+product_variant_values|variant_id|uuid|NO||2||
+product_variant_values|attribute_value_id|uuid|NO||3||
+product_variant_values|created_at|timestamp with time zone|NO||4||
+product_variants|id|uuid|NO||1||
+product_variants|product_id|uuid|NO||2||
+product_variants|sku|character varying|NO|50|3||
+product_variants|barcode|character varying|YES|50|4||
+product_variants|price|numeric|NO||5|12|2
+product_variants|sort_order|smallint|NO||6|16|0
+product_variants|is_active|boolean|NO||7||
+product_variants|updated_at|timestamp with time zone|YES||8||
+product_variants|created_at|timestamp with time zone|NO||9||
+product_variants|removed_on|date|YES||10||
+product_variants|average_cost|numeric|YES||11|14|4
+product_variants|last_cost|numeric|YES||12|14|4
+product_variants|version|integer|NO||13|32|0
+products|id|uuid|NO||1||
+products|name|character varying|NO|150|2||
+products|brand|character varying|YES|100|3||
+products|description|character varying|YES|1000|4||
+products|product_type|smallint|NO||5|16|0
+products|sale_unit|smallint|NO||6|16|0
+products|decimal_places|smallint|NO||7|16|0
+products|allows_negative|boolean|NO||8||
+products|has_variants|boolean|NO||9||
+products|tracks_lots|boolean|NO||10||
+products|shelf_life_days|integer|YES||11|32|0
+products|collection_id|uuid|YES||12||
+products|lifecycle|smallint|NO||13|16|0
+products|launched_on|date|YES||14||
+products|image_key|character varying|YES|200|15||
+products|is_active|boolean|NO||16||
+products|updated_at|timestamp with time zone|YES||17||
+products|created_at|timestamp with time zone|NO||18||
+products|abc_class|smallint|YES||19|16|0
+products|default_min_quantity|numeric|NO||20|14|3
+products|target_coverage_days|integer|YES||21|32|0
+promotions|id|uuid|NO||1||
+promotions|product_id|uuid|NO||2||
+promotions|variant_id|uuid|YES||3||
+promotions|discount_percent|numeric|NO||4|5|2
+promotions|start_date|date|NO||5||
+promotions|end_date|date|NO||6||
+promotions|reason|character varying|YES|200|7||
+promotions|source|smallint|NO||8|16|0
+promotions|forecast_recommendation_id|uuid|YES||9||
+promotions|below_cost_confirmed|boolean|NO||10||
+promotions|created_by|uuid|NO||11||
+promotions|is_active|boolean|NO||12||
+promotions|canceled_at|timestamp with time zone|YES||13||
+promotions|created_at|timestamp with time zone|NO||14||
+purchase_items|id|uuid|NO||1||
+purchase_items|purchase_order_id|uuid|NO||2||
+purchase_items|variant_id|uuid|NO||3||
+purchase_items|quantity|numeric|NO||4|14|3
+purchase_items|unit_cost|numeric|NO||5|14|4
+purchase_items|subtotal|numeric|NO||6|14|2
+purchase_items|sort_order|smallint|NO||7|16|0
+purchase_items|created_at|timestamp with time zone|NO||8||
+purchase_items|average_cost_after|numeric|YES||9|14|4
+purchase_orders|id|uuid|NO||1||
+purchase_orders|number|integer|NO||2|32|0
+purchase_orders|supplier_id|uuid|NO||3||
+purchase_orders|store_id|uuid|NO||4||
+purchase_orders|receive_location_id|uuid|NO||5||
+purchase_orders|status|smallint|NO||6|16|0
+purchase_orders|note|character varying|YES|500|7||
+purchase_orders|total|numeric|NO||8|14|2
+purchase_orders|lead_time_days|integer|NO||9|32|0
+purchase_orders|expected_on|date|NO||10||
+purchase_orders|created_by|uuid|NO||11||
+purchase_orders|sent_at|timestamp with time zone|YES||12||
+purchase_orders|received_at|timestamp with time zone|YES||13||
+purchase_orders|canceled_at|timestamp with time zone|YES||14||
+purchase_orders|cancel_reason|character varying|YES|500|15||
+purchase_orders|updated_at|timestamp with time zone|YES||16||
+purchase_orders|created_at|timestamp with time zone|NO||17||
+purchase_orders|real_lead_time_days|integer|YES||18|32|0
+purchase_orders|received_by|uuid|YES||19||
+states|id|uuid|NO||1||
+states|name|character varying|NO|100|2||
+states|acronym|character varying|NO|2|3||
+states|ibge_code|character varying|NO|2|4||
+states|country_id|uuid|NO||5||
+states|created_at|timestamp with time zone|NO||6||
+stock_balances|id|uuid|NO||1||
+stock_balances|variant_id|uuid|NO||2||
+stock_balances|location_id|uuid|NO||3||
+stock_balances|lot_id|uuid|YES||4||
+stock_balances|quantity|numeric|NO||5|14|3
+stock_balances|version|integer|NO||6|32|0
+stock_balances|updated_at|timestamp with time zone|YES||7||
+stock_balances|created_at|timestamp with time zone|NO||8||
+stock_daily_snapshots|id|uuid|NO||1||
+stock_daily_snapshots|variant_id|uuid|NO||2||
+stock_daily_snapshots|location_id|uuid|NO||3||
+stock_daily_snapshots|day|date|NO||4||
+stock_daily_snapshots|closing_quantity|numeric|NO||5|14|3
+stock_daily_snapshots|created_at|timestamp with time zone|NO||6||
+stock_location_minimums|id|uuid|NO||1||
+stock_location_minimums|variant_id|uuid|NO||2||
+stock_location_minimums|location_id|uuid|NO||3||
+stock_location_minimums|min_quantity|numeric|NO||4|14|3
+stock_location_minimums|updated_at|timestamp with time zone|YES||5||
+stock_location_minimums|created_at|timestamp with time zone|NO||6||
+stock_locations|id|uuid|NO||1||
+stock_locations|store_id|uuid|NO||2||
+stock_locations|name|character varying|NO|100|3||
+stock_locations|is_sellable|boolean|NO||4||
+stock_locations|is_active|boolean|NO||5||
+stock_locations|updated_at|timestamp with time zone|YES||6||
+stock_locations|created_at|timestamp with time zone|NO||7||
+stock_movements|id|uuid|NO||1||
+stock_movements|variant_id|uuid|NO||2||
+stock_movements|location_id|uuid|NO||3||
+stock_movements|lot_id|uuid|YES||4||
+stock_movements|type|smallint|NO||5|16|0
+stock_movements|reason|smallint|NO||6|16|0
+stock_movements|quantity|numeric|NO||7|14|3
+stock_movements|unit_cost|numeric|YES||8|14|4
+stock_movements|balance_after|numeric|NO||9|14|3
+stock_movements|source_type|smallint|NO||10|16|0
+stock_movements|source_id|uuid|YES||11||
+stock_movements|user_id|uuid|NO||12||
+stock_movements|note|character varying|YES|500|13||
+stock_movements|created_at|timestamp with time zone|NO||14||
+stock_policies|id|uuid|NO||1||
+stock_policies|abc_class|smallint|NO||2|16|0
+stock_policies|target_coverage_days|integer|NO||3|32|0
+stock_policies|safety_days|integer|NO||4|32|0
+stock_policies|updated_at|timestamp with time zone|YES||5||
+stock_policies|created_at|timestamp with time zone|NO||6||
+stock_transfer_items|id|uuid|NO||1||
+stock_transfer_items|transfer_id|uuid|NO||2||
+stock_transfer_items|variant_id|uuid|NO||3||
+stock_transfer_items|quantity|numeric|NO||4|14|3
+stock_transfer_items|created_at|timestamp with time zone|NO||5||
+stock_transfers|id|uuid|NO||1||
+stock_transfers|number|integer|NO||2|32|0
+stock_transfers|from_location_id|uuid|NO||3||
+stock_transfers|to_location_id|uuid|NO||4||
+stock_transfers|note|character varying|YES|500|5||
+stock_transfers|created_by|uuid|NO||6||
+stock_transfers|forecast_recommendation_id|uuid|YES||7||
+stock_transfers|created_at|timestamp with time zone|NO||8||
+stores|id|uuid|NO||1||
+stores|name|character varying|NO|100|2||
+stores|default_sale_location_id|uuid|YES||3||
+stores|default_receive_location_id|uuid|YES||4||
+stores|is_active|boolean|NO||5||
+stores|updated_at|timestamp with time zone|YES||6||
+stores|created_at|timestamp with time zone|NO||7||
+suppliers|id|uuid|NO||1||
+suppliers|name|character varying|NO|150|2||
+suppliers|cnpj|character varying|NO|14|3||
+suppliers|lead_time_days|integer|NO||4|32|0
+suppliers|note|character varying|YES|500|5||
+suppliers|is_active|boolean|NO||6||
+suppliers|updated_at|timestamp with time zone|YES||7||
+suppliers|created_at|timestamp with time zone|NO||8||
+user_stores|id|uuid|NO||1||
+user_stores|user_id|uuid|NO||2||
+user_stores|store_id|uuid|NO||3||
+user_stores|created_at|timestamp with time zone|NO||4||
+users|id|uuid|NO||1||
+users|name|character varying|NO|100|2||
+users|last_name|character varying|NO|100|3||
+users|cpf|character varying|NO|11|4||
+users|birth_date|date|NO||5||
+users|email|character varying|NO|150|6||
+users|password_hash|character varying|NO|100|7||
+users|role|smallint|NO||8|16|0
+users|is_active|boolean|NO||9||
+users|last_login_at|timestamp with time zone|YES||10||
+users|updated_at|timestamp with time zone|YES||11||
+users|created_at|timestamp with time zone|NO||12||

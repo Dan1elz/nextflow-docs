@@ -1,0 +1,238 @@
+@startuml classes-12-enumeracoes
+!include ../../estilo.iuml
+skinparam dpi 170
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderThickness 1.4
+  FontSize 14
+  AttributeFontSize 13
+}
+hide empty members
+skinparam class<<acesso>> {
+  BackgroundColor #FCE4EC
+  HeaderBackgroundColor #F8BBD0
+  BorderColor #C2185B
+}
+hide <<acesso>> stereotype
+skinparam class<<cadastro>> {
+  BackgroundColor #FFF8E1
+  HeaderBackgroundColor #FFE082
+  BorderColor #F9A825
+}
+hide <<cadastro>> stereotype
+skinparam class<<produto>> {
+  BackgroundColor #EDE7F6
+  HeaderBackgroundColor #D1C4E9
+  BorderColor #5E35B1
+}
+hide <<produto>> stereotype
+skinparam class<<estoque>> {
+  BackgroundColor #E8F5E9
+  HeaderBackgroundColor #C8E6C9
+  BorderColor #2E7D32
+}
+hide <<estoque>> stereotype
+skinparam class<<venda>> {
+  BackgroundColor #E3F2FD
+  HeaderBackgroundColor #BBDEFB
+  BorderColor #1565C0
+}
+hide <<venda>> stereotype
+skinparam class<<compra>> {
+  BackgroundColor #FFF3E0
+  HeaderBackgroundColor #FFCC80
+  BorderColor #EF6C00
+}
+hide <<compra>> stereotype
+skinparam class<<previsao>> {
+  BackgroundColor #E0F7FA
+  HeaderBackgroundColor #B2EBF2
+  BorderColor #00838F
+}
+hide <<previsao>> stereotype
+title <size:20>Enumerações do domínio</size>
+
+package "Acesso" <<Rectangle>> {
+  enum RoleEnum <<acesso>> {
+    Admin
+  }
+  enum NotificationTypeEnum <<acesso>> {
+    NewRecommendations
+    LotExpiring
+    LowStock
+  }
+}
+RoleEnum -[hidden]down- NotificationTypeEnum
+package "Cadastros" <<Rectangle>> {
+  enum OwnerTypeEnum <<cadastro>> {
+    Client
+    Supplier
+  }
+  enum ContactTypeEnum <<cadastro>> {
+    Phone
+    Email
+    WhatsApp
+  }
+}
+OwnerTypeEnum -[hidden]down- ContactTypeEnum
+package "Produto" <<Rectangle>> {
+  enum ProductTypeEnum <<produto>> {
+    Standard
+    Apparel
+    Perishable
+    Bulk
+  }
+  enum SaleUnitEnum <<produto>> {
+    Unit
+    Kilogram
+    Liter
+    Meter
+  }
+  enum LifecycleEnum <<produto>> {
+    Active
+    Discontinued
+  }
+  enum AbcClassEnum <<produto>> {
+    A
+    B
+    C
+  }
+}
+ProductTypeEnum -[hidden]down- SaleUnitEnum
+SaleUnitEnum -[hidden]down- LifecycleEnum
+LifecycleEnum -[hidden]down- AbcClassEnum
+package "Classificação" <<Rectangle>> {
+  enum EventScopeEnum <<produto>> {
+    National
+    Company
+  }
+  enum DateRuleEnum <<produto>> {
+    Fixed
+    Easter
+    NthWeekday
+    BlackFriday
+    EasterOffset
+  }
+}
+EventScopeEnum -[hidden]down- DateRuleEnum
+package "Estoque" <<Rectangle>> {
+  enum MovementTypeEnum <<estoque>> {
+    In
+    Out
+  }
+  enum MovementReasonEnum <<estoque>> {
+    Opening
+    Purchase
+    Sale
+    CustomerReturn
+    SupplierReturn
+    TransferIn
+    TransferOut
+    Adjustment
+    Breakage
+    Expired
+    Theft
+    InternalUse
+  }
+  enum SourceTypeEnum <<estoque>> {
+    Order
+    PurchaseOrder
+    Transfer
+    Manual
+  }
+}
+MovementTypeEnum -[hidden]down- MovementReasonEnum
+MovementReasonEnum -[hidden]down- SourceTypeEnum
+package "Vendas" <<Rectangle>> {
+  enum OrderStatusEnum <<venda>> {
+    Paid
+    Canceled
+  }
+  enum OrderChannelEnum <<venda>> {
+    Counter
+  }
+  enum PaymentMethodEnum <<venda>> {
+    Cash
+    CreditCard
+    DebitCard
+    BankTransfer
+    Pix
+  }
+  enum PromotionSourceEnum <<venda>> {
+    Manual
+    AiRecommendation
+  }
+}
+OrderStatusEnum -[hidden]down- OrderChannelEnum
+OrderChannelEnum -[hidden]down- PaymentMethodEnum
+PaymentMethodEnum -[hidden]down- PromotionSourceEnum
+package "Compras" <<Rectangle>> {
+  enum PurchaseStatusEnum <<compra>> {
+    Budget
+    Pending
+    Received
+    Canceled
+  }
+}
+package "Previsão (análise)" <<Rectangle>> {
+  enum ForecastTriggerEnum <<previsao>> {
+    Manual
+    Scheduled
+  }
+  enum ForecastRunStatusEnum <<previsao>> {
+    Running
+    Completed
+    CompletedWithoutAi
+    Failed
+  }
+  enum RecommendationActionEnum <<previsao>> {
+    Buy
+    Promote
+    Hold
+    Transfer
+  }
+  enum RecommendationPriorityEnum <<previsao>> {
+    Low
+    Medium
+    High
+  }
+  enum ForecastConfidenceEnum <<previsao>> {
+    Low
+    Medium
+    High
+  }
+  enum RecommendationStatusEnum <<previsao>> {
+    Pending
+    Applied
+    Dismissed
+    Expired
+  }
+  enum LeadTimeSourceEnum <<previsao>> {
+    History
+    ProductSupplier
+    Supplier
+  }
+  enum DismissReasonEnum <<previsao>> {
+    BoughtElsewhere
+    DisagreeQuantity
+    WillDiscontinue
+    Other
+  }
+  enum AiBatchStatusEnum <<previsao>> {
+    Pending
+    Sent
+    Completed
+    Failed
+  }
+}
+ForecastTriggerEnum -[hidden]down- ForecastRunStatusEnum
+ForecastRunStatusEnum -[hidden]down- RecommendationActionEnum
+RecommendationActionEnum -[hidden]down- RecommendationPriorityEnum
+ForecastConfidenceEnum -[hidden]down- RecommendationStatusEnum
+RecommendationStatusEnum -[hidden]down- LeadTimeSourceEnum
+LeadTimeSourceEnum -[hidden]down- DismissReasonEnum
+note as Fora
+  Valores fora do escopo do TCC omitidos: orçamento, reembolso e expiração
+  na venda, inventário no livro-razão e perfil User.
+end note
+@enduml

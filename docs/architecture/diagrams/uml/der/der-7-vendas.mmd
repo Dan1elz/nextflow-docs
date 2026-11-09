@@ -1,0 +1,107 @@
+---
+title: "Vendas e promoções"
+config:
+  er:
+    layoutDirection: TB
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 20px
+---
+erDiagram
+    orders["Venda (orders)"] {
+        uuid id PK
+        uuid store_id FK
+        uuid sale_location_id FK
+        uuid client_id FK "opcional"
+        uuid user_id FK
+        int number
+        smallint status "paga ou cancelada"
+        smallint channel "balcão"
+        numeric subtotal
+        numeric discount_total
+        numeric total
+        numeric cash_received "opcional"
+        numeric change "opcional"
+        timestamptz paid_at "opcional"
+    }
+    order_items["Item da venda (order_items)"] {
+        uuid id PK
+        uuid order_id FK
+        uuid variant_id FK
+        uuid promotion_id FK "opcional"
+        int position
+        numeric quantity
+        numeric list_price
+        numeric unit_price
+        numeric discount
+        numeric line_total
+        numeric unit_cost "opcional"
+    }
+    payments["Pagamento (payments)"] {
+        uuid id PK
+        uuid order_id FK
+        smallint method "dinheiro, crédito, débito, transferência, Pix"
+        numeric amount
+    }
+    promotions["Promoção (promotions)"] {
+        uuid id PK
+        uuid product_id FK
+        uuid variant_id FK "opcional"
+        uuid forecast_recommendation_id FK "opcional"
+        uuid created_by FK
+        numeric discount_percent
+        date start_date
+        date end_date
+        varchar reason "opcional"
+        smallint source "manual ou da IA"
+        bool below_cost_confirmed
+        bool is_active
+        timestamptz canceled_at "opcional"
+    }
+    clients["Cliente (clients)"] {
+        uuid id PK "detalhado no DER 2"
+    }
+    users["Usuário (users)"] {
+        uuid id PK "detalhado no DER 1"
+    }
+    stores["Loja (stores)"] {
+        uuid id PK "detalhado no DER 5"
+    }
+    stock_locations["Local de estoque (stock_locations)"] {
+        uuid id PK "detalhado no DER 5"
+    }
+    products["Produto (products)"] {
+        uuid id PK "detalhado no DER 3"
+    }
+    product_variants["Variação do produto (product_variants)"] {
+        uuid id PK "detalhado no DER 3"
+    }
+    forecast_recommendations["Recomendação (forecast_recommendations)"] {
+        uuid id PK "detalhado no DER 9"
+    }
+
+    orders ||--o{ order_items : "contém"
+    promotions |o--o{ order_items : "aplica desconto"
+    product_variants ||--o{ order_items : "é vendida"
+    clients |o--o{ orders : "compra"
+    stock_locations ||--o{ orders : "baixa de"
+    stores ||--o{ orders : "registra"
+    users ||--o{ orders : "vende"
+    orders ||--o{ payments : "é paga com"
+    users ||--o{ promotions : "cria"
+    forecast_recommendations |o--o{ promotions : "gera"
+    products ||--o{ promotions : "tem promoções"
+    product_variants |o--o{ promotions : "tem promoção"
+
+    classDef cadastro fill:#FFF8E1,stroke:#F9A825,stroke-width:2px
+    class clients cadastro
+    classDef previsao fill:#E0F7FA,stroke:#00838F,stroke-width:2px
+    class forecast_recommendations previsao
+    classDef venda fill:#E3F2FD,stroke:#1565C0,stroke-width:2px
+    class order_items,orders,payments,promotions venda
+    classDef produto fill:#EDE7F6,stroke:#5E35B1,stroke-width:2px
+    class product_variants,products produto
+    classDef estoque fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
+    class stock_locations,stores estoque
+    classDef acesso fill:#FCE4EC,stroke:#C2185B,stroke-width:2px
+    class users acesso

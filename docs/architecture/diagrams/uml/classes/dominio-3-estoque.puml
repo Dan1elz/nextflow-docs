@@ -1,0 +1,90 @@
+@startuml dominio-3-estoque
+!include ../estilo.iuml
+!include estilo-dominio.iuml
+title <size:22>Modelo de domínio — Estoque</size>
+
+class "Loja" as Loja <<estoque>> {
+  nome : Texto
+  ativa : Lógico
+  --
+  definirLocaisPadrão(venda, recebimento)
+}
+class "Local de estoque" as Local <<estoque>> {
+  nome : Texto
+  vendável : Lógico
+  ativo : Lógico
+}
+class "Saldo" as Saldo <<estoque>> {
+  quantidade : Decimal
+  --
+  aplicar(quantidadeComSinal)
+}
+class "Lote" as Lote <<estoque>> {
+  código : Texto
+  validade : Data
+}
+class "Movimentação (livro-razão)" as Mov <<estoque>> {
+  tipo : entrada ou saída
+  motivo : MotivoDaMovimentação
+  quantidade : Decimal
+  custoUnitário : Decimal [0..1]
+  saldoApós : Decimal
+  documentoDeOrigem : venda, compra, transferência ou manual
+  observação : Texto [0..1]
+}
+class "Mínimo por local" as Minimo <<estoque>> {
+  quantidadeMínima : Decimal
+}
+class "Política de estoque" as Politica <<estoque>> {
+  classeABC : A, B ou C
+  coberturaAlvoDias : Inteiro
+  diasDeSegurança : Inteiro
+}
+class "Transferência" as Transf <<estoque>> {
+  número : Inteiro
+  observação : Texto [0..1]
+}
+class "Item da transferência" as ItemTransf <<estoque>> {
+  quantidade : Decimal
+}
+class "Variação do produto" as Variacao <<produto>>
+class "Usuário" as Usuario <<acesso>>
+class "Recomendação" as Recomendacao <<previsao>>
+
+enum "Motivo da movimentação" as Motivo <<estoque>> {
+  Abertura
+  Compra
+  Venda
+  Transferência de entrada ou saída
+  Ajuste
+  Quebra
+  Vencido
+  Furto
+  Uso interno
+  Devolução de cliente ou ao fornecedor
+}
+
+Loja "1" *-- "1..*" Local : possui
+Local "1" -- "*" Saldo : guarda
+Variacao "1" -- "*" Saldo : tem saldo em
+Lote "0..1" -- "*" Saldo : separa por lote
+Variacao "1" *-- "*" Lote : tem
+Local "1" -- "*" Mov : movimenta
+Variacao "1" -- "*" Mov : movimenta
+Lote "0..1" -- "*" Mov : de qual lote
+Usuario "1" -- "*" Mov : lança
+Local "1" -- "*" Minimo : define
+Variacao "1" -- "*" Minimo : tem mínimo
+Transf "*" -- "1" Local : sai de
+Transf "*" -- "1" Local : entra em
+Transf "1" *-- "1..*" ItemTransf : contém
+ItemTransf "*" -- "1" Variacao : transfere
+Usuario "1" -- "*" Transf : registra
+Recomendacao "0..1" -- "0..1" Transf : gera
+
+legend bottom left
+  <b>Regra central:</b> o <b>Saldo</b> (por variação × local × lote) é sempre a soma das <b>Movimentações</b>, que nunca são
+  editadas nem apagadas; erro se corrige com um lançamento contrário (RN-CE01, RN-CE14). Toda venda, compra, transferência
+  e ajuste vira movimentação. A <b>Política</b> vale por classe ABC (cobertura e segurança usadas na previsão).
+endlegend
+@enduml
