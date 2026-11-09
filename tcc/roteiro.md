@@ -1,6 +1,8 @@
 # Roteiro da refatoração do TCC
 
-> **Status:** rascunho / a validar · **Data:** 2026-11-09 · **Arquivo:** `tcc/tcc.odt` (um arquivo só; o histórico fica no git)
+> **Status:** rascunho / a validar · **Data:** 2026-11-09 · **Arquivo:** desde 09/11 (tarde) o que vale é o DOCX do Daniel
+> (`Downloads/Nextflow - TCC - Formatado.docx`, cópia versionada em `tcc/tcc.docx`). O `tcc.odt` e o `montar.sh` ficam
+> como histórico de como os capítulos foram gerados; edições novas vão direto no DOCX (ex.: `ferramentas/ajustar_docx.py`).
 > **Regra:** cada mudança entra como alteração controlada (autor "Claude (revisão TCC)"); o Daniel aceita ou recusa no editor.
 > Todo texto novo também leva **fundo verde** (estilo `TccNovo`) para a leitura. O verde não some ao aceitar a alteração:
 > antes da entrega, rodar `python3 -I tcc/ferramentas/limpar_destaque.py tcc/tcc.odt`.
