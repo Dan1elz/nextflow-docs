@@ -1,4 +1,5 @@
 # Fonte do capítulo 6 (CONSIDERAÇÕES FINAIS). Gerado no ODT por gerar_capitulo.py, depois do cap5.py.
+# Foco no produto (pedido do Daniel, 09/11): o problema do lojista e o que o sistema muda no dia a dia, não a arquitetura.
 
 TITULO = 'CONSIDERAÇÕES FINAIS'
 TITULO_SEGUINTE = 'REFERÊNCIAS'
@@ -6,36 +7,42 @@ NUMERO = '6'
 FIG_INICIO = 44
 QD_INICIO = 16
 
-INTRO = ('O projeto Nextflow alcançou o seu objetivo ao entregar um sistema web modular de gestão para comércios de '
-         'pequeno e médio porte, que integra catálogo de produtos, estoque, vendas de balcão e compras a um módulo de '
-         'previsão de demanda sazonal com apoio de inteligência artificial. A aplicação foi construída segundo os '
-         'princípios da *Clean Architecture*, com as regras de negócio isoladas da infraestrutura, e a *stack* escolhida '
-         '(.NET 10, React com TypeScript e PostgreSQL, executados em contêineres Docker) mostrou-se adequada: as consultas '
-         'responderam, em média, em menos de 100 milissegundos com três anos de histórico, e os 1.059 testes automatizados do '
-         '*backend* comprovam o comportamento das regras de negócio.')
+INTRO = ('Este trabalho partiu de um problema comum aos pequenos e médios comércios: o estoque controlado de memória ou em '
+         'planilhas, compras feitas sem base em dados, falta de produtos justamente nas datas de maior venda e mercadoria '
+         'parada ou vencida depois delas. O Nextflow responde a esse problema reunindo em um único sistema o cadastro de '
+         'produtos, o estoque de cada loja, as vendas de balcão e as compras junto aos fornecedores, de modo que cada venda '
+         'e cada recebimento atualizem o estoque no mesmo instante e fiquem registrados.')
 
 BLOCOS = [
-    ('p', 'Duas decisões se destacam como contribuições do trabalho. A primeira é tratar o estoque como um livro-razão, em '
-          'que o saldo é sempre a soma de movimentações que não podem ser alteradas, o que torna cada quantidade '
-          'explicável e auditável. A segunda é a divisão de papéis na previsão de demanda: o servidor calcula, a '
-          'inteligência artificial prioriza e explica dentro de limites, e o gestor decide. Com isso, o sistema aproveita a '
-          'capacidade dos modelos generativos de produzir explicações em linguagem natural sem depender deles para os '
-          'números, e continua funcionando quando o serviço externo está indisponível.'),
-    ('p', 'Do ponto de vista acadêmico, o desenvolvimento permitiu vivenciar o ciclo completo de um sistema, do '
-          'levantamento de requisitos à modelagem, à implementação, aos testes e à documentação. O registro das regras de '
-          'negócio com códigos, das decisões de arquitetura e dos contratos de tela, a entrega em fatias verticais e o uso '
-          'de testes automatizados fortaleceram competências essenciais ao mercado, como o trabalho colaborativo, o '
-          'controle de versões e a rastreabilidade entre requisito e código.'),
+    ('p', 'O diferencial do produto é transformar esse histórico em decisão de compra. Em vez de o gestor estimar quanto '
+          'pedir para o Natal ou para a Páscoa, o sistema indica o que comprar, em que quantidade e até quando, considerando '
+          'o prazo de entrega de cada fornecedor; aponta o que promover antes que saia de época ou vença; e sugere '
+          'transferir mercadoria de uma loja para outra antes de comprar mais. Cada recomendação é acompanhada do motivo e '
+          'dos números que a sustentam, em linguagem simples, e a decisão final é sempre do gestor.'),
+    ('p', 'Nos dados de demonstração de uma loja de doces e presentes com duas unidades e três anos de histórico, a análise '
+          'antecipou a compra de produtos de Natal cujo estoque não cobriria o prazo de entrega somado ao pico de dezembro, '
+          'sugeriu promoções para kits de datas já passadas com lotes próximos do vencimento e indicou transferências entre '
+          'as lojas. São exatamente as situações que, sem apoio, resultariam em prateleira vazia na data comemorativa, em '
+          'perda por validade ou em uma compra desnecessária.'),
+    ('p', 'No dia a dia, o sistema também simplifica a operação: a venda de balcão aceita o leitor de código de barras e '
+          'várias formas de pagamento, o painel mostra logo na entrada o que precisa de atenção, como estoque baixo, lotes '
+          'perto do vencimento e as próximas datas comerciais, e tudo pode ser acessado pelo computador ou pelo celular, '
+          'sem a necessidade de um servidor na loja. Ao oferecer esses recursos em uma ferramenta acessível, o trabalho '
+          'contribui para aproximar dos pequenos negócios um tipo de gestão que, como mostram os dados apresentados na '
+          'justificativa, ainda é muito mais comum nas empresas de grande porte.'),
+    ('p', 'Para a equipe, o projeto proporcionou a experiência de desenvolver um produto completo, do entendimento do '
+          'problema do lojista à entrega de um sistema funcional e testado, exercitando a definição de regras de negócio, a '
+          'priorização do que entra em cada versão e o trabalho colaborativo.'),
     ('h2', 'Trabalhos futuros'),
-    ('p', 'Embora o Nextflow tenha atingido os objetivos propostos para esta versão, o projeto possui potencial de '
-          'expansão. Como trabalhos futuros, destacam-se:'),
+    ('p', 'O próximo passo natural é colocar o Nextflow em uso em um comércio real. Além disso, destacam-se como '
+          'trabalhos futuros:'),
     ('alineas', [
-        ('perfis de acesso', 'inclusão de perfis com permissões por módulo, como vendedor, estoquista e comprador, aplicando o princípio do menor privilégio;'),
-        ('previsão por loja', 'cálculo da sazonalidade e da necessidade de compra de cada unidade, e não apenas da empresa como um todo;'),
-        ('avaliação em uso real', 'acompanhamento da precisão da previsão ao longo dos meses com dados de um comércio real e testes de usabilidade com usuários, por meio do questionário SUS;'),
+        ('validação em uso real', 'acompanhar a precisão da previsão ao longo dos meses com os dados de uma loja e aplicar testes de usabilidade com os usuários, por meio do questionário SUS;'),
+        ('previsão por loja', 'calcular a sazonalidade e a necessidade de compra de cada unidade, e não apenas da empresa como um todo;'),
+        ('perfis de acesso', 'permitir que vendedores, estoquistas e compradores usem o sistema com acesso apenas ao que precisam;'),
         ('vendas e estoque', 'pedido de venda com orçamento e reserva de estoque, reembolso de vendas e inventário por contagem;'),
         ('gestão financeira', 'fluxo de caixa, contas a pagar e a receber e indicadores de lucro;'),
         ('integração fiscal', 'entrada de mercadorias a partir do arquivo XML da nota fiscal eletrônica;'),
-        ('oferta como serviço', 'separação dos dados por empresa, permitindo que vários comércios utilizem a mesma instalação.'),
+        ('oferta como serviço', 'permitir que vários comércios utilizem a mesma instalação, cada um com os seus dados.'),
     ]),
 ]

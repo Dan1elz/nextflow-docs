@@ -15,8 +15,8 @@
 | Cap. 1 a 3 | Ajustes pontuais feitos (commit `481f488`), aguardando revisão do Daniel |
 | Cap. 4 Desenvolvimento | Reescrito por inteiro (44 figuras, 13 quadros), aguardando revisão; fonte em `ferramentas/cap4.py` |
 | Cap. 5 Resultados | Reescrito por inteiro (Quadros 14 a 16), aguardando revisão; fonte em `ferramentas/cap5.py` |
-| Cap. 6 Considerações finais | Reescrito (contribuições, parte acadêmica e trabalhos futuros), aguardando revisão; fonte em `ferramentas/cap6.py` |
-| Resumo, abstract, listas, folha de aprovação | Por último |
+| Cap. 6 Considerações finais | Reescrito com foco no produto (pedido do Daniel, 09/11), aguardando revisão; fonte em `ferramentas/cap6.py` |
+| Resumo, abstract, listas, sumário, apêndice | Feitos por `ferramentas/pretextuais.py` (último passo do `montar.sh`), aguardando revisão |
 
 ### O que mudou nos cap. 1 a 3 (resumo para a revisão)
 - 1: o "painel de controle de usuários" saiu do problema, da hipótese, do objetivo geral, de um objetivo específico e da
@@ -97,3 +97,14 @@ Se o Daniel editar o `tcc.odt` à mão, commitar antes e levar a edição para a
 - Resumo e abstract novos; palavras-chave (incluir previsão de demanda e inteligência artificial).
 - Listas de figuras, quadros e siglas (novas: ADR, FEFO, LLM, S3, VPS) e o sumário, que são texto manual.
 - Folha de aprovação com "Americana, 18 de junho de 2021" (sobra do modelo): data da banca.
+
+## Pré e pós-textuais — feito em 09/11
+- Resumo, abstract e palavras-chave novos; folha de aprovação com "Americana, ___ de dezembro de 2026." (preencher a data).
+  Os nomes da banca (Benedito, Renato, Antonio) e a dedicatória vieram do modelo: **confirmar com o orientador**.
+- Listas de figuras (45) e quadros (16) e o sumário (62 títulos) são gerados das legendas e dos títulos do documento.
+  O sumário é um índice de verdade: no Word, clicar nele e "Atualizar sumário" para pôr os números de página.
+- Siglas: só as que aparecem no texto (tabela em `pretextuais.py`).
+- Apêndice A virou "Mapa geral do modelo de dados" (Figura 45, `der-apendice-geral.png`).
+- Referências: a ABNT NBR 10520:2023 está na lista, mas não é citada no texto (decidir se fica).
+- O `montar.sh` recusa gravar o `tcc.odt` se ele estiver aberto (arquivo `~$` na pasta); dá para montar em outro caminho:
+  `./montar.sh /caminho/saida.odt`.
