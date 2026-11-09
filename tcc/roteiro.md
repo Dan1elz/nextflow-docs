@@ -2,6 +2,12 @@
 
 > **Status:** rascunho / a validar · **Data:** 2026-11-09 · **Arquivo:** `tcc/tcc.odt` (um arquivo só; o histórico fica no git)
 > **Regra:** cada mudança entra como alteração controlada (autor "Claude (revisão TCC)"); o Daniel aceita ou recusa no editor.
+> Todo texto novo também leva **fundo verde** (estilo `TccNovo`) para a leitura. O verde não some ao aceitar a alteração:
+> antes da entrega, rodar `python3 -I tcc/ferramentas/limpar_destaque.py tcc/tcc.odt`.
+>
+> **Ferramentas** (`tcc/ferramentas/`): `odtrack.py` aplica uma lista de trocas (`ops_*.py`) como alterações controladas;
+> `odt2txt.py` extrai o texto (com as alterações aceitas) para conferir; `limpar_destaque.py` tira o verde.
+> Sempre aplicar sobre a versão anterior commitada e comparar o texto antes de gravar.
 
 ## Estado
 | Parte | Estado |
