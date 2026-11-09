@@ -17,10 +17,26 @@ styles = zin.read('word/styles.xml').decode('utf-8')
 settings = zin.read('word/settings.xml').decode('utf-8')
 
 # 1. fundo verde
-antes = len(re.findall(r'w:fill="C6EFCE"', doc, re.I))
-doc = re.sub(r'<w:shd w:val="clear" w:color="auto" w:fill="C6EFCE"/>', '', doc, flags=re.I)
-doc = doc.replace('<w:rPr></w:rPr>', '')
-assert not re.search(r'C6EFCE', doc, re.I), 'sobrou verde'
+#    Só nos pré e pós-textuais: o verde fica nos capítulos 1 a 6 (o grupo revisa por ele; Daniel, 09/11).
+VERDE = '<w:shd w:val="clear" w:color="auto" w:fill="C6EFCE"/>'
+PARA = re.compile(r'<w:p\b[^>]*>(?:(?!</w:p>).)*</w:p>', re.S)
+
+def inicio_titulo(txt):
+    for m in PARA.finditer(doc):
+        p = m.group(0)
+        if re.search(r'<w:pStyle w:val="Ttulo\d"/>', p) and ''.join(re.findall(r'<w:t(?: [^>]*)?>([^<]*)</w:t>', p)).strip() == txt:
+            return m.start()
+    raise SystemExit('título %s não encontrado' % txt)
+
+ini_txt, fim_txt = inicio_titulo('INTRODUÇÃO'), inicio_titulo('REFERÊNCIAS')
+fora = lambda s: re.sub(re.escape(VERDE), '', s, flags=re.I).replace('<w:rPr></w:rPr>', '')
+antes = len(re.findall(r'w:fill="C6EFCE"', doc[:ini_txt] + doc[fim_txt:], re.I))
+doc = fora(doc[:ini_txt]) + doc[ini_txt:fim_txt] + fora(doc[fim_txt:])
+
+# 1b. parágrafo dos logos da capa estava com estilo de título e entrava no sumário
+m = PARA.search(doc)
+if '<w:drawing' in m.group(0) and '<w:pStyle w:val="Ttulo2"/>' in m.group(0):
+    doc = doc[:m.start()] + m.group(0).replace('<w:pPr><w:pStyle w:val="Ttulo2"/></w:pPr>', '<w:pPr><w:keepNext/></w:pPr>', 1) + doc[m.end():]
 
 # 2. imagens: só geometria, sem preenchimento, linha ou sombra
 def limpa_sppr(m):
@@ -54,7 +70,6 @@ def esc(s):
     return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
 
 # 3. legendas -> estilo Legenda + SEQ (só fora das listas: parágrafo sem tabulação)
-PARA = re.compile(r'<w:p\b[^>]*>(?:(?!</w:p>).)*</w:p>', re.S)
 cont = {'Figura': 0, 'Quadro': 0}
 def legenda(m):
     p = m.group(0)
@@ -65,9 +80,10 @@ def legenda(m):
     kind, num, resto = mm.groups()
     cont[kind] += 1
     open_tag = re.match(r'<w:p\b[^>]*>', p).group(0)
-    run = lambda s: '<w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">%s</w:t></w:r>' % esc(s)
-    seq = ('<w:fldSimple w:instr=" SEQ %s \\* ARABIC "><w:r><w:rPr><w:noProof/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr>'
-           '<w:t>%s</w:t></w:r></w:fldSimple>') % (kind, num)
+    shd = VERDE if 'C6EFCE' in p.upper() else ''
+    run = lambda s: '<w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/>%s</w:rPr><w:t xml:space="preserve">%s</w:t></w:r>' % (shd, esc(s))
+    seq = ('<w:fldSimple w:instr=" SEQ %s \\* ARABIC "><w:r><w:rPr><w:noProof/><w:sz w:val="20"/><w:szCs w:val="20"/>%s</w:rPr>'
+           '<w:t>%s</w:t></w:r></w:fldSimple>') % (kind, shd, num)
     return open_tag + '<w:pPr><w:pStyle w:val="Legenda"/></w:pPr>' + run(kind + ' ') + seq + run(' – ' + resto) + '</w:p>'
 
 # localizar as listas para não mexer nelas como legenda
