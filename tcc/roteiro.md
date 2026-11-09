@@ -24,10 +24,14 @@
 - 2.1 e 2.9: .NET 8 → .NET 10 (também no sumário e na referência, com acesso em 09 nov. 2026); "Machine Learning" saiu;
   Oracle VM → servidor virtual privado em provedor de nuvem (sem citar a Contabo); item novo de armazenamento compatível com S3.
 - 2.7: só o papel Administrador nesta versão; perfis restritos ficam para depois (ADR 0004). As citações de RBAC e ANPD ficaram.
-- 3.2: frase nova sobre as regras de negócio com código, fonte e data.
-- 3.4: Kanban no Trello e depois no quadro versionado; Sprint 3 sem "futuro"; **Sprint 4 nova** (reestruturação e
-  inteligência de compras). A Sprint 2 manteve o .NET 8, porque é histórico.
-- **Fora, por decisão do Daniel (09/11):** declaração do uso de IA no desenvolvimento (ele fala com o orientador esta semana).
+- 3.4: Kanban "inicialmente no Trello e, posteriormente," no quadro versionado; Sprint 3 sem "futuro"; **Sprint 4 nova**
+  (inteligência de compras e consolidação), em que o backend "foi atualizado para a versão 10 do .NET". A Sprint 2 manteve
+  o .NET 8.
+- **Fora, por decisão do Daniel (09/11):** declaração do uso de IA no desenvolvimento (ele fala com o orientador esta semana)
+  e a frase da 3.2 sobre regras levantadas em entrevistas.
+- **Regra para todo o texto (Daniel, 09/11):** a banca não conhece versão anterior, então nada de "reestruturação",
+  "escopo redefinido" ou "nova versão"; mudança vira evolução natural ("posteriormente", "foi atualizado"). E o texto não
+  pode dar a entender que o Daniel é dono ou responsável pelo produto: o trabalho é da equipe.
 
 ## Capítulo 4 — Desenvolvimento (proposta de estrutura)
 | Seção | Conteúdo | Fonte |

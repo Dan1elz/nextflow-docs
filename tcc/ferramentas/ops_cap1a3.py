@@ -62,13 +62,10 @@ OPS = [
         ('T809', 'Armazenamento de objetos:'),
         ('T810', ' as imagens dos produtos são guardadas em um serviço de armazenamento compatível com a interface do Amazon S3, executado em container próprio; o banco de dados registra apenas a chave de cada arquivo, de modo que o serviço pode ser substituído por outro compatível sem alteração no código da aplicação.'),
     ]),
-    # 3.2 Levantamento de requisitos
-    dict(para='Para a extração das necessidades do sistema',
-         append=' Na reestruturação do sistema, os requisitos foram refinados em entrevistas com o responsável pelo produto e registrados como regras de negócio identificadas por código, com fonte e data, o que permite rastrear cada funcionalidade até a regra que a originou.'),
     # 3.4 Sprints
     dict(para='O fluxo de trabalho foi gerido utilizando o Trello',
          old='O fluxo de trabalho foi gerido utilizando o Trello, sob o método Kanban, permitindo a visualização e controle do fluxo de tarefas.',
-         new='O fluxo de trabalho foi gerido sob o método Kanban, inicialmente no Trello e, a partir da reestruturação do sistema, em um quadro de tarefas versionado junto à documentação do projeto, permitindo a visualização e o controle do fluxo de tarefas.'),
+         new='O fluxo de trabalho foi gerido sob o método Kanban, inicialmente no Trello e, posteriormente, em um quadro de tarefas versionado junto à documentação do projeto, permitindo a visualização e o controle do fluxo de tarefas.'),
     dict(para='@P866', span='T869', old='a etapa final concentrou-se', new='a terceira etapa concentrou-se'),
     dict(para='@P866', span='T869',
          old='para o futuro módulo de análise preditiva de sazonalidade, que processará os dados históricos para gerar ',
@@ -79,7 +76,7 @@ OPS = [
          new=''),
     dict(para='@P866', item=[
         ('T867', 'Sprint 4'),
-        ('T868', ': reestruturação e inteligência de compras:'),
-        ('T869', ' com o escopo redefinido para um micro ERP com inteligência de compras, o sistema foi reestruturado sobre a versão 10 do .NET e desenvolvido em fatias verticais, cada uma reunindo modelo de dados, regras de negócio, API, testes automatizados e tela. As regras de negócio, as decisões de arquitetura e os contratos de tela passaram a ser registrados em um repositório próprio de documentação, que serviu de referência para cada entrega. Nesta etapa foram implementados o catálogo com variações, as lojas e os locais de estoque, o estoque registrado como livro-razão, a venda de balcão, o pedido de compra com recebimento e o módulo de previsão de demanda com apoio de inteligência artificial. O processo foi concluído com ajustes de usabilidade e a consolidação desta documentação técnica.'),
+        ('T868', ': inteligência de compras e consolidação:'),
+        ('T869', ' nesta etapa, o desenvolvimento passou a ser organizado em fatias verticais, cada uma reunindo modelo de dados, regras de negócio, API, testes automatizados e tela, e a plataforma do backend foi atualizada para a versão 10 do .NET. As regras de negócio, as decisões de arquitetura e os contratos de tela passaram a ser registrados em um repositório próprio de documentação, que serviu de referência para cada entrega. Foram implementados o catálogo com variações, as lojas e os locais de estoque, o estoque registrado como livro-razão, a venda de balcão, o pedido de compra com recebimento e o módulo de previsão de demanda com apoio de inteligência artificial. O processo foi concluído com ajustes de usabilidade e a consolidação desta documentação técnica.'),
     ]),
 ]
