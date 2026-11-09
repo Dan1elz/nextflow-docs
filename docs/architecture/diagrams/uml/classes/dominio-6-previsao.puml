@@ -1,0 +1,125 @@
+@startuml dominio-6-previsao
+!include ../estilo.iuml
+!include estilo-dominio.iuml
+title <size:22>Modelo de domínio — Previsão de demanda com IA</size>
+
+class "Análise de previsão" as Analise <<previsao>> {
+  origem : manual ou agendada
+  horizonteMeses : Inteiro
+  situação : SituaçãoDaAnálise
+  dataDeReferência : Data
+  iniciadaEm : DataHora
+  concluídaEm : DataHora [0..1]
+  resumoDaIA : Texto [0..1]
+  produtosAnalisados : Inteiro
+  produtosEnviadosÀIA : Inteiro
+  --
+  iniciar(horizonte, produtos, lotes)
+  registrarLote(concluído)
+  concluir(situação, resumo)
+  falhar(erro)
+}
+class "Lote enviado à IA" as Lote <<previsao>> {
+  número : Inteiro
+  quantidadeDeProdutos : Inteiro
+  situação : pendente, enviado, concluído ou falhou
+  --
+  marcarEnviado()
+  marcarConcluído()
+  marcarFalhou(erro)
+}
+class "Projeção mensal" as Projecao <<previsao>> {
+  ano : Inteiro
+  mês : Inteiro
+  quantidadeProjetada : Decimal
+}
+class "Recomendação" as Rec <<previsao>> {
+  ação : AçãoRecomendada
+  prioridade : baixa, média ou alta
+  confiança : baixa, média ou alta
+  situação : SituaçãoDaRecomendação
+  quantidadeSugerida : Decimal [0..1]
+  quantidadeCalculada : Decimal [0..1]
+  descontoSugerido : Percentual [0..1]
+  diasDePromoção : Inteiro [0..1]
+  comprarAté : Data [0..1]
+  motivo : Texto
+  motivoCalculado : Texto
+  ajustadaPelaIA : Lógico
+  estoqueAtual : Decimal
+  aCaminho : Decimal
+  demandaProjetada : Decimal
+  estoqueDeSegurança : Decimal
+  prazoDeEntregaDias : Inteiro
+  --
+  aplicarCompra(pedido)
+  aplicarPromoção(promoção)
+  aplicarTransferência(transferência)
+  descartar(motivo)
+  reverterCompra(pedidoCancelado)
+  expirar()
+}
+class "Item da recomendação" as Item <<previsao>> {
+  quantidade : Decimal
+  participação : Percentual
+}
+class "Parte da loja na compra" as Parte <<previsao>> {
+  participação : Percentual
+  falta : Decimal
+  quantidade : Decimal
+}
+class "Agendamento da previsão" as Agenda <<previsao>> {
+  ativo : Lógico
+  diaDaSemana : DiaDaSemana
+  hora : Hora
+  produtosPorLoteDaIA : Inteiro
+}
+class "Produto" as Produto <<produto>>
+class "Variação do produto" as Variacao <<produto>>
+class "Loja" as Loja <<estoque>>
+class "Transferência" as Transf <<estoque>>
+class "Pedido de compra" as Pedido <<compra>>
+class "Promoção" as Promocao <<venda>>
+class "Usuário" as Usuario <<acesso>>
+
+enum "Ação recomendada" as Acao <<previsao>> {
+  Comprar
+  Promover
+  Manter
+  Transferir
+}
+enum "Situação da recomendação" as SitRec <<previsao>> {
+  Pendente
+  Aplicada
+  Descartada
+  Expirada
+}
+enum "Situação da análise" as SitAn <<previsao>> {
+  Em andamento
+  Concluída
+  Concluída sem IA
+  Falhou
+}
+
+Usuario "0..1" -- "*" Analise : pede
+Agenda ..> Analise : dispara toda semana
+Analise "1" *-- "*" Lote : envia à IA em
+Analise "1" *-- "*" Projecao : projeta
+Projecao "*" -- "1" Produto : de
+Analise "1" *-- "*" Rec : gera
+Rec "*" -- "1" Produto : para
+Rec "1" *-- "*" Item : rateia nas variações
+Item "*" -- "1" Variacao : de
+Rec "1" *-- "*" Parte : divide por loja
+Parte "*" -- "1" Loja : de
+Rec "*" -- "*" Pedido : gerou
+Rec "0..1" -- "0..1" Promocao : gerou
+Rec "0..1" -- "0..1" Transf : gerou
+
+legend bottom left
+  <b>Como funciona:</b> a <b>análise</b> calcula a demanda de cada produto (sazonalidade, estoque, prazo) e gera uma <b>recomendação</b>;
+  a IA recebe os produtos em <b>lotes</b>, só prioriza e explica, dentro de limites (ADR 0005, RN-DF12); sem IA, fica o cálculo.
+  Ao aplicar, a recomendação fica ligada ao que gerou: pedidos de compra (um por loja), promoção ou transferência.
+  Uma análise nova expira as recomendações pendentes da anterior (RN-DF14).
+endlegend
+@enduml

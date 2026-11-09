@@ -1,0 +1,61 @@
+---
+title: "Sequência — Venda rápida no balcão"
+config:
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 18px
+  sequence:
+    mirrorActors: false
+    showSequenceNumbers: true
+---
+sequenceDiagram
+    autonumber
+    actor A as Administrador
+    box rgb(245,245,245) Front-end
+    participant T as Tela de venda rápida
+    end
+    box rgb(227,242,253) Back-end
+    participant API as API
+    participant L as Livro-razão de estoque
+    participant DB as Banco de dados
+    end
+
+    rect rgb(245, 245, 245)
+    Note over A,DB: Montar o carrinho
+    A->>T: bipa o código de barras ou busca o produto
+    T->>API: buscar variações (nome, SKU ou código de barras)
+    API->>DB: consulta variações, preço efetivo e disponível no local
+    DB-->>API: variações encontradas
+    API-->>T: opções com preço e disponível
+    T->>API: prévia do carrinho
+    API-->>T: totais, falta pagar e troco (calculados na API, nada é gravado)
+    end
+
+    rect rgb(245, 245, 245)
+    Note over A,DB: Concluir a venda
+    A->>T: informa as formas de pagamento e conclui
+    T->>API: registrar venda (itens, pagamentos, cliente opcional)
+    API->>API: valida os dados e recalcula o preço efetivo de cada item
+    opt o preço mudou desde a busca
+        API-->>T: "O preço mudou. Novo total. Deseja continuar?"
+        T->>A: pede confirmação
+        A->>T: confirma
+        T->>API: registrar venda (com confirmação)
+    end
+    opt soma dos pagamentos diferente do total
+        API-->>T: erro no campo pagamentos (RN-VD05)
+    end
+    API->>L: baixar o estoque de cada item no local de venda
+    L->>DB: lê saldos por lote (vence primeiro sai primeiro)
+    alt estoque insuficiente
+        L-->>API: itens sem saldo
+        API-->>T: erro em cada item sem saldo
+        T->>A: mostra quais itens não podem ser vendidos
+    else estoque disponível
+        L->>DB: grava as movimentações de saída e atualiza os saldos
+        API->>DB: grava venda, itens e pagamentos
+        API->>DB: confirma tudo numa única transação
+        API-->>T: venda concluída (número, total, troco)
+        T->>A: mostra a venda concluída
+    end
+    end

@@ -1,0 +1,57 @@
+---
+title: "Dados derivados para a previsão"
+config:
+  er:
+    layoutDirection: TB
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 20px
+---
+erDiagram
+    product_sales_monthly["Venda mensal do produto (product_sales_monthly)"] {
+        uuid id PK
+        uuid product_id FK
+        smallint year
+        smallint month
+        numeric quantity_sold
+        numeric quantity_sold_on_promo
+        smallint days_out_of_stock
+        numeric lost_demand_qty
+        numeric avg_price
+        numeric revenue
+    }
+    product_seasonality["Sazonalidade do produto (product_seasonality)"] {
+        uuid id PK
+        uuid product_id FK
+        smallint month
+        numeric seasonal_index
+        smallint months_of_history
+    }
+    stock_daily_snapshots["Fotografia diária do estoque (stock_daily_snapshots)"] {
+        uuid id PK
+        uuid variant_id FK
+        uuid location_id FK
+        date day
+        numeric closing_quantity
+    }
+    products["Produto (products)"] {
+        uuid id PK "detalhado no DER 3"
+    }
+    product_variants["Variação do produto (product_variants)"] {
+        uuid id PK "detalhado no DER 3"
+    }
+    stock_locations["Local de estoque (stock_locations)"] {
+        uuid id PK "detalhado no DER 5"
+    }
+
+    products ||--o{ product_sales_monthly : "vende por mês"
+    products ||--o{ product_seasonality : "tem sazonalidade"
+    stock_locations ||--o{ stock_daily_snapshots : "fotografa"
+    product_variants ||--o{ stock_daily_snapshots : "fotografa"
+
+    classDef previsao fill:#E0F7FA,stroke:#00838F,stroke-width:2px
+    class product_sales_monthly,product_seasonality,stock_daily_snapshots previsao
+    classDef produto fill:#EDE7F6,stroke:#5E35B1,stroke-width:2px
+    class product_variants,products produto
+    classDef estoque fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
+    class stock_locations estoque

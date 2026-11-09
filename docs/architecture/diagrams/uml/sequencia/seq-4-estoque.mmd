@@ -1,0 +1,51 @@
+---
+title: "Sequência — Ajuste e transferência de estoque"
+config:
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 18px
+  sequence:
+    mirrorActors: false
+    showSequenceNumbers: true
+---
+sequenceDiagram
+    autonumber
+    actor A as Administrador
+    box rgb(245,245,245) Front-end
+    participant T as Aba Estoque e Lotes do produto
+    end
+    box rgb(227,242,253) Back-end
+    participant API as API
+    participant L as Livro-razão de estoque
+    participant DB as Banco de dados
+    end
+
+    rect rgb(245, 245, 245)
+    Note over A,DB: Ajuste ou perda (ex.: dar baixa em lote vencido)
+    A->>T: escolhe variação, local, lote, quantidade e motivo
+    T->>API: registrar ajuste manual
+    API->>L: lançar entrada ou saída com o motivo
+    L->>DB: confere o saldo do local e do lote
+    alt saída maior que o saldo (e o produto não permite negativo)
+        L-->>API: saldo insuficiente (RN-CE32)
+        API-->>T: erro na quantidade
+    else saldo suficiente
+        L->>DB: grava a movimentação e atualiza o saldo
+        API-->>T: ajuste registrado
+    end
+    end
+
+    rect rgb(245, 245, 245)
+    Note over A,DB: Transferência entre locais (ex.: depósito → loja)
+    A->>T: escolhe origem, destino e quantidades
+    T->>API: transferir estoque
+    API->>L: lançar saída na origem (lotes que vencem primeiro)
+    L->>DB: grava as saídas e atualiza os saldos da origem
+    L-->>API: lotes que saíram
+    API->>L: lançar entrada no destino com os mesmos lotes
+    L->>DB: grava as entradas e atualiza os saldos do destino
+    API->>DB: grava a transferência e confirma numa única transação
+    API-->>T: transferência registrada
+    end
+
+    Note over A,DB: Toda alteração de saldo vira movimentação no livro-razão, que nunca é editada nem apagada (RN-CE01, RN-CE14).

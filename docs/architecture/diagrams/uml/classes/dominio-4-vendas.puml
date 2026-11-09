@@ -1,0 +1,92 @@
+@startuml dominio-4-vendas
+!include ../estilo.iuml
+!include estilo-dominio.iuml
+title <size:22>Modelo de domínio — Vendas e promoções</size>
+
+class "Venda" as Venda <<venda>> {
+  número : Inteiro
+  situação : SituaçãoDaVenda
+  subtotal : Decimal
+  descontos : Decimal
+  total : Decimal
+  valorRecebido : Decimal [0..1]
+  troco : Decimal [0..1]
+  pagaEm : DataHora
+  --
+  adicionarItem(item)
+  adicionarPagamento(pagamento)
+  registrarDinheiro(recebido, pago)
+}
+
+class "Item da venda" as Item <<venda>> {
+  quantidade : Decimal
+  preçoDeTabela : Decimal
+  preçoPraticado : Decimal
+  desconto : Decimal
+  totalDoItem : Decimal
+  custoNaVenda : Decimal [0..1]
+}
+
+class "Pagamento" as Pagamento <<venda>> {
+  forma : FormaDePagamento
+  valor : Decimal
+}
+
+class "Promoção" as Promocao <<venda>> {
+  desconto : Percentual
+  início : Data
+  fim : Data
+  motivo : Texto [0..1]
+  origem : manual ou IA
+  abaixoDoCustoConfirmado : Lógico
+  --
+  reagendar(novoPeríodo, novoDesconto)
+  cancelar()
+  valePara(variação) : Lógico
+  situaçãoEm(data) : SituaçãoDaPromoção
+}
+
+enum "Situação da venda" as SituacaoVenda <<venda>> {
+  Paga
+  Cancelada
+}
+enum "Forma de pagamento" as Forma <<venda>> {
+  Dinheiro
+  Crédito
+  Débito
+  Transferência
+  Pix
+}
+enum "Situação da promoção" as SituacaoPromo <<venda>> {
+  Agendada
+  Vigente
+  Encerrada
+  Cancelada
+}
+
+class "Cliente" as Cliente <<cadastro>>
+class "Usuário" as Usuario <<acesso>>
+class "Loja" as Loja <<estoque>>
+class "Local de estoque" as Local <<estoque>>
+class "Produto" as Produto <<produto>>
+class "Variação do produto" as Variacao <<produto>>
+
+Venda "1" *-- "1..*" Item : contém
+Venda "1" *-- "1..*" Pagamento : é paga com
+Cliente "0..1" -- "*" Venda : compra
+Usuario "1" -- "*" Venda : vende
+Loja "1" -- "*" Venda : registra
+Local "1" -- "*" Venda : dá baixa no estoque de
+Item "*" -- "1" Variacao : vende
+Item "*" -- "0..1" Promocao : com desconto de
+Produto "1" -- "*" Promocao : tem
+Promocao "*" -- "0..1" Variacao : só para
+Usuario "1" -- "*" Promocao : cria
+
+legend bottom left
+  <b>Como ler:</b> cada caixa é um conceito do negócio; ◆ = composição (o item e o pagamento só existem dentro da venda).
+  Números nas pontas = quantos de cada lado (1, 0..1 = opcional, * = muitos). Cores = módulo (azul Vendas, roxo Produto,
+  verde Estoque, amarelo Cadastros, rosa Acesso). Regras: o preço praticado vem do sistema (preço efetivo, RN-VD02);
+  a soma dos pagamentos fecha o total (RN-VD05); promoção abaixo do custo exige confirmação (RN-VD13).
+endlegend
+@enduml

@@ -1,0 +1,38 @@
+@startuml uc-7-previsao
+!include ../estilo.iuml
+left to right direction
+title Casos de uso — Previsão de demanda com IA
+
+actor "Administrador" as Admin
+actor "Agendador\n(semanal)" as Agendador
+actor "Serviço de IA\n(Gemini)" as IA
+
+rectangle "Nextflow — Inteligência de compras" {
+  usecase "UC38 Gerar análise de demanda" as UC38
+  usecase "UC39 Priorizar e explicar\ncom a IA" as UC39
+  usecase "UC40 Consultar recomendações" as UC40
+  usecase "UC41 Aplicar Comprar" as UC41
+  usecase "UC42 Dividir a compra\nentre lojas" as UC42
+  usecase "UC43 Aplicar Promover" as UC43
+  usecase "UC44 Aplicar Transferir" as UC44
+  usecase "UC45 Descartar recomendação" as UC45
+  usecase "UC46 Consultar precisão\nda previsão" as UC46
+  usecase "UC47 Configurar agendamento" as UC47
+  usecase "UC32 Elaborar pedido\nde compra" as UC32
+}
+
+Admin --> UC38
+Agendador --> UC38
+Admin --> UC40
+Admin --> UC46
+Admin --> UC47
+UC38 ..> UC39 : <<include>>
+UC39 --> IA
+UC41 .up.> UC40 : <<extend>>
+UC43 .up.> UC40 : <<extend>>
+UC44 .up.> UC40 : <<extend>>
+UC45 .up.> UC40 : <<extend>>
+UC41 ..> UC32 : <<include>>
+UC42 .up.> UC41 : <<extend>>
+
+@enduml

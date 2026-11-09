@@ -1,0 +1,53 @@
+---
+title: "Sequência — Autenticação e painel"
+config:
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 18px
+  sequence:
+    mirrorActors: false
+    showSequenceNumbers: true
+---
+sequenceDiagram
+    autonumber
+    actor A as Administrador
+    box rgb(245,245,245) Front-end
+    participant T as Telas (login e painel)
+    end
+    box rgb(227,242,253) Back-end
+    participant API as API
+    participant DB as Banco de dados
+    end
+
+    rect rgb(245, 245, 245)
+    Note over A,DB: Entrar no sistema
+    A->>T: digita e-mail e senha e clica em Entrar
+    T->>API: autenticar (e-mail, senha)
+    API->>DB: busca o usuário pelo e-mail
+    DB-->>API: usuário (ou nenhum)
+    alt usuário não existe ou senha não confere
+        API-->>T: "E-mail ou senha inválidos" (mensagem genérica, RN-AC03)
+        T->>A: mostra o erro
+    else usuário inativo
+        API-->>T: acesso negado (RN-AC02)
+        T->>A: mostra o erro
+    else credencial válida
+        API->>DB: registra o último acesso
+        API-->>T: token de acesso (JWT)
+        T->>T: guarda o token e a loja escolhida no topo
+    end
+    end
+
+    rect rgb(245, 245, 245)
+    Note over A,DB: Abrir o painel (cada bloco carrega em paralelo, com o token e a loja do topo)
+    T->>API: indicadores de vendas do mês e gráfico de 12 meses
+    API->>DB: soma vendas pagas, margem e ticket médio
+    API-->>T: faturamento, pedidos, ticket, margem, comparação com o ano anterior
+    T->>API: estoque baixo e lotes vencendo
+    API->>DB: saldos abaixo do mínimo e lotes que vencem em 30 dias
+    API-->>T: alertas (com a recomendação pendente de cada produto)
+    T->>API: recomendações da IA e próximas datas comemorativas
+    API->>DB: última análise e eventos dos próximos 90 dias
+    API-->>T: top 5 recomendações e eventos
+    T->>A: mostra o painel com gráficos e alertas
+    end

@@ -1,0 +1,49 @@
+---
+title: "Acesso e notificações"
+config:
+  er:
+    layoutDirection: TB
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 20px
+---
+erDiagram
+    users["Usuário (users)"] {
+        uuid id PK
+        varchar name
+        varchar last_name
+        varchar cpf
+        date birth_date
+        varchar email
+        varchar password_hash
+        smallint role "perfil: só Administrador"
+        bool is_active
+        timestamptz last_login_at "opcional"
+    }
+    user_stores["Loja do usuário (user_stores)"] {
+        uuid id PK
+        uuid user_id FK
+        uuid store_id FK
+    }
+    notifications["Notificação (notifications)"] {
+        uuid id PK
+        uuid user_id FK
+        smallint type "recomendações, lote vencendo, estoque baixo"
+        varchar title
+        varchar message
+        varchar link "opcional"
+        date digest_date "opcional"
+        timestamptz read_at "opcional"
+    }
+    stores["Loja (stores)"] {
+        uuid id PK "detalhado no DER 5"
+    }
+
+    users ||--o{ notifications : "recebe"
+    stores ||--o{ user_stores : "tem equipe"
+    users ||--o{ user_stores : "trabalha em"
+
+    classDef acesso fill:#FCE4EC,stroke:#C2185B,stroke-width:2px
+    class notifications,user_stores,users acesso
+    classDef estoque fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
+    class stores estoque

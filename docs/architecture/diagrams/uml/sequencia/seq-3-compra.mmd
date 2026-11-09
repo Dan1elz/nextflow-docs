@@ -1,0 +1,61 @@
+---
+title: "Sequência — Pedido de compra: criar, enviar e receber"
+config:
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 18px
+  sequence:
+    mirrorActors: false
+    showSequenceNumbers: true
+---
+sequenceDiagram
+    autonumber
+    actor A as Administrador
+    box rgb(245,245,245) Front-end
+    participant T as Telas de pedido de compra
+    end
+    box rgb(227,242,253) Back-end
+    participant API as API
+    participant L as Livro-razão de estoque
+    participant DB as Banco de dados
+    end
+
+    rect rgb(245, 245, 245)
+    Note over A,DB: Criar o pedido (orçamento)
+    A->>T: escolhe o fornecedor e adiciona os itens
+    T->>API: sugestão do item (fornecedor, variação, loja)
+    API->>DB: último custo pago e regras do fornecedor
+    API-->>T: custo sugerido, pedido mínimo e múltiplo
+    A->>T: ajusta quantidades e custos e salva
+    T->>API: criar pedido de compra
+    API->>API: avisa se a quantidade foge do mínimo ou do múltiplo
+    API->>DB: grava o pedido em Orçamento, com a previsão de chegada
+    API-->>T: pedido criado
+    end
+
+    rect rgb(245, 245, 245)
+    Note over A,DB: Enviar ao fornecedor
+    A->>T: clica em Enviar
+    T->>API: enviar pedido
+    API->>DB: Orçamento → Pendente, grava a data de envio
+    API-->>T: pedido pendente (o sistema nunca envia sozinho, RN-DF15)
+    end
+
+    rect rgb(245, 245, 245)
+    Note over A,DB: Receber a mercadoria
+    A->>T: confere os itens e informa lote e validade (produto perecível)
+    T->>API: receber pedido (todos os itens)
+    alt pedido não está pendente ou faltam itens
+        API-->>T: erro (sem recebimento parcial, RN-CP02)
+    else pedido completo
+        API->>DB: encontra ou cria cada lote informado
+        API->>L: lançar entrada de cada item no local de recebimento
+        L->>DB: grava as movimentações de entrada e atualiza os saldos
+        L->>DB: recalcula o custo médio de cada variação (RN-CE31)
+        API->>DB: grava o custo médio após o recebimento e o último custo do fornecedor
+        API->>DB: Pendente → Recebido, grava o prazo real de entrega
+        API->>DB: confirma tudo numa única transação
+        API-->>T: pedido recebido
+        T->>A: estoque atualizado
+    end
+    end

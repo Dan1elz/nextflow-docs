@@ -1,0 +1,91 @@
+---
+title: "Lojas, locais, saldo e livro-razão"
+config:
+  er:
+    layoutDirection: TB
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 20px
+---
+erDiagram
+    stores["Loja (stores)"] {
+        uuid id PK
+        uuid default_sale_location_id FK "opcional"
+        uuid default_receive_location_id FK "opcional"
+        varchar name
+        bool is_active
+    }
+    stock_locations["Local de estoque (stock_locations)"] {
+        uuid id PK
+        uuid store_id FK
+        varchar name
+        bool is_sellable "vende neste local?"
+        bool is_active
+    }
+    stock_balances["Saldo (stock_balances)"] {
+        uuid id PK
+        uuid variant_id FK
+        uuid location_id FK
+        uuid lot_id FK "opcional"
+        numeric quantity
+    }
+    lots["Lote (lots)"] {
+        uuid id PK
+        uuid variant_id FK
+        varchar code
+        date expires_on
+    }
+    stock_movements["Movimentação - livro-razão (stock_movements)"] {
+        uuid id PK
+        uuid variant_id FK
+        uuid location_id FK
+        uuid lot_id FK "opcional"
+        uuid user_id FK
+        smallint type "entrada ou saída"
+        smallint reason "compra, venda, transferência, perda..."
+        numeric quantity
+        numeric unit_cost "opcional"
+        numeric balance_after "saldo depois do lançamento"
+        smallint source_type "tipo do documento de origem"
+        uuid source_id "id do documento de origem, opcional"
+        varchar note "opcional"
+    }
+    stock_location_minimums["Mínimo por local (stock_location_minimums)"] {
+        uuid id PK
+        uuid variant_id FK
+        uuid location_id FK
+        numeric min_quantity
+    }
+    stock_policies["Política de estoque ABC (stock_policies)"] {
+        uuid id PK
+        smallint abc_class "A, B ou C"
+        int target_coverage_days
+        int safety_days
+    }
+    product_variants["Variação do produto (product_variants)"] {
+        uuid id PK "detalhado no DER 3"
+    }
+    users["Usuário (users)"] {
+        uuid id PK "detalhado no DER 1"
+    }
+
+    product_variants ||--o{ lots : "tem lotes"
+    stock_locations ||--o{ stock_balances : "guarda"
+    lots |o--o{ stock_balances : "separa por lote"
+    product_variants ||--o{ stock_balances : "tem saldo"
+    stock_locations ||--o{ stock_location_minimums : "define mínimo"
+    product_variants ||--o{ stock_location_minimums : "tem mínimo"
+    stores ||--o{ stock_locations : "possui"
+    stock_locations ||--o{ stock_movements : "movimenta"
+    lots |o--o{ stock_movements : "de qual lote"
+    users ||--o{ stock_movements : "lança"
+    product_variants ||--o{ stock_movements : "movimenta"
+    stock_locations |o--o{ stores : "é local padrão de recebimento"
+    stock_locations |o--o{ stores : "é local padrão de venda"
+
+    classDef estoque fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
+    class lots,stock_balances,stock_location_minimums,stock_locations,stock_movements,stock_policies,stores estoque
+    classDef produto fill:#EDE7F6,stroke:#5E35B1,stroke-width:2px
+    class product_variants produto
+    classDef acesso fill:#FCE4EC,stroke:#C2185B,stroke-width:2px
+    class users acesso

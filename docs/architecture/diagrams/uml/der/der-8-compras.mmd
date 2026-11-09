@@ -1,0 +1,73 @@
+---
+title: "Pedidos de compra"
+config:
+  er:
+    layoutDirection: TB
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 20px
+---
+erDiagram
+    purchase_orders["Pedido de compra (purchase_orders)"] {
+        uuid id PK
+        uuid supplier_id FK
+        uuid store_id FK
+        uuid receive_location_id FK
+        uuid created_by FK
+        uuid received_by FK "opcional"
+        int number
+        smallint status "orçamento, pendente, recebido, cancelado"
+        varchar note "opcional"
+        numeric total
+        int lead_time_days
+        date expected_on
+        timestamptz sent_at "opcional"
+        timestamptz received_at "opcional"
+        timestamptz canceled_at "opcional"
+        varchar cancel_reason "opcional"
+        int real_lead_time_days "opcional"
+    }
+    purchase_items["Item do pedido de compra (purchase_items)"] {
+        uuid id PK
+        uuid purchase_order_id FK
+        uuid variant_id FK
+        numeric quantity
+        numeric unit_cost
+        numeric subtotal
+        smallint sort_order
+        numeric average_cost_after "opcional"
+    }
+    suppliers["Fornecedor (suppliers)"] {
+        uuid id PK "detalhado no DER 2"
+    }
+    stores["Loja (stores)"] {
+        uuid id PK "detalhado no DER 5"
+    }
+    stock_locations["Local de estoque (stock_locations)"] {
+        uuid id PK "detalhado no DER 5"
+    }
+    users["Usuário (users)"] {
+        uuid id PK "detalhado no DER 1"
+    }
+    product_variants["Variação do produto (product_variants)"] {
+        uuid id PK "detalhado no DER 3"
+    }
+
+    purchase_orders ||--o{ purchase_items : "contém"
+    product_variants ||--o{ purchase_items : "é comprada"
+    users ||--o{ purchase_orders : "cria"
+    stock_locations ||--o{ purchase_orders : "recebe em"
+    users |o--o{ purchase_orders : "recebe"
+    stores ||--o{ purchase_orders : "compra para"
+    suppliers ||--o{ purchase_orders : "recebe pedidos"
+
+    classDef produto fill:#EDE7F6,stroke:#5E35B1,stroke-width:2px
+    class product_variants produto
+    classDef compra fill:#FFF3E0,stroke:#EF6C00,stroke-width:2px
+    class purchase_items,purchase_orders compra
+    classDef estoque fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
+    class stock_locations,stores estoque
+    classDef cadastro fill:#FFF8E1,stroke:#F9A825,stroke-width:2px
+    class suppliers cadastro
+    classDef acesso fill:#FCE4EC,stroke:#C2185B,stroke-width:2px
+    class users acesso

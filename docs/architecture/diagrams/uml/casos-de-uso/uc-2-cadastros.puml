@@ -1,0 +1,27 @@
+@startuml uc-2-cadastros
+!include ../estilo.iuml
+left to right direction
+title Casos de uso — Cadastros de pessoas
+
+actor "Administrador" as Admin
+
+rectangle "Nextflow — Cadastros" {
+  usecase "UC06 Gerenciar clientes" as UC06
+  usecase "UC07 Cadastrar cliente rápido\n(nome e CPF)" as UC07
+  usecase "UC08 Gerenciar fornecedores" as UC08
+  usecase "UC09 Manter endereços\n(país, estado, cidade)" as UC09
+  usecase "UC10 Manter contatos" as UC10
+  usecase "UC11 Consultar compras\ndo cliente ou do fornecedor" as UC11
+}
+
+Admin --> UC06
+Admin --> UC07
+Admin --> UC08
+UC06 ..> UC09 : <<include>>
+UC06 ..> UC10 : <<include>>
+UC08 ..> UC09 : <<include>>
+UC08 ..> UC10 : <<include>>
+UC11 .> UC06 : <<extend>>
+UC11 .> UC08 : <<extend>>
+
+@enduml

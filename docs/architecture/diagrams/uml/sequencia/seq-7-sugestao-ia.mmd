@@ -1,0 +1,44 @@
+---
+title: "Sequência — Sugestão da IA na hora (painel)"
+config:
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 18px
+  sequence:
+    mirrorActors: false
+    showSequenceNumbers: true
+---
+sequenceDiagram
+    autonumber
+    actor A as Administrador
+    box rgb(245,245,245) Front-end
+    participant T as Painel (estoque baixo)
+    participant P as Tela de novo pedido de compra
+    end
+    box rgb(227,242,253) Back-end
+    participant API as API
+    participant DB as Banco de dados
+    end
+    box rgb(224,247,250) Serviço externo
+    participant IA as Serviço de IA (Gemini)
+    end
+
+    A->>T: clica em Comprar com a IA no item em estoque baixo
+    T->>T: troca a loja do topo para a loja do item
+    alt o produto já tem recomendação Comprar pendente
+        T->>A: abre o comprar da recomendação (ver sequência anterior)
+    else sem recomendação
+        T->>API: sugestão de compra (variação, local)
+        API->>DB: saldo, mínimo, a caminho, venda dos últimos 90 dias e fornecedor
+        API->>API: calcula: volta ao mínimo e cobre prazo + 30 dias
+        opt IA configurada
+            API->>IA: fatos do item e a quantidade calculada
+            IA-->>API: quantidade sugerida e explicação
+            API->>API: limita a 0,5×–1,5× do calculado e arredonda ao múltiplo (RN-DF12)
+        end
+        API-->>T: quantidade, fornecedor e motivo
+        T->>P: abre o pedido com o produto, o fornecedor e a quantidade
+        P->>A: mostra o motivo da sugestão no topo
+    end
+
+    Note over A,IA: O mesmo vale para lote vencendo: a IA sugere desconto e dias e abre a promoção preenchida (RN-DF30).

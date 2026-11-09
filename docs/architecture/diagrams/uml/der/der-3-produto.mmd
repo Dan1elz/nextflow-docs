@@ -1,0 +1,84 @@
+---
+title: "Produto, variações e preço"
+config:
+  er:
+    layoutDirection: TB
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 20px
+---
+erDiagram
+    products["Produto (products)"] {
+        uuid id PK
+        uuid collection_id FK "opcional"
+        varchar name
+        varchar brand "opcional"
+        varchar description "opcional"
+        smallint product_type "padrão, vestuário, perecível, granel"
+        smallint sale_unit "unidade, kg, litro, metro"
+        smallint decimal_places "casas decimais da quantidade"
+        bool allows_negative
+        bool has_variants
+        bool tracks_lots
+        int shelf_life_days "opcional"
+        smallint lifecycle "em linha ou fora de linha"
+        date launched_on "opcional"
+        varchar image_key "opcional"
+        bool is_active
+        smallint abc_class "curva ABC, opcional"
+        numeric default_min_quantity
+        int target_coverage_days "opcional"
+    }
+    product_variants["Variação do produto (product_variants)"] {
+        uuid id PK
+        uuid product_id FK
+        varchar sku
+        varchar barcode "opcional"
+        numeric price
+        smallint sort_order
+        bool is_active
+        date removed_on "opcional"
+        numeric average_cost "opcional"
+        numeric last_cost "opcional"
+    }
+    product_attributes["Atributo da grade (product_attributes)"] {
+        uuid id PK
+        uuid product_id FK
+        varchar name
+        smallint sort_order
+    }
+    product_attribute_values["Valor do atributo (product_attribute_values)"] {
+        uuid id PK
+        uuid attribute_id FK
+        varchar value
+        smallint sort_order
+    }
+    product_variant_values["Valor da variação (product_variant_values)"] {
+        uuid id PK
+        uuid variant_id FK
+        uuid attribute_value_id FK
+    }
+    price_history["Histórico de preço (price_history)"] {
+        uuid id PK
+        uuid variant_id FK
+        uuid changed_by FK
+        numeric price
+        date valid_from
+        date valid_to "opcional"
+    }
+    users["Usuário (users)"] {
+        uuid id PK "detalhado no DER 1"
+    }
+
+    users ||--o{ price_history : "altera"
+    product_variants ||--o{ price_history : "tem preços"
+    product_attributes ||--o{ product_attribute_values : "tem valores"
+    products ||--o{ product_attributes : "define a grade"
+    product_attribute_values ||--o{ product_variant_values : "compõe"
+    product_variants ||--o{ product_variant_values : "combina"
+    products ||--o{ product_variants : "tem variações"
+
+    classDef produto fill:#EDE7F6,stroke:#5E35B1,stroke-width:2px
+    class price_history,product_attribute_values,product_attributes,product_variant_values,product_variants,products produto
+    classDef acesso fill:#FCE4EC,stroke:#C2185B,stroke-width:2px
+    class users acesso

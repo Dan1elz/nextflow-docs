@@ -1,0 +1,79 @@
+---
+title: "Sequência — Análise de previsão de demanda"
+config:
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 18px
+  sequence:
+    mirrorActors: false
+    showSequenceNumbers: true
+---
+sequenceDiagram
+    autonumber
+    actor A as Administrador
+    participant AG as Agendador semanal
+    box rgb(245,245,245) Front-end
+    participant T as Tela de previsão
+    end
+    box rgb(227,242,253) Back-end
+    participant API as API
+    participant M as Motor da previsão (segundo plano)
+    participant DB as Banco de dados
+    end
+    box rgb(224,247,250) Serviço externo
+    participant IA as Serviço de IA (Gemini)
+    end
+
+    rect rgb(245, 245, 245)
+    Note over A,IA: Disparar a análise
+    alt manual
+        A->>T: clica em Gerar nova análise
+        T->>API: gerar análise
+    else agendada
+        AG->>API: chegou o dia e a hora configurados
+    end
+    alt já existe uma análise em andamento
+        API-->>T: "Já existe uma análise em andamento" (uma por vez, RN-DF23)
+    else nenhuma em andamento
+        API->>DB: cria a análise como Em andamento
+        API->>M: coloca a análise na fila
+        API-->>T: análise iniciada
+        loop a cada 5 segundos, até terminar
+            T->>API: andamento da análise
+            API-->>T: situação e lotes concluídos
+        end
+    end
+    end
+
+    rect rgb(245, 245, 245)
+    Note over A,IA: Calcular (no servidor)
+    M->>DB: recalcula venda mensal, sazonalidade e fotografia do estoque
+    M->>DB: lê histórico, estoque, a caminho, prazos, eventos e políticas
+    M->>M: projeta a demanda de cada produto e calcula Comprar, Promover ou Manter
+    end
+
+    rect rgb(245, 245, 245)
+    Note over A,IA: Revisar com a IA (lotes em sequência, RN-DF20)
+    loop para cada lote de até N produtos
+        M->>IA: envia o cálculo do lote
+        alt IA respondeu
+            IA-->>M: prioridade, ajuste e explicação de cada produto
+            M->>M: aplica os limites (compra 0,5×–1,5×, desconto até o máximo da margem, RN-DF12)
+        else falhou ou sem chave
+            M->>M: o lote fica com o cálculo (RN-DF13)
+        end
+        M->>DB: registra o andamento do lote
+    end
+    M->>IA: pede o resumo geral da análise
+    IA-->>M: resumo (ou o sistema usa um resumo calculado)
+    M->>M: sugere Transferir onde uma loja sobra e outra falta (RN-DF16)
+    end
+
+    rect rgb(245, 245, 245)
+    Note over A,IA: Gravar e avisar
+    M->>DB: expira as recomendações pendentes da análise anterior (RN-DF14)
+    M->>DB: grava recomendações, projeções e a classe ABC dos produtos
+    M->>DB: conclui a análise (com ou sem IA) numa única transação
+    M->>DB: cria a notificação "Análise de previsão concluída" para os usuários
+    T->>A: mostra a nova análise e o sino com a notificação
+    end

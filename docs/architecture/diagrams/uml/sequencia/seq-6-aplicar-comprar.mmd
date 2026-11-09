@@ -1,0 +1,53 @@
+---
+title: "Sequência — Aplicar recomendação Comprar"
+config:
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 18px
+  sequence:
+    mirrorActors: false
+    showSequenceNumbers: true
+---
+sequenceDiagram
+    autonumber
+    actor A as Administrador
+    box rgb(245,245,245) Front-end
+    participant T as Tela de previsão
+    end
+    box rgb(227,242,253) Back-end
+    participant API as API
+    participant DB as Banco de dados
+    end
+
+    rect rgb(245, 245, 245)
+    Note over A,DB: Abrir o comprar
+    A->>T: seleciona recomendações Comprar e clica em Comprar
+    T->>API: detalhe de cada recomendação (rateio nas variações)
+    API-->>T: quantidade por variação e memória do cálculo
+    T->>API: último custo de cada item no fornecedor
+    API-->>T: custos sugeridos
+    opt recomendação com parte por loja (2 lojas ou mais)
+        T->>API: divisão entre lojas
+        API->>DB: participação, saldo e a caminho de cada loja
+        API-->>T: quantidade de cada loja e local de recebimento (RN-DF27)
+    end
+    T->>A: mostra um grupo por fornecedor, já dividido por loja
+    end
+
+    rect rgb(245, 245, 245)
+    Note over A,DB: Gerar os pedidos
+    A->>T: ajusta quantidades e custos e confirma
+    T->>API: aplicar compra (grupos por fornecedor e local de entrega)
+    API->>API: valida: recomendação pendente, ação Comprar, fornecedor e local
+    alt algum item inválido
+        API-->>T: erro na linha do item
+    else tudo válido
+        API->>DB: cria um pedido de compra em Orçamento por fornecedor × loja
+        API->>DB: liga cada recomendação aos pedidos gerados e marca como Aplicada (RN-DF28)
+        API->>DB: confirma numa única transação
+        API-->>T: pedidos criados (número, fornecedor, total)
+        T->>A: links para os pedidos (enviar ao fornecedor é um passo seguinte)
+    end
+    end
+
+    Note over A,DB: Se todos os pedidos de uma recomendação forem cancelados, ela volta a Pendente (RN-DF28).

@@ -1,0 +1,143 @@
+@startuml classes-2-cadastros
+!include ../../estilo.iuml
+skinparam dpi 170
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderThickness 1.4
+  FontSize 14
+  AttributeFontSize 13
+}
+hide empty members
+skinparam class<<acesso>> {
+  BackgroundColor #FCE4EC
+  HeaderBackgroundColor #F8BBD0
+  BorderColor #C2185B
+}
+hide <<acesso>> stereotype
+skinparam class<<cadastro>> {
+  BackgroundColor #FFF8E1
+  HeaderBackgroundColor #FFE082
+  BorderColor #F9A825
+}
+hide <<cadastro>> stereotype
+skinparam class<<produto>> {
+  BackgroundColor #EDE7F6
+  HeaderBackgroundColor #D1C4E9
+  BorderColor #5E35B1
+}
+hide <<produto>> stereotype
+skinparam class<<estoque>> {
+  BackgroundColor #E8F5E9
+  HeaderBackgroundColor #C8E6C9
+  BorderColor #2E7D32
+}
+hide <<estoque>> stereotype
+skinparam class<<venda>> {
+  BackgroundColor #E3F2FD
+  HeaderBackgroundColor #BBDEFB
+  BorderColor #1565C0
+}
+hide <<venda>> stereotype
+skinparam class<<compra>> {
+  BackgroundColor #FFF3E0
+  HeaderBackgroundColor #FFCC80
+  BorderColor #EF6C00
+}
+hide <<compra>> stereotype
+skinparam class<<previsao>> {
+  BackgroundColor #E0F7FA
+  HeaderBackgroundColor #B2EBF2
+  BorderColor #00838F
+}
+hide <<previsao>> stereotype
+title <size:20>Classes — Cadastros de pessoas e localidade</size>
+
+class "Client\n<size:11><i>Cliente</i></size>" as Client <<cadastro>> {
+  + Name : string
+  + LastName : string?
+  + Cpf : TaxDocument?
+  + BirthDate : DateOnly?
+  + IsActive : bool
+  + FullName : string {readOnly}
+  --
+  + Client(dto : ClientRequestDto)
+  + Client(dto : QuickCreateClientRequestDto)
+  + Update(dto) : void
+  + Delete() : void
+  + Reactivate() : void
+}
+class "Supplier\n<size:11><i>Fornecedor</i></size>" as Supplier <<cadastro>> {
+  + Name : string
+  + Cnpj : TaxDocument
+  + LeadTimeDays : int
+  + Note : string?
+  + IsActive : bool
+  --
+  + Supplier(dto)
+  + Update(dto) : void
+  + Delete() : void
+  + Reactivate() : void
+}
+class "Address\n<size:11><i>Endereço</i></size>" as Address <<cadastro>> {
+  + OwnerType : OwnerTypeEnum
+  + OwnerId : Guid
+  + ZipCode : string
+  + Street : string
+  + Number : string
+  + Complement : string?
+  + Neighborhood : string
+  + IsMain : bool
+  --
+  + Address(dto)
+  + Update(dto) : void
+  + SetMain(isMain) : void
+}
+class "Contact\n<size:11><i>Contato</i></size>" as Contact <<cadastro>> {
+  + OwnerType : OwnerTypeEnum
+  + OwnerId : Guid
+  + Type : ContactTypeEnum
+  + Value : string
+  + IsMain : bool
+  + IsPhone : bool {readOnly}
+  --
+  + Contact(dto)
+  + Update(dto) : void
+  + SetMain(isMain) : void
+}
+class "City\n<size:11><i>Cidade</i></size>" as City <<cadastro>> {
+  + Name : string
+  + IbgeCode : string
+  + SearchName : string
+  --
+  + City(name, ibgeCode)
+  + Rename(name) : void
+}
+class "State\n<size:11><i>Estado</i></size>" as State <<cadastro>> {
+  + Name : string
+  + Acronym : string
+  + IbgeCode : string
+  --
+  + State(name, acronym, ibgeCode)
+}
+class "Country\n<size:11><i>País</i></size>" as Country <<cadastro>> {
+  + Name : string
+  + AcronymIso : string
+  + BacenCode : string?
+  --
+  + Country(name, acronymIso, bacenCode)
+}
+class "ProductSupplier\n<size:11><i>ver Classificação</i></size>" as ProductSupplier <<produto>>
+
+Supplier "1" -- "*" ProductSupplier : Products
+Address "*" --> "1" City : City
+State "1" *-- "*" City : Cities
+Country "1" *-- "*" State : States
+Client "1" .. "*" Address : OwnerType + OwnerId
+Supplier "1" .. "*" Address : OwnerType + OwnerId
+Client "1" .. "*" Contact : OwnerType + OwnerId
+Supplier "1" .. "*" Contact : OwnerType + OwnerId
+note as Base
+  Todas herdam de <b>BaseModel</b> (Id : Guid, CreatedAt : DateTime).
+  Atributos com set privado: só o construtor e os métodos mudam o estado.
+end note
+@enduml

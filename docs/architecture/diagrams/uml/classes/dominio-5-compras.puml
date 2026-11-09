@@ -1,0 +1,61 @@
+@startuml dominio-5-compras
+!include ../estilo.iuml
+!include estilo-dominio.iuml
+title <size:22>Modelo de domínio — Compras</size>
+
+class "Pedido de compra" as Pedido <<compra>> {
+  número : Inteiro
+  situação : SituaçãoDoPedido
+  total : Decimal
+  prazoDeEntregaDias : Inteiro
+  previsãoDeChegada : Data
+  enviadoEm : DataHora [0..1]
+  recebidoEm : DataHora [0..1]
+  prazoRealDias : Inteiro [0..1]
+  canceladoEm : DataHora [0..1]
+  motivoDoCancelamento : Texto [0..1]
+  observação : Texto [0..1]
+  --
+  enviar()
+  receber(recebidoPor)
+  cancelar(motivo)
+  estáAtrasado(hoje) : Lógico
+  estáAberto() : Lógico
+}
+class "Item do pedido de compra" as Item <<compra>> {
+  quantidade : Decimal
+  custoUnitário : Decimal
+  subtotal : Decimal
+  custoMédioApós : Decimal [0..1]
+  --
+  registrarRecebimento(custoMédioApós)
+}
+class "Fornecedor" as Fornecedor <<cadastro>>
+class "Loja" as Loja <<estoque>>
+class "Local de estoque" as Local <<estoque>>
+class "Usuário" as Usuario <<acesso>>
+class "Variação do produto" as Variacao <<produto>>
+class "Recomendação" as Recomendacao <<previsao>>
+
+enum "Situação do pedido" as Situacao <<compra>> {
+  Orçamento
+  Pendente
+  Recebido
+  Cancelado
+}
+
+Pedido "1" *-- "1..*" Item : contém
+Item "*" -- "1" Variacao : compra
+Fornecedor "1" -- "*" Pedido : recebe
+Loja "1" -- "*" Pedido : compra para
+Local "1" -- "*" Pedido : recebe em
+Usuario "1" -- "*" Pedido : cria
+Usuario "0..1" -- "*" Pedido : recebe
+Recomendacao "*" -- "*" Pedido : gera
+
+legend bottom left
+  <b>Ciclo de vida:</b> Orçamento → <i>enviar()</i> → Pendente → <i>receber()</i> → Recebido; cancelar() vale para Orçamento ou Pendente
+  (pedido recebido não cancela, RN-CP03). Receber é o pedido inteiro: cada item vira <b>entrada no livro-razão</b> do local de
+  recebimento e atualiza o <b>custo médio</b> da variação (RN-CP02, RN-CP04, RN-CE31). Nada é enviado sozinho (RN-DF15).
+endlegend
+@enduml

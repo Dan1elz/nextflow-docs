@@ -1,0 +1,122 @@
+@startuml dominio-2-catalogo
+!include ../estilo.iuml
+!include estilo-dominio.iuml
+title <size:22>Modelo de domínio — Catálogo de produtos</size>
+
+class "Produto" as Produto <<produto>> {
+  nome : Texto
+  marca : Texto [0..1]
+  descrição : Texto [0..1]
+  tipo : TipoDeProduto
+  unidadeDeVenda : UnidadeDeVenda
+  controlaLote : Lógico
+  vidaÚtilDias : Inteiro [0..1]
+  permiteEstoqueNegativo : Lógico
+  cicloDeVida : CicloDeVida
+  lançamento : Data [0..1]
+  estoqueMínimoPadrão : Decimal
+  classeABC : A, B ou C [0..1]
+  ativo : Lógico
+  --
+  alterarCicloDeVida(ciclo)
+  aplicarClasseABC(classe)
+  mínimoNoLocal(variação, local) : Decimal
+  estáAbaixoDoMínimo(variação, local, disponível) : Lógico
+  desativar()
+}
+class "Variação do produto" as Variacao <<produto>> {
+  sku : Texto
+  códigoDeBarras : Texto [0..1]
+  preço : Decimal
+  custoMédio : Decimal [0..1]
+  últimoCusto : Decimal [0..1]
+  ativa : Lógico
+  --
+  atualizarCustoMédio(quantidade, custo)
+  remover()
+}
+class "Atributo da grade" as Atributo <<produto>> {
+  nome : Texto
+}
+class "Valor do atributo" as Valor <<produto>> {
+  valor : Texto
+}
+class "Histórico de preço" as Historico <<produto>> {
+  preço : Decimal
+  válidoDe : Data
+  válidoAté : Data [0..1]
+  --
+  encerrar(data)
+}
+class "Categoria" as Categoria <<produto>> {
+  nome : Texto
+  descrição : Texto [0..1]
+}
+class "Coleção" as Colecao <<produto>> {
+  nome : Texto
+  início : Data [0..1]
+  fim : Data [0..1]
+}
+class "Evento do calendário" as Evento <<produto>> {
+  nome : Texto
+  abrangência : nacional ou da empresa
+  regraDaData : RegraDaData
+  antecedênciaDias : Inteiro
+  --
+  dataNoAno(ano) : Data
+  próximaData(hoje) : Data
+}
+class "Fornecedor do produto" as FornProd <<produto>> {
+  preferido : Lógico
+  códigoNoFornecedor : Texto [0..1]
+  prazoDias : Inteiro [0..1]
+  pedidoMínimo : Decimal [0..1]
+  múltiploDeCompra : Decimal [0..1]
+  últimoCusto : Decimal [0..1]
+  --
+  registrarÚltimoCusto(custo)
+}
+class "Fornecedor" as Fornecedor <<cadastro>>
+
+enum "Tipo de produto" as TipoProduto <<produto>> {
+  Padrão
+  Vestuário
+  Perecível
+  Granel
+}
+enum "Unidade de venda" as Unidade <<produto>> {
+  Unidade
+  Quilograma
+  Litro
+  Metro
+}
+enum "Ciclo de vida" as Ciclo <<produto>> {
+  Em linha
+  Fora de linha
+}
+enum "Regra da data" as Regra <<produto>> {
+  Data fixa
+  Páscoa
+  N-ésimo dia da semana
+  Black Friday
+  Dias a partir da Páscoa
+}
+
+Produto "1" *-- "1..*" Variacao : tem
+Produto "1" *-- "*" Atributo : define a grade
+Atributo "1" *-- "1..*" Valor : tem
+Variacao "*" -- "*" Valor : combina
+Variacao "1" *-- "*" Historico : registra preços
+Produto "*" -- "*" Categoria : classificado em
+Categoria "0..1" -- "*" Categoria : subcategoria de
+Colecao "0..1" -- "*" Produto : agrupa
+Evento "*" -- "*" Produto : puxa a venda de
+Produto "*" -- "*" Fornecedor : é comprado de
+(Produto, Fornecedor) .. FornProd
+
+legend bottom left
+  <b>Como ler:</b> a grade (ex.: tamanho × sabor) gera as variações; cada variação combina um valor de cada atributo.
+  "Fornecedor do produto" é uma <b>classe de associação</b>: guarda o que vale para aquele par produto × fornecedor.
+  Regras: produto fora de linha nunca recebe recomendação de compra (RN-CE19); o preço muda só com histórico (nunca é apagado).
+endlegend
+@enduml

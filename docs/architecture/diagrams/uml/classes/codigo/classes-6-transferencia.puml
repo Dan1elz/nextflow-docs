@@ -1,0 +1,80 @@
+@startuml classes-6-transferencia
+!include ../../estilo.iuml
+skinparam dpi 170
+skinparam classAttributeIconSize 0
+skinparam class {
+  BorderThickness 1.4
+  FontSize 14
+  AttributeFontSize 13
+}
+hide empty members
+skinparam class<<acesso>> {
+  BackgroundColor #FCE4EC
+  HeaderBackgroundColor #F8BBD0
+  BorderColor #C2185B
+}
+hide <<acesso>> stereotype
+skinparam class<<cadastro>> {
+  BackgroundColor #FFF8E1
+  HeaderBackgroundColor #FFE082
+  BorderColor #F9A825
+}
+hide <<cadastro>> stereotype
+skinparam class<<produto>> {
+  BackgroundColor #EDE7F6
+  HeaderBackgroundColor #D1C4E9
+  BorderColor #5E35B1
+}
+hide <<produto>> stereotype
+skinparam class<<estoque>> {
+  BackgroundColor #E8F5E9
+  HeaderBackgroundColor #C8E6C9
+  BorderColor #2E7D32
+}
+hide <<estoque>> stereotype
+skinparam class<<venda>> {
+  BackgroundColor #E3F2FD
+  HeaderBackgroundColor #BBDEFB
+  BorderColor #1565C0
+}
+hide <<venda>> stereotype
+skinparam class<<compra>> {
+  BackgroundColor #FFF3E0
+  HeaderBackgroundColor #FFCC80
+  BorderColor #EF6C00
+}
+hide <<compra>> stereotype
+skinparam class<<previsao>> {
+  BackgroundColor #E0F7FA
+  HeaderBackgroundColor #B2EBF2
+  BorderColor #00838F
+}
+hide <<previsao>> stereotype
+title <size:20>Classes — Transferência de estoque</size>
+
+class "StockTransfer\n<size:11><i>Transferência</i></size>" as StockTransfer <<estoque>> {
+  + Number : int
+  + Note : string?
+  + ForecastRecommendationId : Guid?
+  --
+  + StockTransfer(fromLocationId, toLocationId, note, createdById, forecastRecommendationId, VariantId, Quantity)
+}
+class "StockTransferItem\n<size:11><i>Item da transferência</i></size>" as StockTransferItem <<estoque>> {
+  + Quantity : decimal
+  --
+  + StockTransferItem(transferId, variantId, quantity)
+}
+class "ProductVariant\n<size:11><i>ver Produto</i></size>" as ProductVariant <<produto>>
+class "StockLocation\n<size:11><i>ver Estoque</i></size>" as StockLocation <<estoque>>
+class "User\n<size:11><i>ver Acesso</i></size>" as User <<acesso>>
+
+StockTransfer "*" --> "1" StockLocation : FromLocation
+StockTransfer "*" --> "1" StockLocation : ToLocation
+StockTransfer "*" --> "1" User : CreatedBy
+StockTransfer "1" *-- "*" StockTransferItem : Items
+StockTransferItem "*" --> "1" ProductVariant : Variant
+note as Base
+  Todas herdam de <b>BaseModel</b> (Id : Guid, CreatedAt : DateTime).
+  Atributos com set privado: só o construtor e os métodos mudam o estado.
+end note
+@enduml

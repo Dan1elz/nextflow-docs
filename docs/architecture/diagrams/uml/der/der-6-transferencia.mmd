@@ -1,0 +1,53 @@
+---
+title: "Transferência de estoque"
+config:
+  er:
+    layoutDirection: TB
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 20px
+---
+erDiagram
+    stock_transfers["Transferência (stock_transfers)"] {
+        uuid id PK
+        uuid from_location_id FK
+        uuid to_location_id FK
+        uuid created_by FK
+        uuid forecast_recommendation_id FK "opcional"
+        int number
+        varchar note "opcional"
+    }
+    stock_transfer_items["Item da transferência (stock_transfer_items)"] {
+        uuid id PK
+        uuid transfer_id FK
+        uuid variant_id FK
+        numeric quantity
+    }
+    stock_locations["Local de estoque (stock_locations)"] {
+        uuid id PK "detalhado no DER 5"
+    }
+    product_variants["Variação do produto (product_variants)"] {
+        uuid id PK "detalhado no DER 3"
+    }
+    users["Usuário (users)"] {
+        uuid id PK "detalhado no DER 1"
+    }
+    forecast_recommendations["Recomendação (forecast_recommendations)"] {
+        uuid id PK "detalhado no DER 9"
+    }
+
+    stock_transfers ||--o{ stock_transfer_items : "contém"
+    product_variants ||--o{ stock_transfer_items : "é transferida"
+    users ||--o{ stock_transfers : "registra"
+    forecast_recommendations |o--o{ stock_transfers : "gera"
+    stock_locations ||--o{ stock_transfers : "sai de"
+    stock_locations ||--o{ stock_transfers : "entra em"
+
+    classDef previsao fill:#E0F7FA,stroke:#00838F,stroke-width:2px
+    class forecast_recommendations previsao
+    classDef produto fill:#EDE7F6,stroke:#5E35B1,stroke-width:2px
+    class product_variants produto
+    classDef estoque fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
+    class stock_locations,stock_transfer_items,stock_transfers estoque
+    classDef acesso fill:#FCE4EC,stroke:#C2185B,stroke-width:2px
+    class users acesso

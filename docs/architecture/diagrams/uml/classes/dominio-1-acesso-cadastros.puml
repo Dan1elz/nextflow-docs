@@ -1,0 +1,111 @@
+@startuml dominio-1-acesso-cadastros
+!include ../estilo.iuml
+!include estilo-dominio.iuml
+title <size:22>Modelo de domínio — Acesso e cadastros</size>
+
+class "Usuário" as Usuario <<acesso>> {
+  nome : Texto
+  sobrenome : Texto
+  cpf : CPF
+  nascimento : Data
+  email : Texto
+  perfil : Administrador
+  ativo : Lógico
+  últimoAcesso : DataHora [0..1]
+  --
+  alterarPerfil(dados)
+  trocarSenha(novaSenha)
+  registrarAcesso()
+  desativar()
+  reativar()
+}
+class "Notificação" as Notificacao <<acesso>> {
+  tipo : TipoDeNotificação
+  título : Texto
+  mensagem : Texto
+  link : Texto [0..1]
+  lidaEm : DataHora [0..1]
+  --
+  marcarComoLida()
+}
+class "Loja" as Loja <<estoque>>
+
+class "Cliente" as Cliente <<cadastro>> {
+  nome : Texto
+  sobrenome : Texto [0..1]
+  cpf : CPF [0..1]
+  nascimento : Data [0..1]
+  ativo : Lógico
+  --
+  desativar()
+  reativar()
+}
+class "Fornecedor" as Fornecedor <<cadastro>> {
+  nome : Texto
+  cnpj : CNPJ
+  prazoDeEntregaDias : Inteiro
+  observação : Texto [0..1]
+  ativo : Lógico
+  --
+  desativar()
+  reativar()
+}
+class "Endereço" as Endereco <<cadastro>> {
+  cep : Texto
+  rua : Texto
+  número : Texto
+  complemento : Texto [0..1]
+  bairro : Texto
+  principal : Lógico
+  --
+  definirComoPrincipal()
+}
+class "Contato" as Contato <<cadastro>> {
+  tipo : TipoDeContato
+  valor : Texto
+  principal : Lógico
+  --
+  definirComoPrincipal()
+}
+class "Cidade" as Cidade <<cadastro>> {
+  nome : Texto
+  códigoIBGE : Texto
+}
+class "Estado" as Estado <<cadastro>> {
+  nome : Texto
+  sigla : Texto
+  códigoIBGE : Texto
+}
+class "País" as Pais <<cadastro>> {
+  nome : Texto
+  sigla : Texto
+  códigoBacen : Texto [0..1]
+}
+
+enum "Tipo de notificação" as TipoNotif <<acesso>> {
+  Novas recomendações
+  Lote vencendo
+  Estoque baixo
+}
+enum "Tipo de contato" as TipoContato <<cadastro>> {
+  Telefone
+  E-mail
+  WhatsApp
+}
+
+Usuario "1" -- "*" Notificacao : recebe
+Usuario "*" -- "*" Loja : trabalha em
+Cliente "1" *-- "*" Endereco : tem
+Fornecedor "1" *-- "*" Endereco : tem
+Cliente "1" *-- "*" Contato : tem
+Fornecedor "1" *-- "*" Contato : tem
+Endereco "*" -- "1" Cidade : fica em
+Estado "1" *-- "*" Cidade : contém
+Pais "1" *-- "*" Estado : contém
+
+legend bottom left
+  <b>Como ler:</b> ◆ = composição (o endereço e o contato só existem dentro do cliente <b>ou</b> do fornecedor dono deles).
+  Números nas pontas = quantos de cada lado (1, 0..1 = opcional, * = muitos). Cores = módulo (rosa Acesso, amarelo Cadastros).
+  Regras: só existe o perfil Administrador (ADR 0004); usuário inativo não entra (RN-AC02); contato tem telefone ou e-mail.
+endlegend
+@enduml
