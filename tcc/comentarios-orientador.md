@@ -241,6 +241,8 @@ um parágrafo que separa funcionamento de acurácia (cita regra-base como forma 
 ajustados com fundo verde: resumo, abstract (que ainda dizia "only prioritizes and explains", sobra dos itens 2/4),
 discussão, limitações e conclusão.
 
+**Enxugado (11/11, pedido do Daniel):** os seis parágrafos novos da 5.1 viraram quatro (dados sintéticos; simulação e semente; cenários e resultado da análise; funcionamento × acurácia), sem os parâmetros finos (fatores do dia da semana, ±3% de custo, 28 dias de cobertura), que ficam só aqui no controle. Resumo e abstract com a frase mais curta.
+
 **Ponto em aberto:** comparação com regra-base em cenário controlado (backtest na simulação: prever cada um dos últimos
 12 meses com o histórico até o mês anterior e comparar o MAPE com "mesmo mês do ano anterior" e "média dos 3 últimos
 meses"). Não feito; depende do ok do Daniel (código novo no back).
