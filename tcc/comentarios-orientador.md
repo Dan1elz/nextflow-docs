@@ -16,6 +16,8 @@ o fundo sai e passamos ao próximo.
 | 6 | 4.10.1 Acessibilidade | Evidências medidas: WCAG, contraste, teclado, foco, leitores de tela, auditoria | aprovado (11/11) | 6db78a6 |
 | 7 | 5.1 Resultados obtidos | Dados simulados: método, parâmetros, datas, distribuição, ruptura, lotes, semente, repetição | aprovado (11/11) | 7d05684 |
 | 8 | 5.1 Resultados obtidos | Validação da previsão: funcionamento × acurácia; regra-base se viável | aprovado (11/11) | 7d05684 |
+| 9 | 5.2 Testes automatizados | Evidências: comando, versão, data, ambiente, relatório; separar 1.059 back × 84 front | em revisão | (ver abaixo) |
+| 10 | 5.3 Desempenho | Mesma máquina, sem rede nem concorrência; ferramenta; não extrapolar; p95, dispersão, máximo, erros | em revisão | (ver abaixo) |
 
 ## 1. 3.2 Levantamento de requisitos
 
@@ -246,6 +248,56 @@ discussão, limitações e conclusão.
 **Ponto em aberto:** comparação com regra-base em cenário controlado (backtest na simulação: prever cada um dos últimos
 12 meses com o histórico até o mês anterior e comparar o MAPE com "mesmo mês do ano anterior" e "média dos 3 últimos
 meses"). Não feito; depende do ok do Daniel (código novo no back).
+
+## 9. 5.2 Testes automatizados
+
+**Comentário:**
+> RECOMENDADO | EVIDÊNCIAS DE TESTES: indicar comando, versão do código, data, ambiente e onde consultar relatório/log de
+> execução. Distinguir explicitamente 1.059 testes de backend dos 84 testes de frontend e esclarecer se todos os 84 também
+> foram executados/aprovados.
+
+**Execução nova (11/11/2026)**, relatórios em `docs/evidencias/2026-11-11/`:
+- Back: `dotnet test nextflow.Tests --logger trx`, versão `8b410cf` (homolog), 1.062 testes (617 unidade + 445
+  integração; +3 do contrato do payload da IA), todos aprovados, 11 min 6 s. `testes-back.trx` e `testes-back-console.txt`.
+- Front: `npx vitest run --reporter=junit`, versão `aba7f64` (homolog, com as cores WCAG), 84 testes em 17 arquivos,
+  todos aprovados, 16 s. `testes-front-junit.xml` e `testes-front-console.txt`.
+- Ambiente: máquina de desenvolvimento, WSL 2 (kernel 6.6), .NET SDK 10.0.103, Node 24.14, Vitest 3.2.7, Docker 29.2.
+- O TRX só tem nomes de teste com "Password", sem senha nem token (conferido).
+
+**O que foi feito:** o parágrafo da 5.2 virou dois; o segundo separa as suítes ("não se somam"), dá comando, versão,
+data, tempo, ambiente e a pasta dos relatórios. Resumo e abstract: 1.059 → 1.062.
+
+## 10. 5.3 Desempenho
+
+**Comentário:**
+> ESSENCIAL | DESEMPENHO: deixar claro que medições ocorreram na mesma máquina (API+BD), sem latência de rede externa nem
+> carga concorrente. Descrever ferramenta de medição e condições, e evitar extrapolar a média para VPS/produção. Se
+> possível, incluir p95, dispersão ou máximos e taxa de erros.
+
+**Pedido do Daniel (11/11):** medir na VM, não no local. A VM foi atualizada (back `8b410cf`, front `aba7f64`, `git pull
+--ff-only` + `docker compose -f compose.homolog.yaml up -d --build` em `~/projects/nextflow-v2/`).
+
+**Medição:** `tcc/ferramentas/medir_desempenho.sh` reescrito (curl, 1 aquecimento + 100 requisições sequenciais por rota,
+saída com erros, média, desvio, p50, p95 e máximo). Duas rodadas em 11/11/2026, com o banco de homologação (42 produtos,
+67.674 movimentações, 20.785 vendas):
+- Interna, 19:46: na VM contra o IP do contêiner da API (sem rede externa). VM: 4 vCPU AMD EPYC, 7,8 GB, Ubuntu 24.04,
+  compartilhada com outros projetos (load 1 a 2). `desempenho-homolog-interno.tsv`.
+- Pública, 19:55: do computador de desenvolvimento para `https://dev-nextflow-api.zanni.tech` (internet, proxy, TLS).
+  `desempenho-homolog-publico.tsv`.
+- 0 erros em 1.400 requisições. Pior caso interno 839 ms (faturamento 12 meses); público 1,8 s (listagem de produtos).
+  Medianas públicas ~250 ms acima das internas.
+- Uma primeira rodada interna logo após o rebuild (load 4) foi descartada.
+
+**O que foi feito:** o parágrafo da 5.3 virou dois (ambiente e condições; ferramenta e as duas medições); o Quadro 17
+foi refeito com média, p95 e máximo das duas medições; a análise depois do quadro passou a citar 0 erros, os máximos, a
+diferença da rede e que vale para um usuário por vez. Resumo e abstract trocaram "menos de 100 ms" por "até 1,8 s no
+servidor de homologação". O desvio padrão e a p50 estão nos TSV, não no quadro.
+
+## GitHub (pedido do Daniel junto com os itens 9 e 10)
+
+O TCC só dizia "repositório GitHub" (3.x, rastreabilidade). Agora cita os três repositórios públicos
+(`github.com/Dan1elz/nextflow`, `-front`, `-docs`) e que servem para reproduzir os testes e as medições. **Os commits do
+nextflow-docs precisam estar no GitHub** para os links das evidências valerem.
 
 ## Checklist final
 - [ ] Todos os itens da tabela aprovados

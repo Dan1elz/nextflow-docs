@@ -1,0 +1,237 @@
+
+ RUN  v3.2.7 /home/daniel/Projetos/nextflow/nextflow-front
+
+ ✓ src/hooks/use-barcode-scanner.test.ts (5 tests) 99ms
+ ✓ src/services/notification.service.test.ts (3 tests) 118ms
+ ✓ src/services/forecast-run.service.test.ts (6 tests) 112ms
+ ✓ src/services/dashboard.service.test.ts (3 tests) 156ms
+stderr | src/pages/PurchaseOrder/Create.test.tsx > Novo pedido de compra pela loja do topo > em todas as lojas pede para escolher uma loja e não mostra o formulário
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+stderr | src/components/app/apply-purchase-dialog.test.tsx > Comprar (F3.8f, T-DF4) > parte do rateio e do último custo, e gera um pedido por fornecedor
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ ✓ src/components/forms/client-quick-form.test.tsx (2 tests) 2881ms
+   ✓ ClientQuickForm > envia o e-mail informado junto com nome e telefone  1622ms
+   ✓ ClientQuickForm > aceita sem e-mail e recusa e-mail inválido  1251ms
+stderr | src/hooks/use-breadcrumb-path.test.tsx > breadcrumb > ver mais do painel fica direto abaixo do Home
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ ✓ src/hooks/use-breadcrumb-path.test.tsx (2 tests) 123ms
+ ✓ src/hooks/use-index-search.test.ts (2 tests) 55ms
+ ✓ src/pages/PurchaseOrder/Create.test.tsx (4 tests) 3855ms
+   ✓ Novo pedido de compra pela loja do topo > em todas as lojas pede para escolher uma loja e não mostra o formulário  582ms
+   ✓ Novo pedido de compra pela loja do topo > com loja selecionada, o local de recebimento padrão vem preenchido e travado  1698ms
+   ✓ Novo pedido de compra pela loja do topo > sem local padrão, deixa escolher só entre os locais da loja  1143ms
+   ✓ Novo pedido de compra pela loja do topo > aberto pelo estoque baixo, já vem com o fornecedor preferido e a falta arredondada ao múltiplo  382ms
+stderr | src/pages/ForecastAccuracy.test.tsx > Precisão da previsão (F3.8i, T-DF10) > mostra o erro por mês, os resumos e a tolerância de ±15%
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+stderr | src/components/app/forecast-detail.test.tsx > Detalhe da recomendação (F3.8e, T-DF3) > mostra o rateio por variação e o total bate com a quantidade sugerida
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | src/pages/ForecastAccuracy.test.tsx > Precisão da previsão (F3.8i, T-DF10) > mostra o erro por mês, os resumos e a tolerância de ±15%
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+ ✓ src/components/app/apply-purchase-dialog.test.tsx (6 tests) 5152ms
+   ✓ Comprar (F3.8f, T-DF4) > parte do rateio e do último custo, e gera um pedido por fornecedor  3002ms
+   ✓ Comprar (F3.8f, T-DF4) > avisa mínimo e múltiplo sem bloquear, e oferece arredondar  1028ms
+   ✓ Comprar (F3.8f, T-DF4) > divide entre lojas pela sugestão e gera um pedido por loja (RN-DF27)  320ms
+stderr | src/components/app/forecast-detail.test.tsx > Detalhe da recomendação (F3.8e, T-DF3) > mostra o que a IA mudou e a memória do cálculo
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | src/pages/Home.test.tsx > Painel inicial (F3.8b, T-DF1) > carrega todos os blocos pelas rotas novas, sem chamar /api/dashboard/stats
+You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+stderr | src/components/app/forecast-detail.test.tsx > Detalhe da recomendação (F3.8e, T-DF3) > avisa quando o rateio não fecha com a quantidade sugerida
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | src/pages/Home.test.tsx > Painel inicial (F3.8b, T-DF1) > carrega todos os blocos pelas rotas novas, sem chamar /api/dashboard/stats
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | src/pages/ForecastAccuracy.test.tsx > Precisão da previsão (F3.8i, T-DF10) > lista a precisão por produto e filtra por tendência
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | src/components/app/forecast-detail.test.tsx > Detalhe da recomendação (F3.8e, T-DF3) > fecha pelo botão do painel
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | src/components/app/forecast-detail.test.tsx > Aba Previsão do produto (F3.8e, T-DF5) > mostra a recomendação mais recente e a precisão das projeções
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+ ✓ src/components/app/forecast-detail.test.tsx (6 tests) 1137ms
+   ✓ Detalhe da recomendação (F3.8e, T-DF3) > mostra o rateio por variação e o total bate com a quantidade sugerida  566ms
+ ✓ src/pages/ForecastAccuracy.test.tsx (3 tests) 1223ms
+   ✓ Precisão da previsão (F3.8i, T-DF10) > mostra o erro por mês, os resumos e a tolerância de ±15%  693ms
+   ✓ Precisão da previsão (F3.8i, T-DF10) > lista a precisão por produto e filtra por tendência  516ms
+stderr | src/pages/Home.test.tsx > Painel inicial (F3.8b, T-DF1) > um bloco que falha mostra o erro só nele e os outros carregam
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | src/pages/Home.test.tsx > Painel inicial (F3.8b, T-DF1) > listas vazias mostram o estado vazio de cada bloco
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+ ✓ src/pages/Home.test.tsx (7 tests) 1292ms
+   ✓ Painel inicial (F3.8b, T-DF1) > carrega todos os blocos pelas rotas novas, sem chamar /api/dashboard/stats  593ms
+stderr | src/components/app/notifications-bell.test.tsx > Sino de notificações (F3.8c, T-DF12) > mostra o contador de não lidas no sino
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+stderr | src/pages/ForecastHistory.test.tsx > Histórico de análises (F3.8h, T-DF9) > lista as análises com origem, status, lotes com falha e contagens
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ ✓ src/components/app/variant-sale-picker.test.tsx (7 tests) 6541ms
+   ✓ VariantSalePicker > adiciona direto ao receber o código de barras completo com Enter (leitor)  3062ms
+   ✓ VariantSalePicker > adiciona pelo SKU exato mesmo quando outro SKU começa igual  804ms
+   ✓ VariantSalePicker > lê dois códigos seguidos sem tirar o foco da busca  924ms
+   ✓ VariantSalePicker > avisa e mantém o código quando nada bate exatamente, sem escolher outro item  648ms
+   ✓ VariantSalePicker > Enter com termo parcial não escolhe sozinho o primeiro da lista  416ms
+   ✓ VariantSalePicker > adiciona sozinho, sem Enter, quando o termo é exatamente um código de barras  506ms
+ ✓ src/components/app/notifications-bell.test.tsx (6 tests) 837ms
+stderr | src/pages/Forecast.test.tsx > Previsão: lista da análise (F3.8d, T-DF2) > mostra o cabeçalho da última análise e as recomendações pendentes
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ ✓ src/pages/ForecastHistory.test.tsx (5 tests) 1395ms
+   ✓ Histórico de análises (F3.8h, T-DF9) > lista as análises com origem, status, lotes com falha e contagens  390ms
+   ✓ Histórico de análises (F3.8h, T-DF9) > filtra por status e abre a análise na tela da previsão  499ms
+ ✓ src/components/app/forecast-actions.test.tsx (6 tests) 1594ms
+   ✓ Descartar (F3.8g, T-DF8) > Outro sem texto mostra o erro no campo e não envia  653ms
+stderr | src/pages/Forecast.test.tsx > Previsão: lista da análise (F3.8d, T-DF2) > abre o detalhe da recomendação pelo nome do produto (T-DF3)
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | src/pages/Forecast.test.tsx > Previsão: lista da análise (F3.8d, T-DF2) > Descartar pelo detalhe e Voltar reabre o detalhe (T-DF8)
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | src/pages/Forecast.test.tsx > Previsão: lista da análise (F3.8d, T-DF2) > Descartar pelo detalhe e Voltar reabre o detalhe (T-DF8)
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | src/pages/Forecast.test.tsx > Previsão: lista da análise (F3.8d, T-DF2) > Descartar pelo detalhe e Voltar reabre o detalhe (T-DF8)
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | src/pages/Forecast.test.tsx > Previsão: lista da análise (F3.8d, T-DF2) > Comprar pelo detalhe gera o pedido e a linha vira Aplicada (T-DF4)
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | src/pages/Forecast.test.tsx > Previsão: lista da análise (F3.8d, T-DF2) > Comprar pelo detalhe gera o pedido e a linha vira Aplicada (T-DF4)
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | src/pages/Forecast.test.tsx > Previsão: lista da análise (F3.8d, T-DF2) > Comprar pelo detalhe gera o pedido e a linha vira Aplicada (T-DF4)
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+ ✓ src/pages/Forecast.test.tsx (11 tests) 3397ms
+   ✓ Previsão: lista da análise (F3.8d, T-DF2) > mostra o cabeçalho da última análise e as recomendações pendentes  426ms
+   ✓ Previsão: lista da análise (F3.8d, T-DF2) > filtra por ação e busca por produto  962ms
+   ✓ Previsão: lista da análise (F3.8d, T-DF2) > abre o detalhe da recomendação pelo nome do produto (T-DF3)  432ms
+   ✓ Previsão: lista da análise (F3.8d, T-DF2) > Descartar pelo detalhe e Voltar reabre o detalhe (T-DF8)  374ms
+   ✓ Previsão: lista da análise (F3.8d, T-DF2) > Comprar pelo detalhe gera o pedido e a linha vira Aplicada (T-DF4)  445ms
+
+ Test Files  17 passed (17)
+      Tests  84 passed (84)
+   Start at  19:28:41
+   Duration  16.30s (transform 6.14s, setup 9.70s, collect 64.82s, tests 29.97s, environment 48.61s, prepare 2.58s)
+
+JUNIT report written to /tmp/claude-1000/testes-front/front-junit.xml

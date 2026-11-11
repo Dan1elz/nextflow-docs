@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="84" failures="0" errors="0" time="29.967829004">
+    <testsuite name="src/hooks/use-barcode-scanner.test.ts" timestamp="2026-11-11T22:29:01.614Z" hostname="Daniel" tests="5" failures="0" errors="0" skipped="0" time="0.099251127">
+        <testcase classname="src/hooks/use-barcode-scanner.test.ts" name="useBarcodeScanner &gt; entrega o código lido rápido com Enter e segura o Enter" time="0.047014252">
+        </testcase>
+        <testcase classname="src/hooks/use-barcode-scanner.test.ts" name="useBarcodeScanner &gt; entrega o código quando o leitor não manda Enter" time="0.012121152">
+        </testcase>
+        <testcase classname="src/hooks/use-barcode-scanner.test.ts" name="useBarcodeScanner &gt; ignora digitação de pessoa (teclas espaçadas)" time="0.006302395">
+        </testcase>
+        <testcase classname="src/hooks/use-barcode-scanner.test.ts" name="useBarcodeScanner &gt; não intercepta o que é digitado num campo de texto" time="0.006868504">
+        </testcase>
+        <testcase classname="src/hooks/use-barcode-scanner.test.ts" name="useBarcodeScanner &gt; não escuta quando desligado" time="0.010041555">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/hooks/use-breadcrumb-path.test.tsx" timestamp="2026-11-11T22:29:01.616Z" hostname="Daniel" tests="2" failures="0" errors="0" skipped="0" time="0.123288867">
+        <testcase classname="src/hooks/use-breadcrumb-path.test.tsx" name="breadcrumb &gt; ver mais do painel fica direto abaixo do Home" time="0.060843654">
+            <system-err>
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/hooks/use-breadcrumb-path.test.tsx" name="breadcrumb &gt; usa os nomes do menu e não liga segmento sem tela" time="0.046469314">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/hooks/use-index-search.test.ts" timestamp="2026-11-11T22:29:01.617Z" hostname="Daniel" tests="2" failures="0" errors="0" skipped="0" time="0.055347044">
+        <testcase classname="src/hooks/use-index-search.test.ts" name="useIndexSearch &gt; refaz a busca com o search novo quando a loja do topo muda" time="0.042998225">
+        </testcase>
+        <testcase classname="src/hooks/use-index-search.test.ts" name="useIndexSearch &gt; sem troca de loja não busca de novo ao renderizar" time="0.005084116">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/pages/Forecast.test.tsx" timestamp="2026-11-11T22:29:01.619Z" hostname="Daniel" tests="11" failures="0" errors="0" skipped="0" time="3.397025204">
+        <testcase classname="src/pages/Forecast.test.tsx" name="Previsão: lista da análise (F3.8d, T-DF2) &gt; mostra o cabeçalho da última análise e as recomendações pendentes" time="0.425554479">
+            <system-err>
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/pages/Forecast.test.tsx" name="Previsão: lista da análise (F3.8d, T-DF2) &gt; filtra por ação e busca por produto" time="0.961711026">
+        </testcase>
+        <testcase classname="src/pages/Forecast.test.tsx" name="Previsão: lista da análise (F3.8d, T-DF2) &gt; abre o detalhe da recomendação pelo nome do produto (T-DF3)" time="0.431841604">
+            <system-err>
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/pages/Forecast.test.tsx" name="Previsão: lista da análise (F3.8d, T-DF2) &gt; a linha não tem botões de ação; as abas mostram o contador" time="0.131452713">
+        </testcase>
+        <testcase classname="src/pages/Forecast.test.tsx" name="Previsão: lista da análise (F3.8d, T-DF2) &gt; Descartar pelo detalhe e Voltar reabre o detalhe (T-DF8)" time="0.373796478">
+            <system-err>
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/pages/Forecast.test.tsx" name="Previsão: lista da análise (F3.8d, T-DF2) &gt; Comprar pelo detalhe gera o pedido e a linha vira Aplicada (T-DF4)" time="0.445291603">
+            <system-err>
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/pages/Forecast.test.tsx" name="Previsão: lista da análise (F3.8d, T-DF2) &gt; análise antiga aberta pelo histórico fica só leitura (T-DF9)" time="0.093844668">
+        </testcase>
+        <testcase classname="src/pages/Forecast.test.tsx" name="Previsão: lista da análise (F3.8d, T-DF2) &gt; gerar mostra Em andamento, acompanha os lotes e recarrega ao terminar" time="0.232546641">
+        </testcase>
+        <testcase classname="src/pages/Forecast.test.tsx" name="Previsão: lista da análise (F3.8d, T-DF2) &gt; 409: avisa que já existe análise em andamento e mostra o progresso" time="0.142584944">
+        </testcase>
+        <testcase classname="src/pages/Forecast.test.tsx" name="Previsão: lista da análise (F3.8d, T-DF2) &gt; sem análise: mostra o vazio com o botão de gerar" time="0.017991678">
+        </testcase>
+        <testcase classname="src/pages/Forecast.test.tsx" name="Previsão: lista da análise (F3.8d, T-DF2) &gt; quem não é Admin não vê o botão de gerar" time="0.135256619">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/pages/ForecastAccuracy.test.tsx" timestamp="2026-11-11T22:29:01.623Z" hostname="Daniel" tests="3" failures="0" errors="0" skipped="0" time="1.222849607">
+        <testcase classname="src/pages/ForecastAccuracy.test.tsx" name="Precisão da previsão (F3.8i, T-DF10) &gt; mostra o erro por mês, os resumos e a tolerância de ±15%" time="0.693183568">
+            <system-err>
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/pages/ForecastAccuracy.test.tsx" name="Precisão da previsão (F3.8i, T-DF10) &gt; lista a precisão por produto e filtra por tendência" time="0.515590772">
+            <system-err>
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/pages/ForecastAccuracy.test.tsx" name="Precisão da previsão (F3.8i, T-DF10) &gt; quem não é Admin não vê a tela nem chama a API" time="0.009666554">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/pages/ForecastHistory.test.tsx" timestamp="2026-11-11T22:29:01.626Z" hostname="Daniel" tests="5" failures="0" errors="0" skipped="0" time="1.395355917">
+        <testcase classname="src/pages/ForecastHistory.test.tsx" name="Histórico de análises (F3.8h, T-DF9) &gt; lista as análises com origem, status, lotes com falha e contagens" time="0.390026805">
+            <system-err>
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/pages/ForecastHistory.test.tsx" name="Histórico de análises (F3.8h, T-DF9) &gt; filtra por status e abre a análise na tela da previsão" time="0.498986085">
+        </testcase>
+        <testcase classname="src/pages/ForecastHistory.test.tsx" name="Histórico de análises (F3.8h, T-DF9) &gt; mostra os lotes da análise com o erro de cada um" time="0.230119278">
+        </testcase>
+        <testcase classname="src/pages/ForecastHistory.test.tsx" name="Agendamento da análise (F3.8h, T-DF11) &gt; salvar o agendamento mostra a próxima execução" time="0.178274777">
+        </testcase>
+        <testcase classname="src/pages/ForecastHistory.test.tsx" name="Agendamento da análise (F3.8h, T-DF11) &gt; lote fora de 1 a 100 mostra o erro no campo e não salva" time="0.094488747">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/pages/Home.test.tsx" timestamp="2026-11-11T22:29:01.628Z" hostname="Daniel" tests="7" failures="0" errors="0" skipped="0" time="1.292043822">
+        <testcase classname="src/pages/Home.test.tsx" name="Painel inicial (F3.8b, T-DF1) &gt; carrega todos os blocos pelas rotas novas, sem chamar /api/dashboard/stats" time="0.592531282">
+            <system-err>
+You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/pages/Home.test.tsx" name="Painel inicial (F3.8b, T-DF1) &gt; vendas, estoque baixo e lotes seguem a loja selecionada no topo" time="0.185807265">
+        </testcase>
+        <testcase classname="src/pages/Home.test.tsx" name="Painel inicial (F3.8b, T-DF1) &gt; com loja selecionada, o card de recomendações mostra o estoque dela" time="0.104564158">
+        </testcase>
+        <testcase classname="src/pages/Home.test.tsx" name="Painel inicial (F3.8b, T-DF1) &gt; em todas as lojas o painel não manda loja" time="0.087701428">
+        </testcase>
+        <testcase classname="src/pages/Home.test.tsx" name="Painel inicial (F3.8b, T-DF1) &gt; um bloco que falha mostra o erro só nele e os outros carregam" time="0.1106073">
+            <system-err>
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/pages/Home.test.tsx" name="Painel inicial (F3.8b, T-DF1) &gt; sem análise de demanda, o card de recomendações explica e aponta a previsão" time="0.092454076">
+        </testcase>
+        <testcase classname="src/pages/Home.test.tsx" name="Painel inicial (F3.8b, T-DF1) &gt; listas vazias mostram o estado vazio de cada bloco" time="0.111247422">
+            <system-err>
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+    </testsuite>
+    <testsuite name="src/services/dashboard.service.test.ts" timestamp="2026-11-11T22:29:01.633Z" hostname="Daniel" tests="3" failures="0" errors="0" skipped="0" time="0.155688052">
+        <testcase classname="src/services/dashboard.service.test.ts" name="dashboardService (T-DF1) &gt; busca cada bloco do painel na sua rota" time="0.119577974">
+        </testcase>
+        <testcase classname="src/services/dashboard.service.test.ts" name="dashboardService (T-DF1) &gt; pede os lotes vencendo nos próximos 30 dias" time="0.013916189">
+        </testcase>
+        <testcase classname="src/services/dashboard.service.test.ts" name="dashboardService (T-DF1) &gt; pega as 5 primeiras recomendações da última análise" time="0.016683025">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/services/forecast-run.service.test.ts" timestamp="2026-11-11T22:29:01.635Z" hostname="Daniel" tests="6" failures="0" errors="0" skipped="0" time="0.112494095">
+        <testcase classname="src/services/forecast-run.service.test.ts" name="forecastRunService (T-DF2) &gt; lê a última análise e devolve null quando nunca houve" time="0.068201349">
+        </testcase>
+        <testcase classname="src/services/forecast-run.service.test.ts" name="forecastRunService (T-DF2) &gt; gera a análise sem horizonte (é automático)" time="0.010045829">
+        </testcase>
+        <testcase classname="src/services/forecast-run.service.test.ts" name="forecastRunService (T-DF2) &gt; consulta o progresso da análise" time="0.007617123">
+        </testcase>
+        <testcase classname="src/services/forecast-run.service.test.ts" name="forecastRunService (T-DF2) &gt; lista as recomendações da análise com paginação e filtros" time="0.009789066">
+        </testcase>
+        <testcase classname="src/services/forecast-run.service.test.ts" name="forecastRunService (T-DF2) &gt; lê o detalhe da recomendação (T-DF3)" time="0.006098713">
+        </testcase>
+        <testcase classname="src/services/forecast-run.service.test.ts" name="forecastRunService (T-DF2) &gt; lê a previsão do produto com 24 meses (T-DF5)" time="0.006229142">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/services/notification.service.test.ts" timestamp="2026-11-11T22:29:01.637Z" hostname="Daniel" tests="3" failures="0" errors="0" skipped="0" time="0.118240123">
+        <testcase classname="src/services/notification.service.test.ts" name="notificationService (T-DF12) &gt; busca as 20 últimas notificações, lidas e não lidas" time="0.092878616">
+        </testcase>
+        <testcase classname="src/services/notification.service.test.ts" name="notificationService (T-DF12) &gt; marca uma notificação como lida" time="0.011205786">
+        </testcase>
+        <testcase classname="src/services/notification.service.test.ts" name="notificationService (T-DF12) &gt; marca todas como lidas" time="0.005806055">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/app/apply-purchase-dialog.test.tsx" timestamp="2026-11-11T22:29:01.639Z" hostname="Daniel" tests="6" failures="0" errors="0" skipped="0" time="5.151850595">
+        <testcase classname="src/components/app/apply-purchase-dialog.test.tsx" name="Comprar (F3.8f, T-DF4) &gt; parte do rateio e do último custo, e gera um pedido por fornecedor" time="3.002211727">
+            <system-err>
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/app/apply-purchase-dialog.test.tsx" name="Comprar (F3.8f, T-DF4) &gt; avisa mínimo e múltiplo sem bloquear, e oferece arredondar" time="1.027757001">
+        </testcase>
+        <testcase classname="src/components/app/apply-purchase-dialog.test.tsx" name="Comprar (F3.8f, T-DF4) &gt; vários produtos: sem fornecedor preferido pede a escolha antes de enviar" time="0.292617226">
+        </testcase>
+        <testcase classname="src/components/app/apply-purchase-dialog.test.tsx" name="Comprar (F3.8f, T-DF4) &gt; mostra o 422 do servidor na linha certa" time="0.271673631">
+        </testcase>
+        <testcase classname="src/components/app/apply-purchase-dialog.test.tsx" name="Comprar (F3.8f, T-DF4) &gt; divide entre lojas pela sugestão e gera um pedido por loja (RN-DF27)" time="0.320140876">
+        </testcase>
+        <testcase classname="src/components/app/apply-purchase-dialog.test.tsx" name="Comprar (F3.8f, T-DF4) &gt; abre já dividido quando a análise gravou a parte de cada loja" time="0.22409712">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/app/forecast-actions.test.tsx" timestamp="2026-11-11T22:29:01.642Z" hostname="Daniel" tests="6" failures="0" errors="0" skipped="0" time="1.593947165">
+        <testcase classname="src/components/app/forecast-actions.test.tsx" name="Descartar (F3.8g, T-DF8) &gt; Outro sem texto mostra o erro no campo e não envia" time="0.652548242">
+        </testcase>
+        <testcase classname="src/components/app/forecast-actions.test.tsx" name="Descartar (F3.8g, T-DF8) &gt; sem motivo envia corpo vazio e devolve a linha descartada" time="0.125718344">
+        </testcase>
+        <testcase classname="src/components/app/forecast-actions.test.tsx" name="Descartar (F3.8g, T-DF8) &gt; mostra o 422 do servidor no campo do texto" time="0.164135713">
+        </testcase>
+        <testcase classname="src/components/app/forecast-actions.test.tsx" name="Promover (F3.8g, T-DF6) &gt; parte da sugestão, mostra a prévia e cria a promoção" time="0.172525586">
+        </testcase>
+        <testcase classname="src/components/app/forecast-actions.test.tsx" name="Promover (F3.8g, T-DF6) &gt; abaixo do custo pede confirmação e reenvia" time="0.20262542">
+        </testcase>
+        <testcase classname="src/components/app/forecast-actions.test.tsx" name="Promover (F3.8g, T-DF6) &gt; variações escolhidas exigem ao menos uma e vão no corpo" time="0.272108832">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/app/forecast-detail.test.tsx" timestamp="2026-11-11T22:29:01.645Z" hostname="Daniel" tests="6" failures="0" errors="0" skipped="0" time="1.136599319">
+        <testcase classname="src/components/app/forecast-detail.test.tsx" name="Detalhe da recomendação (F3.8e, T-DF3) &gt; mostra o rateio por variação e o total bate com a quantidade sugerida" time="0.565752615">
+            <system-err>
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/app/forecast-detail.test.tsx" name="Detalhe da recomendação (F3.8e, T-DF3) &gt; mostra o que a IA mudou e a memória do cálculo" time="0.206858713">
+            <system-err>
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/app/forecast-detail.test.tsx" name="Detalhe da recomendação (F3.8e, T-DF3) &gt; avisa quando o rateio não fecha com a quantidade sugerida" time="0.124234958">
+            <system-err>
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/app/forecast-detail.test.tsx" name="Detalhe da recomendação (F3.8e, T-DF3) &gt; fecha pelo botão do painel" time="0.103309315">
+            <system-err>
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/app/forecast-detail.test.tsx" name="Aba Previsão do produto (F3.8e, T-DF5) &gt; mostra a recomendação mais recente e a precisão das projeções" time="0.082904408">
+            <system-err>
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/app/forecast-detail.test.tsx" name="Aba Previsão do produto (F3.8e, T-DF5) &gt; sem recomendação, mostra só a previsão do produto" time="0.045449212">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/app/notifications-bell.test.tsx" timestamp="2026-11-11T22:29:01.649Z" hostname="Daniel" tests="6" failures="0" errors="0" skipped="0" time="0.837432729">
+        <testcase classname="src/components/app/notifications-bell.test.tsx" name="Sino de notificações (F3.8c, T-DF12) &gt; mostra o contador de não lidas no sino" time="0.19758586">
+            <system-err>
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/app/notifications-bell.test.tsx" name="Sino de notificações (F3.8c, T-DF12) &gt; abre a lista com título, texto, tipo e link de cada notificação" time="0.203629472">
+        </testcase>
+        <testcase classname="src/components/app/notifications-bell.test.tsx" name="Sino de notificações (F3.8c, T-DF12) &gt; marcar uma como lida faz o contador cair" time="0.134087231">
+        </testcase>
+        <testcase classname="src/components/app/notifications-bell.test.tsx" name="Sino de notificações (F3.8c, T-DF12) &gt; marcar todas zera o contador" time="0.121196385">
+        </testcase>
+        <testcase classname="src/components/app/notifications-bell.test.tsx" name="Sino de notificações (F3.8c, T-DF12) &gt; abrir o link de uma não lida marca como lida e navega" time="0.114851039">
+        </testcase>
+        <testcase classname="src/components/app/notifications-bell.test.tsx" name="Sino de notificações (F3.8c, T-DF12) &gt; sem notificações mostra o estado vazio e nenhum contador" time="0.061866133">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/app/variant-sale-picker.test.tsx" timestamp="2026-11-11T22:29:01.652Z" hostname="Daniel" tests="7" failures="0" errors="0" skipped="0" time="6.540615432">
+        <testcase classname="src/components/app/variant-sale-picker.test.tsx" name="VariantSalePicker &gt; adiciona direto ao receber o código de barras completo com Enter (leitor)" time="3.061763591">
+        </testcase>
+        <testcase classname="src/components/app/variant-sale-picker.test.tsx" name="VariantSalePicker &gt; adiciona pelo SKU exato mesmo quando outro SKU começa igual" time="0.803858591">
+        </testcase>
+        <testcase classname="src/components/app/variant-sale-picker.test.tsx" name="VariantSalePicker &gt; lê dois códigos seguidos sem tirar o foco da busca" time="0.92442557">
+        </testcase>
+        <testcase classname="src/components/app/variant-sale-picker.test.tsx" name="VariantSalePicker &gt; avisa e mantém o código quando nada bate exatamente, sem escolher outro item" time="0.64847352">
+        </testcase>
+        <testcase classname="src/components/app/variant-sale-picker.test.tsx" name="VariantSalePicker &gt; Enter com termo parcial não escolhe sozinho o primeiro da lista" time="0.415798513">
+        </testcase>
+        <testcase classname="src/components/app/variant-sale-picker.test.tsx" name="VariantSalePicker &gt; adiciona sozinho, sem Enter, quando o termo é exatamente um código de barras" time="0.506153395">
+        </testcase>
+        <testcase classname="src/components/app/variant-sale-picker.test.tsx" name="VariantSalePicker &gt; não adiciona sozinho quando o termo só começa igual a um código" time="0.1684091">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/forms/client-quick-form.test.tsx" timestamp="2026-11-11T22:29:01.654Z" hostname="Daniel" tests="2" failures="0" errors="0" skipped="0" time="2.881276327">
+        <testcase classname="src/components/forms/client-quick-form.test.tsx" name="ClientQuickForm &gt; envia o e-mail informado junto com nome e telefone" time="1.62209216">
+        </testcase>
+        <testcase classname="src/components/forms/client-quick-form.test.tsx" name="ClientQuickForm &gt; aceita sem e-mail e recusa e-mail inválido" time="1.250901515">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/pages/PurchaseOrder/Create.test.tsx" timestamp="2026-11-11T22:29:01.655Z" hostname="Daniel" tests="4" failures="0" errors="0" skipped="0" time="3.854523579">
+        <testcase classname="src/pages/PurchaseOrder/Create.test.tsx" name="Novo pedido de compra pela loja do topo &gt; em todas as lojas pede para escolher uma loja e não mostra o formulário" time="0.582306307">
+            <system-err>
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/pages/PurchaseOrder/Create.test.tsx" name="Novo pedido de compra pela loja do topo &gt; com loja selecionada, o local de recebimento padrão vem preenchido e travado" time="1.697905831">
+        </testcase>
+        <testcase classname="src/pages/PurchaseOrder/Create.test.tsx" name="Novo pedido de compra pela loja do topo &gt; sem local padrão, deixa escolher só entre os locais da loja" time="1.142567288">
+        </testcase>
+        <testcase classname="src/pages/PurchaseOrder/Create.test.tsx" name="Novo pedido de compra pela loja do topo &gt; aberto pelo estoque baixo, já vem com o fornecedor preferido e a falta arredondada ao múltiplo" time="0.382460893">
+        </testcase>
+    </testsuite>
+</testsuites>

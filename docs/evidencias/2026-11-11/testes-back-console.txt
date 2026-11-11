@@ -1,0 +1,15 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Nextflow.Domain -> /home/daniel/Projetos/nextflow/nextflow/nextflow.Domain/bin/Debug/net10.0/Nextflow.Domain.dll
+  Nextflow.Application -> /home/daniel/Projetos/nextflow/nextflow/nextflow.Application/bin/Debug/net10.0/Nextflow.Application.dll
+  Nextflow.Infrastructure -> /home/daniel/Projetos/nextflow/nextflow/nextflow.Infrastructure/bin/Debug/net10.0/Nextflow.Infrastructure.dll
+  Nextflow -> /home/daniel/Projetos/nextflow/nextflow/nextflow/bin/Debug/net10.0/nextflow.dll
+  Nextflow.Tests -> /home/daniel/Projetos/nextflow/nextflow/nextflow.Tests/bin/Debug/net10.0/Nextflow.Tests.dll
+Test run for /home/daniel/Projetos/nextflow/nextflow/nextflow.Tests/bin/Debug/net10.0/Nextflow.Tests.dll (.NETCoreApp,Version=v10.0)
+VSTest version 18.0.1 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+Results File: /tmp/claude-1000/testes-back/back.trx
+
+Passed!  - Failed:     0, Passed:  1062, Skipped:     0, Total:  1062, Duration: 11 m 6 s - Nextflow.Tests.dll (net10.0)
