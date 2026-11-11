@@ -13,7 +13,7 @@ o fundo sai e passamos ao próximo.
 | 3 | 4.9.3 Papel da IA | Privacidade: mostrar os campos do payload ao Gemini e como são filtrados (LGPD) | aprovado (11/11) | 5675448 |
 | 4 | 4.9.3 Papel da IA | Contradição com 4.1, 4.5.2, resumo e conclusão; documentar campos alteráveis, antes/depois e salvaguardas | aprovado (11/11) | 3ac0ce5 |
 | 5 | 4.9.5 Medição da precisão | MAPE: venda zero, exclusão por ruptura, venda observada × demanda, 15% como meta | aprovado (11/11) | 2151518 |
-| 6 | 4.10.1 Acessibilidade | Evidências medidas: WCAG, contraste, teclado, foco, leitores de tela, auditoria | em revisão | (ver abaixo) |
+| 6 | 4.10.1 Acessibilidade | Evidências medidas: WCAG, contraste, teclado, foco, leitores de tela, auditoria | em revisão | 6db78a6 |
 
 ## 1. 3.2 Levantamento de requisitos
 
