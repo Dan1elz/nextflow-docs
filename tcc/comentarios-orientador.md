@@ -22,7 +22,7 @@ o fundo sai e passamos ao próximo.
 | 12 | 4.3 Requisitos | Rastreabilidade RF/RNF → casos de uso → testes; onde estão os 52 casos de uso | aprovado (11/11) | 658b8e5 |
 | 13 | 5.2.3 Avaliação heurística | Avaliadores, roteiro, problemas, severidade, correções; inspeção interna ≠ teste com usuários | aprovado (11/11) | ae6feb3 |
 | 14 | 5.3 Discussão sobre os resultados | Qualificar objetivos; separar implementação, testes internos e validação externa pendente | aprovado (11/11) | 2822769 |
-| 15 | 6 Considerações finais | Generalização: sem estudo de implantação, custo ou lojistas; tratar como potencial do protótipo | em revisão | efc9ad5 |
+| 15 | 6 Considerações finais | Generalização: sem estudo de implantação, custo ou lojistas; tratar como potencial do protótipo | aprovado (11/11) | efc9ad5 |
 
 ## 1. 3.2 Levantamento de requisitos
 
@@ -415,8 +415,19 @@ não generaliza (problema do lojista e diferencial).
   pelas pesquisas sobre pequenos negócios"; ponto ligado do item 1).
 - O parágrafo "No dia a dia", que já estava verde de antes desta revisão, foi reescrito e segue verde.
 
+## Fechamento (11/11/2026)
+
+Todos os 15 comentários aprovados. Depois disso:
+- **Listas de figuras e de quadros** viraram campos do Word (`TOC \z \c "Figura"` e `\c "Quadro"`), sem `\h`, então sem
+  link azul. As 64 legendas voltaram a ter o campo `SEQ` (tinham perdido nas conversões). O `settings.xml` ganhou
+  `updateFields`: ao abrir, o Word pergunta se atualiza os campos; responder **Sim** acerta as páginas das listas e do sumário.
+- **Simplificações** (com fundo verde para leitura): justificativa (parágrafo técnico e o "Em suma"), 3.3 e 3.3.1 (dois
+  parágrafos genéricos sobre metodologia ágil e sprints), 4.1 (o 2º parágrafo repetia a 4.9.3; virou duas frases e uma
+  remissão) e a última frase do parágrafo da LGPD na 4.9.3.
+- A busca por repetição literal (blocos de 5 a 7 palavras) só achou citações do NIC.br, que ficaram.
+
 ## Checklist final
-- [ ] Todos os itens da tabela aprovados
+- [x] Todos os itens da tabela aprovados
 - [ ] Pontos ligados resolvidos ou descartados
 - [ ] Fundo verde retirado do documento inteiro
 - [ ] Referências novas em ordem alfabética e citadas no texto
