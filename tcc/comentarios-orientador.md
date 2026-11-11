@@ -428,6 +428,12 @@ Todos os 15 comentários aprovados. Depois disso:
 
 ## Checklist final
 - [x] Todos os itens da tabela aprovados
-- [ ] Pontos ligados resolvidos ou descartados
-- [ ] Fundo verde retirado do documento inteiro
-- [ ] Referências novas em ordem alfabética e citadas no texto
+- [ ] Pontos ligados ainda abertos (não bloqueiam a entrega):
+  - ADR 0005 no nextflow-docs ainda diz "só prioriza e explica" (alinhar com RN-DF22 e com a 4.9.3);
+  - prints do tema escuro no TCC mostram o roxo antigo dos botões (refazer com as cores WCAG);
+  - termos da API gratuita do Gemini (decidir se o TCC menciona);
+  - exemplo de payload com dados do seed como apêndice (opcional);
+  - comparação da previsão com regra-base na simulação (opcional, não feita);
+  - cores dos gráficos não medidas.
+- [x] Fundo verde retirado do documento inteiro
+- [x] Referências novas em ordem alfabética e citadas no texto (Sebrae 2023, W3C, Anthropic, OpenAI; conferido em 11/11)
