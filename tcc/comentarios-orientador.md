@@ -21,6 +21,7 @@ o fundo sai e passamos ao próximo.
 | 11 | 4.9.3 Papel da IA | Regras de validação: justificar 50–150%, revalidação (estoque, mínimo, múltiplo, prazo, orçamento), autorização do gestor | aprovado (11/11) | 2a32725 |
 | 12 | 4.3 Requisitos | Rastreabilidade RF/RNF → casos de uso → testes; onde estão os 52 casos de uso | aprovado (11/11) | 658b8e5 |
 | 13 | 5.2.3 Avaliação heurística | Avaliadores, roteiro, problemas, severidade, correções; inspeção interna ≠ teste com usuários | aprovado (11/11) | ae6feb3 |
+| 14 | 5.3 Discussão sobre os resultados | Qualificar objetivos; separar implementação, testes internos e validação externa pendente | em revisão | (ver abaixo) |
 
 ## 1. 3.2 Levantamento de requisitos
 
@@ -370,6 +371,24 @@ dois temas e no celular, de 06 a 11/11, escala de gravidade de Nielsen de 0 a 4)
 gravidade e correção (commits `71a0faf`, `07f9093`, contraste do item 6, `bc58b38`, `ac6cb93`, `e3127f0`) e um parágrafo
 final com o Quadro 18 e a ressalva de inspeção interna. Sem quadro novo, para não renumerar.
 
+
+## 14. 5.3 Discussão sobre os resultados
+
+**Comentário:**
+> ESSENCIAL | CONCLUSÕES: qualificar o alcance dos objetivos. Segurança e acessibilidade não tiveram verificação completa
+> descrita; a precisão da demanda ainda não possui observações reais, e a usabilidade não foi testada com usuários.
+> Separar implementação, testes internos e validação externa pendente.
+
+**Versão do colega:** boa direção (limitações, validação real como próxima etapa), mas genérica ("foram realizadas
+verificações de acessibilidade") e sem separar os três níveis. Não foi usada como base.
+
+**O que foi feito:** os três parágrafos da 5.3 viraram três níveis: (1) implementação, com os objetivos alcançados nesse
+nível; (2) verificação interna com os números (1.062 + 84 testes, Apêndice B, homologação, WCAG, inspeção da equipe) e
+"não equivalem a uma validação externa"; (3) validação externa pendente em quatro pontos (precisão sem dado real;
+usabilidade e acessibilidade sem usuários, tecnologias assistivas nem auditoria; segurança sem teste de invasão; carga
+concorrente não medida) e as limitações de escopo (um perfil, previsão da empresa). Nos trabalhos futuros, o item
+"validação em uso real" passou a incluir a apresentação da prova de conceito aos comerciantes, auditoria de
+acessibilidade, leitores de tela, análise de vulnerabilidades e testes de carga (fecha os pontos ligados dos itens 1 e 6).
 
 ## Checklist final
 - [ ] Todos os itens da tabela aprovados
