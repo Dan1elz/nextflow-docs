@@ -12,6 +12,7 @@ o fundo sai e passamos ao próximo.
 | 2 | 4.1 Visão geral do sistema | Contradição: "todos os números são determinísticos" × IA "refina quantidade ou desconto" (4.9.3) | aprovado (11/11) | ec88a7a |
 | 3 | 4.9.3 Papel da IA | Privacidade: mostrar os campos do payload ao Gemini e como são filtrados (LGPD) | aprovado (11/11) | 5675448 |
 | 4 | 4.9.3 Papel da IA | Contradição com 4.1, 4.5.2, resumo e conclusão; documentar campos alteráveis, antes/depois e salvaguardas | aprovado (11/11) | 3ac0ce5 |
+| 5 | 4.9.5 Medição da precisão | MAPE: venda zero, exclusão por ruptura, venda observada × demanda, 15% como meta | em revisão | (ver abaixo) |
 
 ## 1. 3.2 Levantamento de requisitos
 
@@ -141,6 +142,32 @@ conclusão e a lista das quatro etapas no 4.9.3.
 
 **Conferido no código:** `ForecastGuardrails.cs` (ação, prioridade, quantidade, desconto, dias, notas no motivo),
 `ForecastCalculator.cs` (desconto sugerido 5–25%, promoção 14–30 dias, margem 1,10 sobre o custo).
+
+## 5. 4.9.5 Medição da precisão
+
+**Parágrafo comentado:** o parágrafo único do 4.9.5 (versão de 10/11).
+
+**Comentário:**
+> ESSENCIAL | MAPE: explicar tratamento dos meses com venda real igual a zero (divisão por zero), critérios de exclusão
+> por ruptura e distinção entre vendas observadas e demanda verdadeira. Descrever se 15% é meta interna e não resultado
+> já medido.
+
+**Texto proposto pelo colega:** fórmula do erro mensal, exclusão de venda zero com previsão positiva, 0% quando os dois
+são zero, exclusão por ruptura em mais da metade dos dias, 15% como critério interno, viés de ±5%.
+
+**Validação contra o código** (`ForecastAccuracyCalculator.cs`, `ForecastProjectionRepository.GetAccuracyRows`,
+`DerivedDataCalculator.MonthlySales`; RN-DF19, RN-DF26):
+- Tudo confere com o código: erro = |previsto − vendido| ÷ vendido × 100; venda 0 com previsão > 0 sai (`NoSales`);
+  os dois zerados contam 0%; ruptura quando dias sem estoque × 2 > dias do mês (`Stockout`); viés acima de +5% ou abaixo
+  de −5%; tolerância MAPE ≤ 15% (RN-DF26, decidido em 08/11, antes 20%).
+- A projeção de referência é a da última análise concluída (com ou sem IA) com data de referência antes do dia 1º do mês.
+- Dia sem estoque = soma do fechamento das variações nos locais vendáveis ≤ 0.
+- O indicador geral é a % de produtos dentro da tolerância entre os que têm algum mês medido.
+- O sistema estima a demanda perdida por ruptura (RN-CE24), mas a medição usa a venda registrada, não a demanda estimada.
+
+**O que foi feito:** o parágrafo virou três, com fundo verde: (1) como a comparação é feita e a fórmula; (2) venda zero,
+ruptura e venda observada × demanda verdadeira, incluindo o limite da exclusão (ruptura parcial ainda distorce);
+(3) 15% como critério interno da equipe, o indicador geral, o viés e o fato de ainda não haver medição (remete às limitações).
 
 ## Checklist final
 - [ ] Todos os itens da tabela aprovados
