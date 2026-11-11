@@ -22,7 +22,7 @@ o fundo sai e passamos ao próximo.
 | 12 | 4.3 Requisitos | Rastreabilidade RF/RNF → casos de uso → testes; onde estão os 52 casos de uso | aprovado (11/11) | 658b8e5 |
 | 13 | 5.2.3 Avaliação heurística | Avaliadores, roteiro, problemas, severidade, correções; inspeção interna ≠ teste com usuários | aprovado (11/11) | ae6feb3 |
 | 14 | 5.3 Discussão sobre os resultados | Qualificar objetivos; separar implementação, testes internos e validação externa pendente | aprovado (11/11) | 2822769 |
-| 15 | 6 Considerações finais | Generalização: sem estudo de implantação, custo ou lojistas; tratar como potencial do protótipo | em revisão | (ver abaixo) |
+| 15 | 6 Considerações finais | Generalização: sem estudo de implantação, custo ou lojistas; tratar como potencial do protótipo | em revisão | efc9ad5 |
 
 ## 1. 3.2 Levantamento de requisitos
 
