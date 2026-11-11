@@ -14,8 +14,8 @@ o fundo sai e passamos ao próximo.
 | 4 | 4.9.3 Papel da IA | Contradição com 4.1, 4.5.2, resumo e conclusão; documentar campos alteráveis, antes/depois e salvaguardas | aprovado (11/11) | 3ac0ce5 |
 | 5 | 4.9.5 Medição da precisão | MAPE: venda zero, exclusão por ruptura, venda observada × demanda, 15% como meta | aprovado (11/11) | 2151518 |
 | 6 | 4.10.1 Acessibilidade | Evidências medidas: WCAG, contraste, teclado, foco, leitores de tela, auditoria | aprovado (11/11) | 6db78a6 |
-| 7 | 5.1 Resultados obtidos | Dados simulados: método, parâmetros, datas, distribuição, ruptura, lotes, semente, repetição | em revisão | (ver abaixo) |
-| 8 | 5.1 Resultados obtidos | Validação da previsão: funcionamento × acurácia; regra-base se viável | em revisão | (ver abaixo) |
+| 7 | 5.1 Resultados obtidos | Dados simulados: método, parâmetros, datas, distribuição, ruptura, lotes, semente, repetição | em revisão | 7d05684 |
+| 8 | 5.1 Resultados obtidos | Validação da previsão: funcionamento × acurácia; regra-base se viável | em revisão | 7d05684 |
 
 ## 1. 3.2 Levantamento de requisitos
 
