@@ -20,7 +20,7 @@ o fundo sai e passamos ao próximo.
 | 10 | 5.3 Desempenho | Mesma máquina, sem rede nem concorrência; ferramenta; não extrapolar; p95, dispersão, máximo, erros | aprovado (11/11) | 74ec08c |
 | 11 | 4.9.3 Papel da IA | Regras de validação: justificar 50–150%, revalidação (estoque, mínimo, múltiplo, prazo, orçamento), autorização do gestor | aprovado (11/11) | 2a32725 |
 | 12 | 4.3 Requisitos | Rastreabilidade RF/RNF → casos de uso → testes; onde estão os 52 casos de uso | em revisão | 658b8e5 |
-| 13 | 5.2.3 Avaliação heurística | Avaliadores, roteiro, problemas, severidade, correções; inspeção interna ≠ teste com usuários | pendente | — |
+| 13 | 5.2.3 Avaliação heurística | Avaliadores, roteiro, problemas, severidade, correções; inspeção interna ≠ teste com usuários | em revisão | (ver abaixo) |
 
 ## 1. 3.2 Levantamento de requisitos
 
@@ -352,7 +352,7 @@ só produz efeito..." porque o item de autorização já diz isso. Rótulo do 4�
   no índice de ilustrações.
 - Ponto fraco visível na matriz: RF012 (painel e notificações) tem só 2 testes de backend; o front cobre com 19.
 
-## 13. 5.2.3 Avaliação heurística (aguardando o Daniel)
+## 13. 5.2.3 Avaliação heurística
 
 **Comentário:**
 > RECOMENDADO | USABILIDADE: informar quantos avaliadores, roteiro, problemas encontrados, severidade e correções feitas.
@@ -361,6 +361,15 @@ só produz efeito..." porque o item de autorização já diz isso. Rótulo do 4�
 Não há registro da avaliação nos docs (o roteiro só diz "sem teste com usuários, decisão do Daniel, 09/11"). Material para
 os problemas encontrados: commits `fix` do front de 06 a 11/11 (≈20 correções de interface, várias vindas da conferência
 de telas do Daniel) e o contraste do item 6.
+
+**Respostas do Daniel (11/11):** ninguém além dos três usou o app; sem roteiro formal ("fui abrindo e testando"); item
+opcional; pode usar as correções do histórico como problemas.
+
+**O que foi feito:** o parágrafo de abertura virou: método (três integrantes, sem roteiro, telas dos fluxos principais nos
+dois temas e no celular, de 06 a 11/11, escala de gravidade de Nielsen de 0 a 4), lista de seis problemas com heurística,
+gravidade e correção (commits `71a0faf`, `07f9093`, contraste do item 6, `bc58b38`, `ac6cb93`, `e3127f0`) e um parágrafo
+final com o Quadro 18 e a ressalva de inspeção interna. Sem quadro novo, para não renumerar.
+
 
 ## Checklist final
 - [ ] Todos os itens da tabela aprovados
