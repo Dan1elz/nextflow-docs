@@ -10,6 +10,7 @@ o fundo sai e passamos ao próximo.
 |--|--|--|--|--|
 | 1 | 3.2 Levantamento de requisitos | Detalhar a modelagem de processos e as histórias de usuário; validação | aprovado (11/11) | 05305ef |
 | 2 | 4.1 Visão geral do sistema | Contradição: "todos os números são determinísticos" × IA "refina quantidade ou desconto" (4.9.3) | aprovado (11/11) | ec88a7a |
+| 3 | 4.9.3 Papel da IA | Privacidade: mostrar os campos do payload ao Gemini e como são filtrados (LGPD) | em revisão | 5675448 |
 
 ## 1. 3.2 Levantamento de requisitos
 
@@ -72,6 +73,40 @@ consultado; priorização por dependência e prazo; concorda em assumir a prova 
 **Pontos ligados, ainda sem mexer:**
 - ADR 0005 no nextflow-docs ainda diz "só prioriza e explica"; atualizar para casar com RN-DF22.
 - "Assim, cada sugestão pode ser reproduzida" saiu: a resposta da IA não é reproduzível, só o cálculo.
+
+## 3. 4.9.3 Papel da inteligência artificial (privacidade)
+
+**Parágrafo comentado:** os dois parágrafos do 4.9.3 (versão de 10/11), terminando em "Nenhum dado pessoal de clientes
+é enviado ao serviço."
+
+**Comentário:**
+> ESSENCIAL | PRIVACIDADE: apresentar quais campos compõem o payload enviado ao Gemini e como são filtrados/anonimizados.
+> A afirmação é relevante para LGPD e não deve permanecer apenas declaratória; citar testes, estrutura de integração ou
+> exemplo sem dados reais.
+
+**Texto proposto pelo colega:** payload com identificador e informações comerciais do produto, saldos, pedidos pendentes,
+preços, prazos, vendas mensais agregadas, índices sazonais e recomendações calculadas; princípio da necessidade (LGPD art.
+6º, III); sem vendas individuais nem dados de clientes.
+
+**Validação contra o código** (`ForecastAiPrompt.BuildPayload`, `BuildSummaryPayload`, `ForecastProductInput`,
+`OnDemandSuggestionUseCases`, `GeminiAiClient`):
+- Correto no geral. Ajustes: "pedidos pendentes" na verdade é só a quantidade a chegar somada, não os pedidos; faltavam
+  validade, promoção vigente, desconto máximo, demanda projetada, cobertura, confiança, eventos comerciais e fora de linha.
+- Faltavam também a chamada de resumo (contagens e até 15 recomendações) e a sugestão sob demanda (nome da loja, do local
+  e código do lote).
+- Não há anonimização: os dados pessoais nunca entram, porque `ForecastProductInput` não tem campo de cliente ou usuário e
+  as vendas chegam agregadas por produto e mês.
+- **Não existe teste** que trave os campos do payload. Os testes do orquestrador cobrem só ordenação e leitura da resposta.
+
+**O que foi feito:** a frase "Nenhum dado pessoal..." saiu do parágrafo da falha. Entrou um parágrafo de abertura, a lista
+com os seis grupos de campos, um parágrafo sobre o resumo e a sugestão sob demanda e um parágrafo da LGPD (art. 6º, III,
+Brasil 2018, que já estava nas referências), com a filtragem pela estrutura e a chave só no cabeçalho.
+
+**Pontos ligados, ainda sem mexer:**
+- Teste de contrato do payload (lista fechada de campos, sem dado de cliente) no back, para o texto poder citar o teste.
+- Exemplo de payload com dados do seed, como apêndice ou figura.
+- Termos da API gratuita do Gemini: o Google pode usar o conteúdo enviado para melhorar os produtos. Os dados de
+  produto, preço e custo são comerciais, não pessoais, mas vale decidir se o TCC menciona isso.
 
 ## Checklist final
 - [ ] Todos os itens da tabela aprovados
