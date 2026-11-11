@@ -22,6 +22,7 @@ o fundo sai e passamos ao próximo.
 | 12 | 4.3 Requisitos | Rastreabilidade RF/RNF → casos de uso → testes; onde estão os 52 casos de uso | aprovado (11/11) | 658b8e5 |
 | 13 | 5.2.3 Avaliação heurística | Avaliadores, roteiro, problemas, severidade, correções; inspeção interna ≠ teste com usuários | aprovado (11/11) | ae6feb3 |
 | 14 | 5.3 Discussão sobre os resultados | Qualificar objetivos; separar implementação, testes internos e validação externa pendente | aprovado (11/11) | 2822769 |
+| 15 | 6 Considerações finais | Generalização: sem estudo de implantação, custo ou lojistas; tratar como potencial do protótipo | em revisão | (ver abaixo) |
 
 ## 1. 3.2 Levantamento de requisitos
 
@@ -389,6 +390,30 @@ usabilidade e acessibilidade sem usuários, tecnologias assistivas nem auditoria
 concorrente não medida) e as limitações de escopo (um perfil, previsão da empresa). Nos trabalhos futuros, o item
 "validação em uso real" passou a incluir a apresentação da prova de conceito aos comerciantes, auditoria de
 acessibilidade, leitores de tela, análise de vulnerabilidades e testes de carga (fecha os pontos ligados dos itens 1 e 6).
+
+## 15. 6 Considerações finais
+
+**Comentário:**
+> RECOMENDADO | GENERALIZAÇÃO: não há estudo de implantação, custo total ou avaliação com lojistas para comprovar
+> acessibilidade econômica e benefícios operacionais. Apresentar como potencial do protótipo até haver evidência de adoção
+> real.
+
+**Versão do colega:** bem qualificada ("potencial de aplicação", "dependem de avaliações específicas"), mas reescrevia
+todos os parágrafos num tom mais genérico e menos de produto. Aproveitei as ideias e mantive o texto original onde ele
+não generaliza (problema do lojista e diferencial).
+
+**O que foi feito:**
+- Parágrafo dos dados de demonstração: "dados sintéticos", "histórico simulado", "situações que, numa operação real,..." e
+  "mostra o comportamento esperado do sistema, mas não comprova sua eficácia em um comércio real".
+- Parágrafo do dia a dia: "busca simplificar"; "ferramenta acessível" virou "potencial do protótipo"; nova frase de que
+  o potencial não foi comprovado (sem estudo de implantação, custo total nem avaliação com lojistas).
+- Parágrafo da equipe: "sistema funcional e testado" virou "protótipo funcional, verificado por testes automatizados e
+  por simulações".
+- Trabalhos futuros: a validação em uso real inclui levantar o custo de implantação e os ganhos na operação.
+- Mesma generalização em outros lugares: resumo e abstract ("ferramenta acessível" → protótipo com potencial que depende
+  de validação com lojistas) e fim da justificativa ("necessidades reais das empresas modernas" → "necessidades apontadas
+  pelas pesquisas sobre pequenos negócios"; ponto ligado do item 1).
+- O parágrafo "No dia a dia", que já estava verde de antes desta revisão, foi reescrito e segue verde.
 
 ## Checklist final
 - [ ] Todos os itens da tabela aprovados
