@@ -18,6 +18,7 @@ o fundo sai e passamos ao próximo.
 | 8 | 5.1 Resultados obtidos | Validação da previsão: funcionamento × acurácia; regra-base se viável | aprovado (11/11) | 7d05684 |
 | 9 | 5.2 Testes automatizados | Evidências: comando, versão, data, ambiente, relatório; separar 1.059 back × 84 front | aprovado (11/11) | 74ec08c |
 | 10 | 5.3 Desempenho | Mesma máquina, sem rede nem concorrência; ferramenta; não extrapolar; p95, dispersão, máximo, erros | aprovado (11/11) | 74ec08c |
+| 11 | 4.9.3 Papel da IA | Regras de validação: justificar 50–150%, revalidação (estoque, mínimo, múltiplo, prazo, orçamento), autorização do gestor | em revisão | (ver abaixo) |
 
 ## 1. 3.2 Levantamento de requisitos
 
@@ -309,6 +310,28 @@ sumário (página aproximada) e referências ANTHROPIC (Claude Code) e OPENAI (C
   código e 07/11 nos docs).
 - ABNT: não há norma oficial confirmada que obrigue a declaração (NBR 6023 e 10520 não tratam de IA generativa); declarar é
   a prática recomendada pelas bibliotecas. Conferir se a Fatec tem regra própria.
+
+## 11. 4.9.3 Papel da IA (regras de validação)
+
+**Comentário:**
+> RECOMENDADO | REGRAS DE VALIDAÇÃO: justificar a faixa de 50% a 150% e como os ajustes da IA são revalidados contra
+> estoque, pedido mínimo, múltiplo, prazo e limite orçamentário; indicar se existe autorização explícita do gestor sobre o
+> valor ajustado.
+
+**Base:** versão revisada pelo grupo (quatro etapas, 50–150% como restrição sem validação estatística, valor final pode
+sair da faixa, prazo do cálculo, sem limite orçamentário, autorização do gestor).
+
+**Conferido no código:** `ForecastGuardrails` (clamp e depois `AdjustPurchase` com vida útil, mínimo e múltiplo;
+`Deadline = calc.Deadline`); `ForecastActionUseCases` (aplicar Comprar gera pedido em Orçamento, nada é enviado; avisos de
+mínimo, múltiplo e validade são do diálogo e não bloqueiam); `apply-purchase-dialog.tsx` (quantidade editável, avisos,
+custo estimado do pedido); `forecast-detail.tsx` (selo de ajuste da IA e quantidade calculada ao lado); RN-VD13
+(promoção abaixo do custo exige confirmação). O prompt (regra 3) mostra a intenção da faixa: a IA só muda a quantidade
+diante de evento comercial, validade ou cobertura curta.
+
+**Ajustes sobre a versão do grupo:** justificativa da faixa (antecipar ou reduzir sem mudar a ordem de grandeza);
+autorização detalhada (diálogo editável com avisos e custo, pedido em orçamento que ainda precisa ser enviado, confirmação
+de promoção abaixo do custo) no lugar de "validações correspondentes"; tirada a frase "Em qualquer caso, a recomendação
+só produz efeito..." porque o item de autorização já diz isso. Rótulo do 4º item: "Persistência e autorização".
 
 ## Checklist final
 - [ ] Todos os itens da tabela aprovados
