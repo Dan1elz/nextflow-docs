@@ -10,7 +10,7 @@ o fundo sai e passamos ao próximo.
 |--|--|--|--|--|
 | 1 | 3.2 Levantamento de requisitos | Detalhar a modelagem de processos e as histórias de usuário; validação | aprovado (11/11) | 05305ef |
 | 2 | 4.1 Visão geral do sistema | Contradição: "todos os números são determinísticos" × IA "refina quantidade ou desconto" (4.9.3) | aprovado (11/11) | ec88a7a |
-| 3 | 4.9.3 Papel da IA | Privacidade: mostrar os campos do payload ao Gemini e como são filtrados (LGPD) | em revisão | 5675448 |
+| 3 | 4.9.3 Papel da IA | Privacidade: mostrar os campos do payload ao Gemini e como são filtrados (LGPD) | aprovado (11/11) | 5675448 |
 
 ## 1. 3.2 Levantamento de requisitos
 
