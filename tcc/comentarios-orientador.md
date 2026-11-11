@@ -19,7 +19,7 @@ o fundo sai e passamos ao próximo.
 | 9 | 5.2 Testes automatizados | Evidências: comando, versão, data, ambiente, relatório; separar 1.059 back × 84 front | aprovado (11/11) | 74ec08c |
 | 10 | 5.3 Desempenho | Mesma máquina, sem rede nem concorrência; ferramenta; não extrapolar; p95, dispersão, máximo, erros | aprovado (11/11) | 74ec08c |
 | 11 | 4.9.3 Papel da IA | Regras de validação: justificar 50–150%, revalidação (estoque, mínimo, múltiplo, prazo, orçamento), autorização do gestor | aprovado (11/11) | 2a32725 |
-| 12 | 4.3 Requisitos | Rastreabilidade RF/RNF → casos de uso → testes; onde estão os 52 casos de uso | em revisão | (ver abaixo) |
+| 12 | 4.3 Requisitos | Rastreabilidade RF/RNF → casos de uso → testes; onde estão os 52 casos de uso | em revisão | 658b8e5 |
 | 13 | 5.2.3 Avaliação heurística | Avaliadores, roteiro, problemas, severidade, correções; inspeção interna ≠ teste com usuários | pendente | — |
 
 ## 1. 3.2 Levantamento de requisitos
