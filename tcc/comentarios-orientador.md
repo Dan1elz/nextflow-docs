@@ -9,6 +9,7 @@ o fundo sai e passamos ao próximo.
 | # | Seção | Comentário (resumo) | Status | Commit |
 |--|--|--|--|--|
 | 1 | 3.2 Levantamento de requisitos | Detalhar a modelagem de processos e as histórias de usuário; validação | aprovado (11/11) | 05305ef |
+| 2 | 4.1 Visão geral do sistema | Contradição: "todos os números são determinísticos" × IA "refina quantidade ou desconto" (4.9.3) | em revisão | ec88a7a |
 
 ## 1. 3.2 Levantamento de requisitos
 
@@ -38,6 +39,39 @@ consultado; priorização por dependência e prazo; concorda em assumir a prova 
 - Fim da justificativa: "necessidades reais das empresas" → "necessidades apontadas pelas pesquisas".
 - Trabalhos futuros: incluir a apresentação da prova de conceito aos lojistas.
 - Resumo (opcional): de onde vieram os requisitos.
+
+## 2. 4.1 Visão geral do sistema
+
+**Parágrafo comentado:**
+> O princípio que orienta esse módulo é a divisão de papéis entre o servidor, a inteligência artificial e o gestor:
+> todos os números da previsão são produzidos por cálculo determinístico no backend; a inteligência artificial apenas
+> prioriza e explica as recomendações, dentro de limites definidos; e nenhuma ação é executada sem a decisão do gestor.
+> Assim, cada sugestão pode ser conferida e reproduzida, e o sistema continua funcionando mesmo sem o serviço de
+> inteligência artificial.
+
+**Comentário:**
+> ESSENCIAL | CONSISTÊNCIA INTERNA: seção 4.9.3 diz que o Gemini pode "refinar a quantidade ou o desconto". Aqui se
+> afirma que todos os números são determinísticos e que a IA apenas prioriza/explica. Esclarecer se o resultado final
+> pode mudar numericamente; distinguir cálculo base, ajuste da IA, regras de validação e valores persistidos, inclusive
+> no resumo e na conclusão.
+
+**Como funciona de fato** (código `ForecastGuardrails.cs`, `ForecastRecommendation.cs`; RN-DF10 a 12, 22, 25, 29):
+- Sim, o resultado final pode mudar numericamente. A IA pode trocar a prioridade e propor quantidade (0,5× a 1,5× da
+  necessidade, depois pedido mínimo, múltiplo e vida útil), desconto (5% até o máximo da margem) e dias de promoção (7 a 45).
+- Valor fora da faixa é levado ao limite, e o motivo registra o ajuste. A IA não muda a confiança, não cria Comprar,
+  Promover ou Transferir sem o gatilho do cálculo, e não troca uma compra urgente por Manter.
+- Ficam gravados: o valor final (`SuggestedQuantity`, desconto, dias), a `CalculatedQuantity`, o `ReasonCalculated`
+  ao lado do motivo da IA e o `AiAdjusted`. O desconto calculado não é gravado à parte.
+- O gestor ainda edita quantidade, desconto e período nos diálogos de aplicar.
+
+**O que foi feito:**
+- 4.1: o parágrafo virou dois (o que o cálculo produz, o que a IA pode ajustar, a validação, o que é gravado, a decisão do gestor).
+- 4.9.3 Papel da IA: virou uma lista com as quatro etapas (cálculo base, ajuste da IA, regras de validação, valores persistidos) e o comportamento na falha.
+- Arquitetura (princípio "o servidor calcula, a IA interpreta"), resumo e conclusão: só o trecho sobre a IA foi trocado.
+
+**Pontos ligados, ainda sem mexer:**
+- ADR 0005 no nextflow-docs ainda diz "só prioriza e explica"; atualizar para casar com RN-DF22.
+- "Assim, cada sugestão pode ser reproduzida" saiu: a resposta da IA não é reproduzível, só o cálculo.
 
 ## Checklist final
 - [ ] Todos os itens da tabela aprovados
