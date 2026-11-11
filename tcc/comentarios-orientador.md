@@ -13,6 +13,7 @@ o fundo sai e passamos ao próximo.
 | 3 | 4.9.3 Papel da IA | Privacidade: mostrar os campos do payload ao Gemini e como são filtrados (LGPD) | aprovado (11/11) | 5675448 |
 | 4 | 4.9.3 Papel da IA | Contradição com 4.1, 4.5.2, resumo e conclusão; documentar campos alteráveis, antes/depois e salvaguardas | aprovado (11/11) | 3ac0ce5 |
 | 5 | 4.9.5 Medição da precisão | MAPE: venda zero, exclusão por ruptura, venda observada × demanda, 15% como meta | aprovado (11/11) | 2151518 |
+| 6 | 4.10.1 Acessibilidade | Evidências medidas: WCAG, contraste, teclado, foco, leitores de tela, auditoria | em revisão | (ver abaixo) |
 
 ## 1. 3.2 Levantamento de requisitos
 
@@ -168,6 +169,42 @@ são zero, exclusão por ruptura em mais da metade dos dias, 15% como critério 
 **O que foi feito:** o parágrafo virou três, com fundo verde: (1) como a comparação é feita e a fórmula; (2) venda zero,
 ruptura e venda observada × demanda verdadeira, incluindo o limite da exclusão (ruptura parcial ainda distorce);
 (3) 15% como critério interno da equipe, o indicador geral, o viés e o fato de ainda não haver medição (remete às limitações).
+
+## 6. 4.10.1 Acessibilidade
+
+**Parágrafo comentado:** o parágrafo único do 4.10.1 (shadcn/ui, "contraste adequado nos dois temas").
+
+**Comentário:**
+> ESSENCIAL | ACESSIBILIDADE: trazer evidências mensuráveis (critérios WCAG, relação de contraste, navegação por
+> teclado, foco, leitores de tela ou auditoria automatizada/manual). Uso de shadcn/ui e afirmação de "contraste adequado"
+> não demonstram, por si só, conformidade ou acessibilidade validada.
+
+**Texto do colega:** correto no tom (shadcn não garante conformidade, WCAG 2.2 como referência), mas todo no
+condicional ("deve considerar", "permitem documentar"), sem nenhum número. Não foi usado como base.
+
+**Medição (11/11/2026):** `tcc/ferramentas/contraste.py` lê os tokens OKLCH de `nextflow-front/src/index.css`, converte
+para sRGB e aplica a razão de contraste da WCAG. Primeira medição: abaixo do mínimo a mensagem de erro no claro (4,4),
+o texto do botão principal e os links no escuro (3,9 e 4,4), o botão de exclusão no escuro (2,8), o anel de foco (2,2)
+e a borda dos campos (1,3).
+
+**Correção no front** (branch `fix/contraste-wcag` do nextflow-front, **sem commit**, aguardando o Daniel validar nas
+telas): `--destructive` claro mais escuro; `--input` opaco e mais escuro nos dois temas; `--ring` opaco; no escuro,
+`--primary` mais claro com texto escuro (`--primary-foreground`) e `--destructive-foreground` escuro; `ring-ring/50`
+virou `ring-ring` em button, calendar e item, e `outline-ring/50` virou `outline-ring`. Depois: todos os pares passam
+(menor: borda dos campos no escuro, 3,3:1). Build ok, 84 testes ok, lint sem erro novo (53 erros antigos em outros
+arquivos).
+
+**Outras evidências levantadas:** `lang="pt-BR"`; 56 `aria-invalid` e `aria-describedby` no `form.tsx`; 93 `aria-label`;
+16 `sr-only`; 153 consultas por papel/rótulo nos testes contra 1 por test id; componentes Radix.
+
+**O que foi feito no TCC:** 4.10.1 reescrito (introdução, contraste com o novo Quadro 15 de antes/depois, teclado e
+foco, leitores de tela, testes, limitações); quadros 15–17 viraram 16–18; a WCAG 2.2 entrou nas referências (W3C, 2023)
+e passou a ser citada no capítulo 2; o RNF da interface troca "contraste adequado" pelos mínimos 4,5:1 e 3:1.
+
+**Pontos ligados, ainda sem mexer:**
+- Auditoria com axe ou Lighthouse e teste com leitor de tela (exigem o navegador; o texto assume como limitação).
+- Cores dos gráficos não medidas.
+- Prints do TCC com o tema escuro mostram o roxo antigo dos botões; refazer se o Daniel aprovar as cores.
 
 ## Checklist final
 - [ ] Todos os itens da tabela aprovados
