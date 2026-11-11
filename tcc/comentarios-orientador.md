@@ -16,8 +16,8 @@ o fundo sai e passamos ao próximo.
 | 6 | 4.10.1 Acessibilidade | Evidências medidas: WCAG, contraste, teclado, foco, leitores de tela, auditoria | aprovado (11/11) | 6db78a6 |
 | 7 | 5.1 Resultados obtidos | Dados simulados: método, parâmetros, datas, distribuição, ruptura, lotes, semente, repetição | aprovado (11/11) | 7d05684 |
 | 8 | 5.1 Resultados obtidos | Validação da previsão: funcionamento × acurácia; regra-base se viável | aprovado (11/11) | 7d05684 |
-| 9 | 5.2 Testes automatizados | Evidências: comando, versão, data, ambiente, relatório; separar 1.059 back × 84 front | em revisão | (ver abaixo) |
-| 10 | 5.3 Desempenho | Mesma máquina, sem rede nem concorrência; ferramenta; não extrapolar; p95, dispersão, máximo, erros | em revisão | (ver abaixo) |
+| 9 | 5.2 Testes automatizados | Evidências: comando, versão, data, ambiente, relatório; separar 1.059 back × 84 front | em revisão | 74ec08c |
+| 10 | 5.3 Desempenho | Mesma máquina, sem rede nem concorrência; ferramenta; não extrapolar; p95, dispersão, máximo, erros | em revisão | 74ec08c |
 
 ## 1. 3.2 Levantamento de requisitos
 
