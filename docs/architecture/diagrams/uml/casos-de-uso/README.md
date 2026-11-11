@@ -75,7 +75,7 @@ Todos exigem autenticação (UC01), exceto o próprio UC01.
 | UC36 | Informar lote e validade | Administrador | Só para produto que controla lote. | ADR 0008 |
 | UC37 | Cancelar pedido | Administrador | Pedido recebido não cancela. | RN-CP03 |
 | UC38 | Gerar análise de demanda | Administrador, Agendador | Em segundo plano, uma por vez; manual ou semanal. | RN-DF18, RN-DF23 |
-| UC39 | Priorizar e explicar com a IA | Serviço de IA | Lotes sequenciais de produtos; a IA ajusta dentro dos limites. | RN-DF12, RN-DF13, RN-DF20 |
+| UC39 | Revisar com a IA (dentro dos limites) | Serviço de IA | Lotes sequenciais de produtos; a IA ajusta dentro dos limites. | RN-DF12, RN-DF13, RN-DF20 |
 | UC40 | Consultar recomendações | Administrador | Lista por ação, prioridade e confiança, com o detalhe do cálculo. | RN-DF21 |
 | UC41 | Aplicar Comprar | Administrador | Gera pedidos de compra em orçamento por fornecedor. | RN-DF15 |
 | UC42 | Dividir a compra entre lojas | Administrador | Parte de cada loja pela falta dela, um pedido por loja. | RN-DF27, RN-DF28 |

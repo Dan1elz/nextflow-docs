@@ -9,7 +9,7 @@ actor "Serviço de IA\n(Gemini)" as IA
 
 rectangle "Nextflow — Inteligência de compras" {
   usecase "UC38 Gerar análise de demanda" as UC38
-  usecase "UC39 Priorizar e explicar\ncom a IA" as UC39
+  usecase "UC39 Revisar com a IA\n(dentro dos limites)" as UC39
   usecase "UC40 Consultar recomendações" as UC40
   usecase "UC41 Aplicar Comprar" as UC41
   usecase "UC42 Dividir a compra\nentre lojas" as UC42

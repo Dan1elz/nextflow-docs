@@ -1,0 +1,12 @@
+inicio 2026-11-11T19:46:51-03:00
+ 19:46:51 up 24 days,  7:02,  3 users,  load average: 1.08, 2.65, 2.92
+consulta	n	erros	media_ms	desvio_ms	p50_ms	p95_ms	max_ms
+Listagem de produtos (20 por página)	100	0	58.9	30.5	49.0	118.4	233.6
+Movimentações de estoque (20 por página)	100	0	109.9	43.0	97.3	189.9	361.7
+Histórico de vendas (20 por página)	100	0	64.0	38.7	52.2	109.3	336.1
+Painel: indicadores de vendas do mês	100	0	56.4	27.1	47.8	102.5	226.0
+Painel: faturamento de 12 meses	100	0	283.1	89.4	268.7	406.0	838.9
+Painel: estoque baixo	100	0	77.5	49.8	61.7	149.3	366.3
+Última análise de previsão	100	0	26.7	29.6	19.9	53.2	199.3
+fim 2026-11-11T19:48:18-03:00
+ 19:48:18 up 24 days,  7:03,  3 users,  load average: 2.17, 2.61, 2.88

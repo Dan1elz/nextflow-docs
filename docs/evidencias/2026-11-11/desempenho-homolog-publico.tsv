@@ -1,0 +1,8 @@
+consulta	n	erros	media_ms	desvio_ms	p50_ms	p95_ms	max_ms
+Listagem de produtos (20 por página)	100	0	384.9	230.4	296.9	853.4	1825.9
+Movimentações de estoque (20 por página)	100	0	382.2	136.1	346.9	605.0	1451.9
+Histórico de vendas (20 por página)	100	0	310.1	59.0	294.2	387.1	699.5
+Painel: indicadores de vendas do mês	100	0	314.7	62.1	295.1	416.8	636.0
+Painel: faturamento de 12 meses	100	0	534.6	142.0	488.5	767.1	1245.2
+Painel: estoque baixo	100	0	323.3	83.3	293.9	498.5	706.2
+Última análise de previsão	100	0	298.5	118.5	266.7	424.0	1270.2
