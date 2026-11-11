@@ -21,7 +21,7 @@ o fundo sai e passamos ao próximo.
 | 11 | 4.9.3 Papel da IA | Regras de validação: justificar 50–150%, revalidação (estoque, mínimo, múltiplo, prazo, orçamento), autorização do gestor | aprovado (11/11) | 2a32725 |
 | 12 | 4.3 Requisitos | Rastreabilidade RF/RNF → casos de uso → testes; onde estão os 52 casos de uso | aprovado (11/11) | 658b8e5 |
 | 13 | 5.2.3 Avaliação heurística | Avaliadores, roteiro, problemas, severidade, correções; inspeção interna ≠ teste com usuários | aprovado (11/11) | ae6feb3 |
-| 14 | 5.3 Discussão sobre os resultados | Qualificar objetivos; separar implementação, testes internos e validação externa pendente | em revisão | 2822769 |
+| 14 | 5.3 Discussão sobre os resultados | Qualificar objetivos; separar implementação, testes internos e validação externa pendente | aprovado (11/11) | 2822769 |
 
 ## 1. 3.2 Levantamento de requisitos
 
