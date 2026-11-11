@@ -11,6 +11,7 @@ o fundo sai e passamos ao próximo.
 | 1 | 3.2 Levantamento de requisitos | Detalhar a modelagem de processos e as histórias de usuário; validação | aprovado (11/11) | 05305ef |
 | 2 | 4.1 Visão geral do sistema | Contradição: "todos os números são determinísticos" × IA "refina quantidade ou desconto" (4.9.3) | aprovado (11/11) | ec88a7a |
 | 3 | 4.9.3 Papel da IA | Privacidade: mostrar os campos do payload ao Gemini e como são filtrados (LGPD) | aprovado (11/11) | 5675448 |
+| 4 | 4.9.3 Papel da IA | Contradição com 4.1, 4.5.2, resumo e conclusão; documentar campos alteráveis, antes/depois e salvaguardas | em revisão | (ver abaixo) |
 
 ## 1. 3.2 Levantamento de requisitos
 
@@ -110,6 +111,36 @@ Brasil 2018, que já estava nas referências), com a filtragem pela estrutura e 
 - Exemplo de payload com dados do seed, como apêndice ou figura.
 - Termos da API gratuita do Gemini: o Google pode usar o conteúdo enviado para melhorar os produtos. Os dados de
   produto, preço e custo são comerciais, não pessoais, mas vale decidir se o TCC menciona isso.
+
+## 4. 4.9.3 Papel da inteligência artificial (transparência)
+
+**Parágrafo comentado:** o primeiro parágrafo do 4.9.3 (versão de 10/11), com "a IA pode ajustar a prioridade, refinar a
+quantidade ou o desconto".
+
+**Comentário:**
+> ESSENCIAL | IA GENERATIVA: resolver a contradição com seções 4.1, 4.5.2, resumo e conclusões, que atribuem à IA apenas
+> priorização/explicação. Documentar campos alteráveis, valores antes/depois e salvaguardas, para garantir transparência
+> do mecanismo de decisão.
+
+**O que já estava resolvido pelo item 2:** 4.1, 4.5.2 (princípio "o servidor calcula, a IA interpreta"), resumo,
+conclusão e a lista das quatro etapas no 4.9.3.
+
+**Sobras achadas na varredura:**
+- Justificativa (cap. 1): "utiliza a inteligência artificial apenas para priorizar e explicar".
+- Quadro 1, RF da previsão: "com priorização e explicação por inteligência artificial".
+- UC39 "Priorizar e explicar com a IA" (especificação do UC38 e diagrama da Figura 7).
+
+**O que foi feito:**
+- As três sobras foram corrigidas. O UC39 virou "Revisar com a IA dentro dos limites"; o diagrama `uc-7-previsao.puml`
+  foi gerado de novo e trocado no docx (imagem não tem fundo verde).
+- 4.9.3: novo **Quadro 14 – Campos da recomendação que a IA pode alterar** (campo, valor de origem, o que a IA pode
+  fazer, salvaguarda, o que fica gravado) e um exemplo de antes/depois: compra 100 → IA 200 → gravado 150, com a nota
+  do código; desconto 20% calculado → IA 30% → gravado 23% (preço R$ 10, custo R$ 7, margem de 10%).
+- Quadros 14, 15 e 16 viraram 15, 16 e 17 (legendas, índice e citações). A entrada nova do índice está sem hiperlink e
+  com página aproximada: atualizar o índice no Word na formatação final.
+
+**Conferido no código:** `ForecastGuardrails.cs` (ação, prioridade, quantidade, desconto, dias, notas no motivo),
+`ForecastCalculator.cs` (desconto sugerido 5–25%, promoção 14–30 dias, margem 1,10 sobre o custo).
 
 ## Checklist final
 - [ ] Todos os itens da tabela aprovados
