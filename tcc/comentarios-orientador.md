@@ -14,6 +14,8 @@ o fundo sai e passamos ao próximo.
 | 4 | 4.9.3 Papel da IA | Contradição com 4.1, 4.5.2, resumo e conclusão; documentar campos alteráveis, antes/depois e salvaguardas | aprovado (11/11) | 3ac0ce5 |
 | 5 | 4.9.5 Medição da precisão | MAPE: venda zero, exclusão por ruptura, venda observada × demanda, 15% como meta | aprovado (11/11) | 2151518 |
 | 6 | 4.10.1 Acessibilidade | Evidências medidas: WCAG, contraste, teclado, foco, leitores de tela, auditoria | aprovado (11/11) | 6db78a6 |
+| 7 | 5.1 Resultados obtidos | Dados simulados: método, parâmetros, datas, distribuição, ruptura, lotes, semente, repetição | em revisão | (ver abaixo) |
+| 8 | 5.1 Resultados obtidos | Validação da previsão: funcionamento × acurácia; regra-base se viável | em revisão | (ver abaixo) |
 
 ## 1. 3.2 Levantamento de requisitos
 
@@ -205,6 +207,43 @@ e passou a ser citada no capítulo 2; o RNF da interface troca "contraste adequa
 - Auditoria com axe ou Lighthouse e teste com leitor de tela (exigem o navegador; o texto assume como limitação).
 - Cores dos gráficos não medidas.
 - Prints do TCC com o tema escuro mostram o roxo antigo dos botões; refazer se o Daniel aprovar as cores.
+
+## 7 e 8. 5.1 Resultados obtidos (dados simulados e validação da previsão)
+
+**Parágrafos comentados:** os três parágrafos da 5.1 (sistema entregue, dados de demonstração, análise de 08/11).
+
+**Comentários:**
+> ESSENCIAL | DADOS SIMULADOS: documentar método e parâmetros de geração dos 36 meses, datas especiais, distribuição das
+> vendas, indisponibilidade, lotes, semente aleatória (se houver) e scripts ou critérios de repetição; separar claramente
+> dados sintéticos de resultados reais.
+
+> ESSENCIAL | VALIDAÇÃO DA PREVISÃO: as recomendações coerentes com padrões inseridos em dados sintéticos demonstram
+> funcionamento, não acurácia preditiva em uso real. Explicitar essa distinção e, se viável, comparar com regra-base ou
+> cenários controlados independentes.
+
+**Como o seed funciona** (`nextflow.Infrastructure/Seeders/Demo`: `DemoDemand.cs`, `DemoHistorySimulation.cs`,
+`DemoHistorySeeder.cs`, `DemoScenariosSeeder.cs`):
+- Demanda/dia = volume mensal × fator do mês (14 perfis) × fator de evento (Páscoa, Namorados, Mães, Pais, Crianças,
+  Natal) × dia da semana (0,55 dom. a 1,35 sáb.) × tendência (1,08/ano estável, 1,45 crescente, 0,70 decrescente) × 0,8.
+  Data única (ovo, kits) só na janela de 21 a 42 dias. Segunda loja = 60%. Venda do dia ~ Poisson (normal acima de 30).
+- Reposição a cada 14 dias por fornecedor e loja, mirando prazo + 14 + 28 dias; prazo real = cadastrado −2 a +3 dias;
+  custo ±3%. Venda limitada ao saldo do salão (ruptura = venda perdida). Lote por chegada de alimento, validade = vida
+  útil; saída FEFO pelo livro-razão.
+- Semente fixa 42 (`RandomSeed`), âncora gravada na nota da abertura; `Seed:Demo:HistoryMonths` = 36. Testes:
+  `DemoHistorySeedTests`, `DemoScenariosSeedTests`.
+- **Cenários inseridos:** `LateLastOrder` em 6 produtos (DP-003, 008, 017 trufa, 021 panetone, 041, 046) corta a última
+  reposição; recebimento de ontem com lotes de 12 e 25 dias; transferência "errada" Shopping → Centro. As 6 compras, 2
+  promoções e 4 transferências da análise de 08/11 vêm desses cenários.
+
+**O que foi feito:** a 5.1 manteve o 1º parágrafo; o 2º virou quatro (dados sintéticos, modelo de demanda, reposição/
+ruptura/lotes, cenários inseridos e repetição); o 3º passou a ligar cada recomendação ao cenário que a provocou e ganhou
+um parágrafo que separa funcionamento de acurácia (cita regra-base como forma de avaliar com dados reais). Também
+ajustados com fundo verde: resumo, abstract (que ainda dizia "only prioritizes and explains", sobra dos itens 2/4),
+discussão, limitações e conclusão.
+
+**Ponto em aberto:** comparação com regra-base em cenário controlado (backtest na simulação: prever cada um dos últimos
+12 meses com o histórico até o mês anterior e comparar o MAPE com "mesmo mês do ano anterior" e "média dos 3 últimos
+meses"). Não feito; depende do ok do Daniel (código novo no back).
 
 ## Checklist final
 - [ ] Todos os itens da tabela aprovados
