@@ -103,7 +103,10 @@ com os seis grupos de campos, um parágrafo sobre o resumo e a sugestão sob dem
 Brasil 2018, que já estava nas referências), com a filtragem pela estrutura e a chave só no cabeçalho.
 
 **Pontos ligados, ainda sem mexer:**
-- Teste de contrato do payload (lista fechada de campos, sem dado de cliente) no back, para o texto poder citar o teste.
+- ~~Teste de contrato do payload~~ feito no back (branch `test/payload-ia-lgpd`, ainda sem commit): `ForecastAiPayloadTests`
+  (lote, resumo e a entrada da previsão sem campo de cliente) e checagem nos dois testes RN-DF30 da sugestão sob demanda,
+  com a lista em `Tests/Support/AiPayloadContract.cs`. O 4.9.3 cita os testes no fim do parágrafo da LGPD.
+- O total de testes do capítulo 5 (1.059 no back) vai mudar: 3 testes novos. Atualizar quando a suíte for rodada de novo.
 - Exemplo de payload com dados do seed, como apêndice ou figura.
 - Termos da API gratuita do Gemini: o Google pode usar o conteúdo enviado para melhorar os produtos. Os dados de
   produto, preço e custo são comerciais, não pessoais, mas vale decidir se o TCC menciona isso.
