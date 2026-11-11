@@ -19,6 +19,8 @@ o fundo sai e passamos ao próximo.
 | 9 | 5.2 Testes automatizados | Evidências: comando, versão, data, ambiente, relatório; separar 1.059 back × 84 front | aprovado (11/11) | 74ec08c |
 | 10 | 5.3 Desempenho | Mesma máquina, sem rede nem concorrência; ferramenta; não extrapolar; p95, dispersão, máximo, erros | aprovado (11/11) | 74ec08c |
 | 11 | 4.9.3 Papel da IA | Regras de validação: justificar 50–150%, revalidação (estoque, mínimo, múltiplo, prazo, orçamento), autorização do gestor | aprovado (11/11) | 2a32725 |
+| 12 | 4.3 Requisitos | Rastreabilidade RF/RNF → casos de uso → testes; onde estão os 52 casos de uso | em revisão | (ver abaixo) |
+| 13 | 5.2.3 Avaliação heurística | Avaliadores, roteiro, problemas, severidade, correções; inspeção interna ≠ teste com usuários | pendente | — |
 
 ## 1. 3.2 Levantamento de requisitos
 
@@ -332,6 +334,33 @@ diante de evento comercial, validade ou cobertura curta.
 autorização detalhada (diálogo editável com avisos e custo, pedido em orçamento que ainda precisa ser enviado, confirmação
 de promoção abaixo do custo) no lugar de "validações correspondentes"; tirada a frase "Em qualquer caso, a recomendação
 só produz efeito..." porque o item de autorização já diz isso. Rótulo do 4º item: "Persistência e autorização".
+
+## 12. 4.3 Requisitos (rastreabilidade)
+
+**Comentário:**
+> RECOMENDADO | RASTREABILIDADE: incluir (ou indicar onde existe) matriz RF/RNF → casos de uso → testes/resultado. São
+> mencionados 52 casos de uso, mas somente quatro estão especificados em detalhe e os requisitos funcionais estão
+> agrupados; indicar onde os demais são documentados.
+
+**O que foi feito:**
+- `tcc/ferramentas/rastreabilidade.py` lê os relatórios de 11/11 (TRX do back, JUnit do front) e gera
+  `docs/architecture/rastreabilidade.md`: RF → casos de uso → classes/arquivos de teste com contagem; RNF → verificação.
+  Os 52 UC se dividem entre os 12 RF sem sobra; 1.010 testes do back e 80 do front ficam ligados aos RF, e 52 + 4
+  cobrem infraestrutura, migrações e seed. Zero falhas.
+- TCC: parágrafo novo na 4.3 (onde estão os 52 UC e as regras; Apêndice B; arquivo da matriz) e **Apêndice B – Matriz de
+  rastreabilidade dos requisitos** com o **Quadro 19** (no fim, para não renumerar os quadros), com entrada no sumário e
+  no índice de ilustrações.
+- Ponto fraco visível na matriz: RF012 (painel e notificações) tem só 2 testes de backend; o front cobre com 19.
+
+## 13. 5.2.3 Avaliação heurística (aguardando o Daniel)
+
+**Comentário:**
+> RECOMENDADO | USABILIDADE: informar quantos avaliadores, roteiro, problemas encontrados, severidade e correções feitas.
+> A análise pelos próprios desenvolvedores é uma inspeção interna, não substitui testes com usuários independentes.
+
+Não há registro da avaliação nos docs (o roteiro só diz "sem teste com usuários, decisão do Daniel, 09/11"). Material para
+os problemas encontrados: commits `fix` do front de 06 a 11/11 (≈20 correções de interface, várias vindas da conferência
+de telas do Daniel) e o contraste do item 6.
 
 ## Checklist final
 - [ ] Todos os itens da tabela aprovados
