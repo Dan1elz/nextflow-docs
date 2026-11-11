@@ -15,7 +15,7 @@
 | DER — Classificação e fornecimento do produto | [der-4-classificacao.png](der-4-classificacao.png) | categories, category_products, collections, calendar_events, product_events, product_suppliers |
 | DER — Lojas, locais, saldo e livro-razão | [der-5-estoque.png](der-5-estoque.png) | stores, stock_locations, stock_balances, lots, stock_movements, stock_location_minimums, stock_policies |
 | DER — Transferência de estoque | [der-6-transferencia.png](der-6-transferencia.png) | stock_transfers, stock_transfer_items |
-| DER — Vendas e promoções | [der-7-vendas.png](der-7-vendas.png) | orders, order_items, payments, promotions |
+| DER — Vendas e promoções (Graphviz, ver nota) | [der-7-vendas.png](der-7-vendas.png) | orders, order_items, payments, promotions |
 | DER — Pedidos de compra | [der-8-compras.png](der-8-compras.png) | purchase_orders, purchase_items |
 | DER — Previsão: análise e recomendação | [der-9-previsao-analise.png](der-9-previsao-analise.png) | forecast_runs, forecast_recommendations, forecast_ai_batches, forecast_projections, forecast_settings |
 | DER — Previsão: aplicação da recomendação | [der-10-previsao-aplicacao.png](der-10-previsao-aplicacao.png) | forecast_recommendation_items, forecast_recommendation_stores, forecast_recommendation_purchase_orders |
@@ -23,6 +23,10 @@
 | **Apêndice** — Mapa geral dos módulos | [der-apendice-geral.png](der-apendice-geral.png) | as 48, agrupadas, com a contagem de FKs entre módulos |
 
 Legenda no Word: "Figura N – Diagrama entidade-relacionamento (Módulo). Fonte: Elaborado pelo autor (2026)."
+
+> **DER 7 em Graphviz (10/11/2026):** no Mermaid ele saía uma faixa larga (as sete tabelas de outros módulos numa linha)
+> e os verbos das ligações ficavam ilegíveis no PDF (apontamento do orientador). Agora é gerado por `der7_graphviz.py`
+> (`der-7-vendas.dot`), com as tabelas empilhadas e fonte maior nos verbos; o `.mmd` fica como referência.
 
 ## Como ler (texto para pôr abaixo da figura no Word ou falar na banca)
 - **Cor = módulo**, a mesma em todas as figuras: rosa Acesso, amarelo Cadastros, roxo Produto, verde Estoque,
