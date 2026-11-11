@@ -299,6 +299,17 @@ O TCC só dizia "repositório GitHub" (3.x, rastreabilidade). Agora cita os trê
 (`github.com/Dan1elz/nextflow`, `-front`, `-docs`) e que servem para reproduzir os testes e as medições. **Os commits do
 nextflow-docs precisam estar no GitHub** para os links das evidências valerem.
 
+## Extra: uso de IA no projeto (pedido do Daniel, 11/11/2026)
+
+Não é comentário do orientador. Nova subseção **3.3.3 Uso de inteligência artificial no desenvolvimento**, com entrada no
+sumário (página aproximada) e referências ANTHROPIC (Claude Code) e OPENAI (ChatGPT).
+- Respostas do Daniel: só o Claude Code no código; na etapa final, ChatGPT só para dúvidas de documentação; declarar
+  também o apoio na revisão do texto do TCC.
+- Evidência: commits com `Co-Authored-By: Claude` até 11/11/2026: back 70/197, front 76/194, docs 61/66 (desde 26/10 no
+  código e 07/11 nos docs).
+- ABNT: não há norma oficial confirmada que obrigue a declaração (NBR 6023 e 10520 não tratam de IA generativa); declarar é
+  a prática recomendada pelas bibliotecas. Conferir se a Fatec tem regra própria.
+
 ## Checklist final
 - [ ] Todos os itens da tabela aprovados
 - [ ] Pontos ligados resolvidos ou descartados
