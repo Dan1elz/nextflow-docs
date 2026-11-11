@@ -8,7 +8,7 @@ o fundo sai e passamos ao próximo.
 
 | # | Seção | Comentário (resumo) | Status | Commit |
 |--|--|--|--|--|
-| 1 | 3.2 Levantamento de requisitos | Detalhar a modelagem de processos e as histórias de usuário; validação | em revisão | 05305ef |
+| 1 | 3.2 Levantamento de requisitos | Detalhar a modelagem de processos e as histórias de usuário; validação | aprovado (11/11) | 05305ef |
 
 ## 1. 3.2 Levantamento de requisitos
 
