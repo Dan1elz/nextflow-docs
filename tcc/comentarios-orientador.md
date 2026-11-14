@@ -437,3 +437,13 @@ Todos os 15 comentários aprovados. Depois disso:
   - cores dos gráficos não medidas.
 - [x] Fundo verde retirado do documento inteiro
 - [x] Referências novas em ordem alfabética e citadas no texto (Sebrae 2023, W3C, Anthropic, OpenAI; conferido em 11/11)
+
+## Declaração de uso de IA (13/11/2026)
+
+Pedido do grupo (Ricardo, 13/11): página com assinatura dos integrantes pelo gov.br, conforme o modelo de monografia da
+Fatec (`Anexo-1-Modelo-Monografia-ADS.docx`), que traz a "Declaração de Uso de Inteligência Artificial Generativa" logo
+depois da folha da banca. Inserida no `tcc.docx` (fundo verde) entre a banca e a dedicatória: ferramentas (Claude Code com
+Claude Opus 5.5 e Sonnet 5.5, conforme os commits; ChatGPT na plataforma web, sem versão conhecida), atividades (as do
+modelo que se aplicam + código, testes, documentação e diagramas + localização de fontes validadas pelos autores), as três
+frases fixas do modelo, remissão à 3.3.3, data em branco e três linhas de assinatura com os nomes da capa. As 36 linhas
+vazias que empurravam a dedicatória saíram; a dedicatória ganhou quebra de página. Assinar só o PDF final.
